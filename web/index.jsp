@@ -29,7 +29,7 @@
                     <%if(sesion.getAttribute("user") == null){%>
                         Iniciar sesión
                     <%} else{%>
-                        CAMBIAME A NOMBRE DEL USUARIO LOGEADO
+                        CAMBIAME A NOMBRE DEL USU LOGEADO
                     <%}%>
                 </a></div>
             </header>
