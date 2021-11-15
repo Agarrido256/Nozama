@@ -12,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -46,10 +44,11 @@ public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 99)
     @Column(name = "iduser")
-    private Integer iduser;
+    private String iduser;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 99)
@@ -87,11 +86,11 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Integer iduser) {
+    public Usuario(String iduser) {
         this.iduser = iduser;
     }
 
-    public Usuario(Integer iduser, String nombre, String apellidos, Date fechanac, boolean premium, String contraseña) {
+    public Usuario(String iduser, String nombre, String apellidos, Date fechanac, boolean premium, String contraseña) {
         this.iduser = iduser;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -100,11 +99,11 @@ public class Usuario implements Serializable {
         this.contraseña = contraseña;
     }
 
-    public Integer getIduser() {
+    public String getIduser() {
         return iduser;
     }
 
-    public void setIduser(Integer iduser) {
+    public void setIduser(String iduser) {
         this.iduser = iduser;
     }
 

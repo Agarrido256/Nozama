@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.transaction.UserTransaction;
 import modelo.exceptions.IllegalOrphanException;
 import modelo.exceptions.NonexistentEntityException;
 import modelo.exceptions.RollbackFailureException;
@@ -30,7 +29,7 @@ public class ProductoJpaController implements Serializable {
     public ProductoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     public ProductoJpaController(){
         this.emf = Persistence.createEntityManagerFactory("NozamaPU");
     }
@@ -44,6 +43,9 @@ public class ProductoJpaController implements Serializable {
     public void create(Producto producto) throws RollbackFailureException, Exception {
         if (producto.getAsistenciaList() == null) {
             producto.setAsistenciaList(new ArrayList<Asistencia>());
+        }
+        if (producto.getForoList() == null) {
+            producto.setForoList(new ArrayList<Foro>());
         }
         if (producto.getPedidoList() == null) {
             producto.setPedidoList(new ArrayList<Pedido>());
@@ -60,6 +62,12 @@ public class ProductoJpaController implements Serializable {
                 attachedAsistenciaList.add(asistenciaListAsistenciaToAttach);
             }
             producto.setAsistenciaList(attachedAsistenciaList);
+            List<Foro> attachedForoList = new ArrayList<Foro>();
+            for (Foro foroListForoToAttach : producto.getForoList()) {
+                foroListForoToAttach = em.getReference(foroListForoToAttach.getClass(), foroListForoToAttach.getIdforo());
+                attachedForoList.add(foroListForoToAttach);
+            }
+            producto.setForoList(attachedForoList);
             List<Pedido> attachedPedidoList = new ArrayList<Pedido>();
             for (Pedido pedidoListPedidoToAttach : producto.getPedidoList()) {
                 pedidoListPedidoToAttach = em.getReference(pedidoListPedidoToAttach.getClass(), pedidoListPedidoToAttach.getIdpedido());
@@ -74,6 +82,15 @@ public class ProductoJpaController implements Serializable {
                 if (oldIdpprodcutoOfAsistenciaListAsistencia != null) {
                     oldIdpprodcutoOfAsistenciaListAsistencia.getAsistenciaList().remove(asistenciaListAsistencia);
                     oldIdpprodcutoOfAsistenciaListAsistencia = em.merge(oldIdpprodcutoOfAsistenciaListAsistencia);
+                }
+            }
+            for (Foro foroListForo : producto.getForoList()) {
+                Producto oldIdpprodcutoOfForoListForo = foroListForo.getIdpprodcuto();
+                foroListForo.setIdpprodcuto(producto);
+                foroListForo = em.merge(foroListForo);
+                if (oldIdpprodcutoOfForoListForo != null) {
+                    oldIdpprodcutoOfForoListForo.getForoList().remove(foroListForo);
+                    oldIdpprodcutoOfForoListForo = em.merge(oldIdpprodcutoOfForoListForo);
                 }
             }
             for (Pedido pedidoListPedido : producto.getPedidoList()) {
@@ -110,6 +127,8 @@ public class ProductoJpaController implements Serializable {
             Producto persistentProducto = em.find(Producto.class, producto.getIdpro());
             List<Asistencia> asistenciaListOld = persistentProducto.getAsistenciaList();
             List<Asistencia> asistenciaListNew = producto.getAsistenciaList();
+            List<Foro> foroListOld = persistentProducto.getForoList();
+            List<Foro> foroListNew = producto.getForoList();
             List<Pedido> pedidoListOld = persistentProducto.getPedidoList();
             List<Pedido> pedidoListNew = producto.getPedidoList();
             List<String> illegalOrphanMessages = null;
@@ -119,6 +138,14 @@ public class ProductoJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Asistencia " + asistenciaListOldAsistencia + " since its idpprodcuto field is not nullable.");
+                }
+            }
+            for (Foro foroListOldForo : foroListOld) {
+                if (!foroListNew.contains(foroListOldForo)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Foro " + foroListOldForo + " since its idpprodcuto field is not nullable.");
                 }
             }
             for (Pedido pedidoListOldPedido : pedidoListOld) {
@@ -139,6 +166,13 @@ public class ProductoJpaController implements Serializable {
             }
             asistenciaListNew = attachedAsistenciaListNew;
             producto.setAsistenciaList(asistenciaListNew);
+            List<Foro> attachedForoListNew = new ArrayList<Foro>();
+            for (Foro foroListNewForoToAttach : foroListNew) {
+                foroListNewForoToAttach = em.getReference(foroListNewForoToAttach.getClass(), foroListNewForoToAttach.getIdforo());
+                attachedForoListNew.add(foroListNewForoToAttach);
+            }
+            foroListNew = attachedForoListNew;
+            producto.setForoList(foroListNew);
             List<Pedido> attachedPedidoListNew = new ArrayList<Pedido>();
             for (Pedido pedidoListNewPedidoToAttach : pedidoListNew) {
                 pedidoListNewPedidoToAttach = em.getReference(pedidoListNewPedidoToAttach.getClass(), pedidoListNewPedidoToAttach.getIdpedido());
@@ -155,6 +189,17 @@ public class ProductoJpaController implements Serializable {
                     if (oldIdpprodcutoOfAsistenciaListNewAsistencia != null && !oldIdpprodcutoOfAsistenciaListNewAsistencia.equals(producto)) {
                         oldIdpprodcutoOfAsistenciaListNewAsistencia.getAsistenciaList().remove(asistenciaListNewAsistencia);
                         oldIdpprodcutoOfAsistenciaListNewAsistencia = em.merge(oldIdpprodcutoOfAsistenciaListNewAsistencia);
+                    }
+                }
+            }
+            for (Foro foroListNewForo : foroListNew) {
+                if (!foroListOld.contains(foroListNewForo)) {
+                    Producto oldIdpprodcutoOfForoListNewForo = foroListNewForo.getIdpprodcuto();
+                    foroListNewForo.setIdpprodcuto(producto);
+                    foroListNewForo = em.merge(foroListNewForo);
+                    if (oldIdpprodcutoOfForoListNewForo != null && !oldIdpprodcutoOfForoListNewForo.equals(producto)) {
+                        oldIdpprodcutoOfForoListNewForo.getForoList().remove(foroListNewForo);
+                        oldIdpprodcutoOfForoListNewForo = em.merge(oldIdpprodcutoOfForoListNewForo);
                     }
                 }
             }
@@ -212,6 +257,13 @@ public class ProductoJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Producto (" + producto + ") cannot be destroyed since the Asistencia " + asistenciaListOrphanCheckAsistencia + " in its asistenciaList field has a non-nullable idpprodcuto field.");
+            }
+            List<Foro> foroListOrphanCheck = producto.getForoList();
+            for (Foro foroListOrphanCheckForo : foroListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Producto (" + producto + ") cannot be destroyed since the Foro " + foroListOrphanCheckForo + " in its foroList field has a non-nullable idpprodcuto field.");
             }
             List<Pedido> pedidoListOrphanCheck = producto.getPedidoList();
             for (Pedido pedidoListOrphanCheckPedido : pedidoListOrphanCheck) {

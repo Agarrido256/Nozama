@@ -6,18 +6,19 @@
 package modelo;
 
 import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import modelo.exceptions.IllegalOrphanException;
 import modelo.exceptions.NonexistentEntityException;
+import modelo.exceptions.PreexistingEntityException;
 import modelo.exceptions.RollbackFailureException;
 
 /**
@@ -40,7 +41,7 @@ public class AdministradorJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Administrador administrador) throws RollbackFailureException, Exception {
+    public void create(Administrador administrador) throws PreexistingEntityException, RollbackFailureException, Exception {
         if (administrador.getAsistenciaList() == null) {
             administrador.setAsistenciaList(new ArrayList<Asistencia>());
         }
@@ -72,6 +73,9 @@ public class AdministradorJpaController implements Serializable {
                 etx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            if (findAdministrador(administrador.getIdadmin()) != null) {
+                throw new PreexistingEntityException("Administrador " + administrador + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -131,7 +135,7 @@ public class AdministradorJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = administrador.getIdadmin();
+                String id = administrador.getIdadmin();
                 if (findAdministrador(id) == null) {
                     throw new NonexistentEntityException("The administrador with id " + id + " no longer exists.");
                 }
@@ -144,7 +148,7 @@ public class AdministradorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         EntityTransaction etx = null;
         try {
@@ -209,7 +213,7 @@ public class AdministradorJpaController implements Serializable {
         }
     }
 
-    public Administrador findAdministrador(Integer id) {
+    public Administrador findAdministrador(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Administrador.class, id);

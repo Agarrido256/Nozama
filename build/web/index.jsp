@@ -50,9 +50,9 @@
                 out.print("<script>alert('Usuario o clave no valida!');</script>");
             }
             if(request.getParameter("cerrarsesion") != null){
-                session.invalidate();
+                sesion.invalidate();
                 response.sendRedirect("index.jsp");
-            }
+            } //java.lang.IllegalStateException: getAttribute: Session already invalidated
         %>
         <div class="base">
             <header>
@@ -67,7 +67,7 @@
                 </a><br>
                     <%if(sesion.getAttribute("esadmin") == "si") {%>
                         <a href="index.jsp?cerrarsesion=true">Cerrar sesión</a><br>
-                        <a href="#">Panel de administración</a>
+                        <a href="#">Administración</a>
                     <%} else if(sesion.getAttribute("esadmin") == "no") {%>
                         <a href="index.jsp?cerrarsesion=true">Cerrar sesión</a>
                     <%}%>
@@ -103,16 +103,23 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <div> 
-                    <form action="index.jsp" method="POST"> 
-                        <br>
-                        <label for="inputEmail">Nombre de cuenta:</label><br>
-                        <input type="text" name="user" placeholder="Escriba su nombre de cuenta..."><br>
-                        <label for="inputPassword">Contraseña:</label><br>
-                        <input type="password" name="pass" placeholder="Escriba su contraseña..."><br>
-                        <br>
-                        <button type="submit" name="Logearse">ACCEDER <img src="imagenes/loginicon.png"></button><br>
-                        <p><a href="" style="color:cornflowerblue">¿Has olvidado la contraseña?</a></p> 
-                    </form>
+                    <%if(sesion.getAttribute("user") == null){%>
+                        <form action="index.jsp" method="POST"> 
+                            <br>
+                            <label for="inputEmail">Nombre de cuenta:</label><br>
+                            <input type="text" name="user" placeholder="Escriba su nombre de cuenta..."><br>
+                            <label for="inputPassword">Contraseña:</label><br>
+                            <input type="password" name="pass" placeholder="Escriba su contraseña..."><br>
+                            <br>
+                            <button type="submit" name="Logearse">ACCEDER <img src="imagenes/loginicon.png"></button><br>
+                            <p><a href="" style="color:cornflowerblue">¿Has olvidado la contraseña?</a></p> 
+                        </form>
+                    <%} else {%>
+                        <h2>Opciones de cuenta</h2>
+                        <a href="#" style="color: rgb(246,167,96);">Cambiar contraseña</a><br>
+                        <a href="#" style="color: rgb(246,167,96);">Cambiar parámetros de la cuenta</a><br>
+                        <a href="index.jsp?cerrarsesion=true" style="color: rgb(246,167,96);">Cerrar sesión</a>
+                    <%}%>
                 </div> 
             </div>
         </div>

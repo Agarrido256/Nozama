@@ -16,9 +16,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.transaction.UserTransaction;
 import modelo.exceptions.IllegalOrphanException;
 import modelo.exceptions.NonexistentEntityException;
+import modelo.exceptions.PreexistingEntityException;
 import modelo.exceptions.RollbackFailureException;
 
 /**
@@ -30,7 +30,7 @@ public class UsuarioJpaController implements Serializable {
     public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     public UsuarioJpaController(){
         this.emf = Persistence.createEntityManagerFactory("NozamaPU");
     }
@@ -41,9 +41,12 @@ public class UsuarioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Usuario usuario) throws RollbackFailureException, Exception {
+    public void create(Usuario usuario) throws PreexistingEntityException, RollbackFailureException, Exception {
         if (usuario.getAsistenciaList() == null) {
             usuario.setAsistenciaList(new ArrayList<Asistencia>());
+        }
+        if (usuario.getForoList() == null) {
+            usuario.setForoList(new ArrayList<Foro>());
         }
         if (usuario.getPedidoList() == null) {
             usuario.setPedidoList(new ArrayList<Pedido>());
@@ -60,6 +63,12 @@ public class UsuarioJpaController implements Serializable {
                 attachedAsistenciaList.add(asistenciaListAsistenciaToAttach);
             }
             usuario.setAsistenciaList(attachedAsistenciaList);
+            List<Foro> attachedForoList = new ArrayList<Foro>();
+            for (Foro foroListForoToAttach : usuario.getForoList()) {
+                foroListForoToAttach = em.getReference(foroListForoToAttach.getClass(), foroListForoToAttach.getIdforo());
+                attachedForoList.add(foroListForoToAttach);
+            }
+            usuario.setForoList(attachedForoList);
             List<Pedido> attachedPedidoList = new ArrayList<Pedido>();
             for (Pedido pedidoListPedidoToAttach : usuario.getPedidoList()) {
                 pedidoListPedidoToAttach = em.getReference(pedidoListPedidoToAttach.getClass(), pedidoListPedidoToAttach.getIdpedido());
@@ -74,6 +83,15 @@ public class UsuarioJpaController implements Serializable {
                 if (oldIdusuarioOfAsistenciaListAsistencia != null) {
                     oldIdusuarioOfAsistenciaListAsistencia.getAsistenciaList().remove(asistenciaListAsistencia);
                     oldIdusuarioOfAsistenciaListAsistencia = em.merge(oldIdusuarioOfAsistenciaListAsistencia);
+                }
+            }
+            for (Foro foroListForo : usuario.getForoList()) {
+                Usuario oldIdusuarioOfForoListForo = foroListForo.getIdusuario();
+                foroListForo.setIdusuario(usuario);
+                foroListForo = em.merge(foroListForo);
+                if (oldIdusuarioOfForoListForo != null) {
+                    oldIdusuarioOfForoListForo.getForoList().remove(foroListForo);
+                    oldIdusuarioOfForoListForo = em.merge(oldIdusuarioOfForoListForo);
                 }
             }
             for (Pedido pedidoListPedido : usuario.getPedidoList()) {
@@ -91,6 +109,9 @@ public class UsuarioJpaController implements Serializable {
                 etx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            if (findUsuario(usuario.getIduser()) != null) {
+                throw new PreexistingEntityException("Usuario " + usuario + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -110,6 +131,8 @@ public class UsuarioJpaController implements Serializable {
             Usuario persistentUsuario = em.find(Usuario.class, usuario.getIduser());
             List<Asistencia> asistenciaListOld = persistentUsuario.getAsistenciaList();
             List<Asistencia> asistenciaListNew = usuario.getAsistenciaList();
+            List<Foro> foroListOld = persistentUsuario.getForoList();
+            List<Foro> foroListNew = usuario.getForoList();
             List<Pedido> pedidoListOld = persistentUsuario.getPedidoList();
             List<Pedido> pedidoListNew = usuario.getPedidoList();
             List<String> illegalOrphanMessages = null;
@@ -119,6 +142,14 @@ public class UsuarioJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Asistencia " + asistenciaListOldAsistencia + " since its idusuario field is not nullable.");
+                }
+            }
+            for (Foro foroListOldForo : foroListOld) {
+                if (!foroListNew.contains(foroListOldForo)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Foro " + foroListOldForo + " since its idusuario field is not nullable.");
                 }
             }
             for (Pedido pedidoListOldPedido : pedidoListOld) {
@@ -139,6 +170,13 @@ public class UsuarioJpaController implements Serializable {
             }
             asistenciaListNew = attachedAsistenciaListNew;
             usuario.setAsistenciaList(asistenciaListNew);
+            List<Foro> attachedForoListNew = new ArrayList<Foro>();
+            for (Foro foroListNewForoToAttach : foroListNew) {
+                foroListNewForoToAttach = em.getReference(foroListNewForoToAttach.getClass(), foroListNewForoToAttach.getIdforo());
+                attachedForoListNew.add(foroListNewForoToAttach);
+            }
+            foroListNew = attachedForoListNew;
+            usuario.setForoList(foroListNew);
             List<Pedido> attachedPedidoListNew = new ArrayList<Pedido>();
             for (Pedido pedidoListNewPedidoToAttach : pedidoListNew) {
                 pedidoListNewPedidoToAttach = em.getReference(pedidoListNewPedidoToAttach.getClass(), pedidoListNewPedidoToAttach.getIdpedido());
@@ -155,6 +193,17 @@ public class UsuarioJpaController implements Serializable {
                     if (oldIdusuarioOfAsistenciaListNewAsistencia != null && !oldIdusuarioOfAsistenciaListNewAsistencia.equals(usuario)) {
                         oldIdusuarioOfAsistenciaListNewAsistencia.getAsistenciaList().remove(asistenciaListNewAsistencia);
                         oldIdusuarioOfAsistenciaListNewAsistencia = em.merge(oldIdusuarioOfAsistenciaListNewAsistencia);
+                    }
+                }
+            }
+            for (Foro foroListNewForo : foroListNew) {
+                if (!foroListOld.contains(foroListNewForo)) {
+                    Usuario oldIdusuarioOfForoListNewForo = foroListNewForo.getIdusuario();
+                    foroListNewForo.setIdusuario(usuario);
+                    foroListNewForo = em.merge(foroListNewForo);
+                    if (oldIdusuarioOfForoListNewForo != null && !oldIdusuarioOfForoListNewForo.equals(usuario)) {
+                        oldIdusuarioOfForoListNewForo.getForoList().remove(foroListNewForo);
+                        oldIdusuarioOfForoListNewForo = em.merge(oldIdusuarioOfForoListNewForo);
                     }
                 }
             }
@@ -178,7 +227,7 @@ public class UsuarioJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = usuario.getIduser();
+                String id = usuario.getIduser();
                 if (findUsuario(id) == null) {
                     throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
                 }
@@ -191,7 +240,7 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         EntityTransaction etx = null;
         try {
@@ -212,6 +261,13 @@ public class UsuarioJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Asistencia " + asistenciaListOrphanCheckAsistencia + " in its asistenciaList field has a non-nullable idusuario field.");
+            }
+            List<Foro> foroListOrphanCheck = usuario.getForoList();
+            for (Foro foroListOrphanCheckForo : foroListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Foro " + foroListOrphanCheckForo + " in its foroList field has a non-nullable idusuario field.");
             }
             List<Pedido> pedidoListOrphanCheck = usuario.getPedidoList();
             for (Pedido pedidoListOrphanCheckPedido : pedidoListOrphanCheck) {
@@ -263,7 +319,7 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public Usuario findUsuario(Integer id) {
+    public Usuario findUsuario(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Usuario.class, id);

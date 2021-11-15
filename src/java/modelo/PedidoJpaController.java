@@ -15,7 +15,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.UserTransaction;
 import modelo.exceptions.NonexistentEntityException;
 import modelo.exceptions.RollbackFailureException;
 
@@ -28,7 +27,7 @@ public class PedidoJpaController implements Serializable {
     public PedidoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     public PedidoJpaController(){
         this.emf = Persistence.createEntityManagerFactory("NozamaPU");
     }

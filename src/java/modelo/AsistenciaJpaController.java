@@ -15,7 +15,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.UserTransaction;
 import modelo.exceptions.NonexistentEntityException;
 import modelo.exceptions.RollbackFailureException;
 
@@ -28,17 +27,17 @@ public class AsistenciaJpaController implements Serializable {
     public AsistenciaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     public AsistenciaJpaController(){
         this.emf = Persistence.createEntityManagerFactory("NozamaPU");
     }
     
     private EntityManagerFactory emf = null;
 
-
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+
 
     public void create(Asistencia asistencia) throws RollbackFailureException, Exception {
         EntityManager em = null;

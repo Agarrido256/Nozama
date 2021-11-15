@@ -12,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -45,10 +43,11 @@ public class Administrador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 99)
     @Column(name = "idadmin")
-    private Integer idadmin;
+    private String idadmin;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 99)
@@ -80,11 +79,11 @@ public class Administrador implements Serializable {
     public Administrador() {
     }
 
-    public Administrador(Integer idadmin) {
+    public Administrador(String idadmin) {
         this.idadmin = idadmin;
     }
 
-    public Administrador(Integer idadmin, String nombre, String apellidos, Date fechanac, String contraseña, Date fechacontrato) {
+    public Administrador(String idadmin, String nombre, String apellidos, Date fechanac, String contraseña, Date fechacontrato) {
         this.idadmin = idadmin;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -93,11 +92,11 @@ public class Administrador implements Serializable {
         this.fechacontrato = fechacontrato;
     }
 
-    public Integer getIdadmin() {
+    public String getIdadmin() {
         return idadmin;
     }
 
-    public void setIdadmin(Integer idadmin) {
+    public void setIdadmin(String idadmin) {
         this.idadmin = idadmin;
     }
 
