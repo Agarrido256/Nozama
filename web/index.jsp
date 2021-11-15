@@ -4,6 +4,8 @@
     Author     : PcCom
 --%>
 
+<%@page import="modelo.Usuario"%>
+<%@page import="modelo.UsuarioJpaController"%>
 <%@page import="modelo.Administrador"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.AdministradorJpaController"%>
@@ -20,6 +22,37 @@
     <body>
         <%
             HttpSession sesion = request.getSession();
+            AdministradorJpaController controlAdmin = new AdministradorJpaController();
+            List<Administrador> datosAdministrador = controlAdmin.findAdministradorEntities();
+            UsuarioJpaController controlUsu = new UsuarioJpaController();
+            List<Usuario> datosUsuario = controlUsu.findUsuarioEntities();
+            if(request.getParameter("Logearse") != null){
+                String usuario = request.getParameter("user").toString();
+                String contra = request.getParameter("pass").toString();
+                for(Administrador registro : datosAdministrador){
+                    if(registro.getIdadmin().equals(usuario) && registro.getContraseña().equals(contra)){
+                        sesion.setAttribute("user", usuario);
+                        sesion.setAttribute("userpass", contra);
+                        sesion.setAttribute("esadmin", "si"); //no uso boolean porque luego el if no le gusta los boolean de sesion
+                        sesion.setAttribute("n", registro.getNombre());
+                        response.sendRedirect("index.jsp");
+                    }
+                }
+                for(Usuario registro : datosUsuario){
+                    if(registro.getIduser().equals(usuario) && registro.getContraseña().equals(contra)){
+                        sesion.setAttribute("user", usuario);
+                        sesion.setAttribute("userpass", contra);
+                        sesion.setAttribute("esadmin", "no");
+                        sesion.setAttribute("n", registro.getNombre());
+                        response.sendRedirect("index.jsp");
+                    }
+                }
+                out.print("<script>alert('Usuario o clave no valida!');</script>");
+            }
+            if(request.getParameter("cerrarsesion") != null){
+                session.invalidate();
+                response.sendRedirect("index.jsp");
+            }
         %>
         <div class="base">
             <header>
@@ -28,10 +61,17 @@
                 <div class="divlogin"><a href="#" id="login">
                     <%if(sesion.getAttribute("user") == null){%>
                         Iniciar sesión
-                    <%} else{%>
-                        CAMBIAME A NOMBRE DEL USU LOGEADO
+                    <%} else {%>
+                        Bienvenido <%= sesion.getAttribute("n")%>
                     <%}%>
-                </a></div>
+                </a><br>
+                    <%if(sesion.getAttribute("esadmin") == "si") {%>
+                        <a href="index.jsp?cerrarsesion=true">Cerrar sesión</a><br>
+                        <a href="#">Panel de administración</a>
+                    <%} else if(sesion.getAttribute("esadmin") == "no") {%>
+                        <a href="index.jsp?cerrarsesion=true">Cerrar sesión</a>
+                    <%}%>
+                </div>
             </header>
             <nav>
                 <p style="font-weight: bold; margin-top: 5px;"><a href="">nav</a> | <a href="">nav</a> | <a href="">nav</a></p>
