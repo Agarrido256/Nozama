@@ -50,9 +50,12 @@
                 out.print("<script>alert('Usuario o clave no valida!');</script>");
             }
             if(request.getParameter("cerrarsesion") != null){
-                sesion.invalidate();
+                sesion.setAttribute("user", null);
+                sesion.setAttribute("userpass", null);
+                sesion.setAttribute("esadmin", null);
+                sesion.setAttribute("n", null);
                 response.sendRedirect("index.jsp");
-            } //java.lang.IllegalStateException: getAttribute: Session already invalidated
+            }
         %>
         <div class="base">
             <header>
@@ -62,7 +65,7 @@
                     <%if(sesion.getAttribute("user") == null){%>
                         Iniciar sesión
                     <%} else {%>
-                        Bienvenido <%= sesion.getAttribute("n")%>
+                        Bienvenid@ <%= sesion.getAttribute("n")%>
                     <%}%>
                 </a><br>
                     <%if(sesion.getAttribute("esadmin") == "si") {%>
@@ -78,7 +81,7 @@
             </nav>
             <section>
                 <article>
-                    
+                    <iframe src="vistas/prueba.jsp" width="100%" height="1000" style="border:none;"></iframe>
                 </article>
                 <footer>
                     <div class="foot1">
