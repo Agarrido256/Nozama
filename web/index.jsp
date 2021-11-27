@@ -81,7 +81,7 @@
             </nav>
             <section>
                 <article>
-                    <iframe src="vistas/prueba.jsp" width="100%" height="1000" style="border:none;"></iframe>
+                    <iframe src="vistas/welcome.jsp" width="100%" height="1000" style="border:none;"></iframe>
                 </article>
                 <footer>
                     <div class="foot1">
