@@ -50,16 +50,23 @@
                 out.print("<script>alert('Usuario o clave no valida!');</script>");
             }
             if(request.getParameter("cerrarsesion") != null){
-                sesion.setAttribute("user", null);
-                sesion.setAttribute("userpass", null);
-                sesion.setAttribute("esadmin", null);
-                sesion.setAttribute("n", null);
+                sesion.removeAttribute("user");
+                sesion.removeAttribute("userpass");
+                sesion.removeAttribute("esadmin");
+                sesion.removeAttribute("n");
+                response.sendRedirect("index.jsp");
+            }
+            if(sesion.getAttribute("pagina") == null){
+                sesion.setAttribute("pagina", "vistas/welcome.jsp");
+            }
+            if(request.getParameter("cambiarpagina") != null){
+                sesion.setAttribute("pagina", request.getParameter("cambiarpagina").toString());
                 response.sendRedirect("index.jsp");
             }
         %>
         <div class="base">
             <header>
-                <a href=""><img src="imagenes/logo.PNG"></a>
+                <a href="index.jsp?salir=true"><img src="imagenes/logo.PNG"></a>
                 <div class="buscador"></div>
                 <div class="divlogin"><a href="#" id="login">
                     <%if(sesion.getAttribute("user") == null){%>
@@ -70,7 +77,7 @@
                 </a><br>
                     <%if(sesion.getAttribute("esadmin") == "si") {%>
                         <a href="index.jsp?cerrarsesion=true">Cerrar sesión</a><br>
-                        <a href="#">Administración</a>
+                        <a href="index.jsp?cambiarpagina=vistas/tablas.jsp">Administración</a>
                     <%} else if(sesion.getAttribute("esadmin") == "no") {%>
                         <a href="index.jsp?cerrarsesion=true">Cerrar sesión</a>
                     <%}%>
@@ -81,7 +88,7 @@
             </nav>
             <section>
                 <article>
-                    <iframe src="vistas/welcome.jsp" width="100%" height="1000" style="border:none;"></iframe>
+                    <iframe src="<%= sesion.getAttribute("pagina").toString()%>" width="100%" height="800" style="border:none;"></iframe>
                 </article>
                 <footer>
                     <div class="foot1">
