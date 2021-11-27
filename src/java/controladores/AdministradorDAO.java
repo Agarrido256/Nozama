@@ -84,7 +84,7 @@ public class AdministradorDAO extends HttpServlet {
             String nombre = request.getParameter("nombre").toString();
             String apellidos = request.getParameter("apellidos").toString();
             String estafecha = request.getParameter("fechanac").toString();
-            String contraseña = request.getParameter("contraseña").toString();
+            String contrasena = request.getParameter("contrasena").toString();
             String estafechac = request.getParameter("fechacontrato").toString();
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -96,7 +96,7 @@ public class AdministradorDAO extends HttpServlet {
             } catch (ParseException ex) {
                 mensaje = "f";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/tablas.jsp");
                 return;
             }
             try{
@@ -104,22 +104,22 @@ public class AdministradorDAO extends HttpServlet {
                 administrador.setNombre(nombre);
                 administrador.setApellidos(apellidos);
                 administrador.setFechanac(fechanac);
-                administrador.setContraseña(contraseña);
+                administrador.setContraseña(contrasena);
                 administrador.setFechacontrato(fechacontrato);
                 controlcon.create(administrador);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/tablas.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/tablas.jsp");
                 return;
             }
         }
         if(request.getParameter("Modificar") != null){
-            String idadmin = request.getParameter("sidadmin").toString();
+            String idadmin = sesion.getAttribute("sidadmin").toString();
             String nombre;
             if(request.getParameter("nombre").toString().isEmpty()){
                 nombre = sesion.getAttribute("snombre").toString();
@@ -132,59 +132,47 @@ public class AdministradorDAO extends HttpServlet {
             } else {
                 apellidos = request.getParameter("apellidos").toString();
             }
-            String estafecha;
-            if(request.getParameter("fechanac").toString().isEmpty()){
-                estafecha = sesion.getAttribute("sfechanac").toString();
+            String contrasena;
+            if(request.getParameter("contrasena").toString().isEmpty()){
+                contrasena = sesion.getAttribute("scontrasena").toString();
             } else {
-                estafecha = request.getParameter("fechanac").toString();
-            }
-            String contraseña;
-            if(request.getParameter("contraseña").toString().isEmpty()){
-                contraseña = sesion.getAttribute("scontraseña").toString();
-            } else {
-                contraseña = request.getParameter("contraseña").toString();
-            }
-            String estafechac;
-            if(request.getParameter("fechacontrato").toString().isEmpty()){
-                estafechac = sesion.getAttribute("sfechacontrato").toString();
-            } else {
-                estafechac = request.getParameter("fechacontrato").toString();
+                contrasena = request.getParameter("contrasena").toString();
             }
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date fechanac;
             Date fechacontrato;
             try {
-                fechanac = simpleDateFormat.parse(estafecha);
-                fechacontrato = simpleDateFormat.parse(estafechac);
+                fechanac = simpleDateFormat.parse(request.getParameter("fechanac").toString());
+                fechacontrato = simpleDateFormat.parse(request.getParameter("fechacontrato").toString());
             } catch (ParseException ex) {
                 mensaje = "f";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/modAdministrador.jsp");
                 return;
             }
             sesion.removeAttribute("sidadmin");
             sesion.removeAttribute("snombre");
             sesion.removeAttribute("sapellidos");
             sesion.removeAttribute("sfechanac");
-            sesion.removeAttribute("scontraseña");
+            sesion.removeAttribute("scontrasena");
             sesion.removeAttribute("sfechacontrato");
             try{
                 administrador.setIdadmin(idadmin);
                 administrador.setNombre(nombre);
                 administrador.setApellidos(apellidos);
                 administrador.setFechanac(fechanac);
-                administrador.setContraseña(contraseña);
+                administrador.setContraseña(contrasena);
                 administrador.setFechacontrato(fechacontrato);
                 controlcon.edit(administrador);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/modAdministrador.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/modAdministrador.jsp");
                 return;
             }
         }
@@ -194,16 +182,16 @@ public class AdministradorDAO extends HttpServlet {
                 controlcon.destroy(idadmin);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/tablas.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("vistas/tablas.jsp");
                 return;
             }
         }
-        processRequest(request, response);
+        
     }
 
     /**

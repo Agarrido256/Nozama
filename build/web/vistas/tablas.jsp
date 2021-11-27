@@ -51,7 +51,7 @@
         }
     %>
     <body>
-        <a href="../index.jsp?cambiarpagina=vistas/welcome.jsp">Salir</a><br>
+        <a href="welcome.jsp">Salir</a><br>
         <p>Introduzca los datos y seleccione la acción, en el caso de que quiera eliminar o modificar un registro,
             solo es necesario declarar el <strong>id identificador del registro en cuestión</strong></p>
         <h2>Gestionar administradores</h2>
@@ -61,7 +61,7 @@
             <p>Nombre: <input type='text' name='nombre' required/></p>
             <p>Apellidos: <input type='text' name='apellidos' required/></p>
             <p>Fecha de nacimiento: <input type='date' name='fechanac' required/></p>
-            <p>Contraseña: <input type='password' name='contraseña' required/></p>
+            <p>Contraseña: <input type='password' name='contrasena' required/></p>
             <p>Fecha del contrato: <input type='date' name='fechacontrato' required/></p>
             <p><input type='submit' name='Registrar' value='Registrar'/></p>
         </form>
@@ -74,12 +74,12 @@
             <%}%>
             </select>
             </p>
-            <p><input type='submit' name='Modificar' value='Modificar'/></p>
+            <p><input type='submit' name='mod' value='Modificar'/></p>
         </form>
         <h3>Eliminar a un administrador</h3>
         <form action='../AdministradorDAO' method='POST'>
             <p>Id del Administrador: 
-            <select name="tarjetasanitaria">
+            <select name="idadmin">
             <%for(Administrador registro : datosAdministrador){%>
                 <option value='<%= registro.getIdadmin()%>'><%= registro.getIdadmin()%></option>
             <%}%>
