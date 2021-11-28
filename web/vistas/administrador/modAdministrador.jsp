@@ -15,6 +15,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <style>
+            *{
+                font-family: 'Source Sans Pro', sans-serif;
+}
+
+            html, body{
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+
+            body{
+                background-color: rgb(244,244,244);
+            }
+            
             table, td, th {
                 border: 1px solid black;
             }
@@ -67,9 +81,9 @@
         }
     %>
     <body>
-        <a href="tablas.jsp">Cancelar y volver</a><br>
+        <a href="gestionAdministrador.jsp">Cancelar y volver</a><br>
         <p>Escriba solamente, los datos que desee cambiar del administrador con el id: <%= sesion.getAttribute("sidadmin")%></p>
-        <form action='../AdministradorDAO' method='POST'>
+        <form action='../../UsuarioDAO' method='POST'>
             <p>Nombre: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("snombre")%>'/></p>
             <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= sesion.getAttribute("sapellidos")%>'/></p>
             <p>Fecha de nacimiento: <input type='date' name='fechanac' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechanac"))%>'/></p>
@@ -91,7 +105,7 @@
                     Apellidos
                 </th>
                 <th>
-                    fecha de nacimiento
+                    Fecha de nacimiento
                 </th>
                 <th>
                     Fecha de contrato

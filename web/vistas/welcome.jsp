@@ -9,8 +9,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../diseño/iframes.css">
-        <script src="../diseño/iframes.js"></script>
+        <style>
+            *{
+                font-family: 'Source Sans Pro', sans-serif;
+}
+
+            html, body{
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+
+            body{
+                background-color: rgb(244,244,244);
+            }
+        </style>
     </head>
     <body>
         <%

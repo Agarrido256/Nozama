@@ -4,9 +4,17 @@
         <servlet-name>AdministradorDAO</servlet-name>
         <servlet-class>controladores.AdministradorDAO</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UsuarioDAO</servlet-name>
+        <servlet-class>controladores.UsuarioDAO</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdministradorDAO</servlet-name>
         <url-pattern>/AdministradorDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsuarioDAO</servlet-name>
+        <url-pattern>/UsuarioDAO</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

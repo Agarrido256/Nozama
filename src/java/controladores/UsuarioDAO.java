@@ -7,6 +7,7 @@ package controladores;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Boolean.parseBoolean;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,16 +16,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelo.Administrador;
-import modelo.AdministradorJpaController;
+import modelo.Usuario;
+import modelo.UsuarioJpaController;
 
 /**
  *
  * @author PcCom
  */
-public class AdministradorDAO extends HttpServlet {
-    private AdministradorJpaController controlcon = new AdministradorJpaController();
-    private Administrador administrador = new Administrador();
+public class UsuarioDAO extends HttpServlet {
+    private UsuarioJpaController controlcon = new UsuarioJpaController();
+    private Usuario usuario = new Usuario();
     private String mensaje = "";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,9 +44,10 @@ public class AdministradorDAO extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdministradorDAO</title>");            
+            out.println("<title>Servlet UsuarioDAO</title>");            
             out.println("</head>");
             out.println("<body>");
+            out.println("<h1>Servlet UsuarioDAO at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -80,46 +82,52 @@ public class AdministradorDAO extends HttpServlet {
         HttpSession sesion = request.getSession();
         mensaje = "";
         if(request.getParameter("Registrar") != null){
-            String idadmin = request.getParameter("idadmin").toString();
+            String iduser = request.getParameter("iduser").toString();
             String nombre = request.getParameter("nombre").toString();
             String apellidos = request.getParameter("apellidos").toString();
             String estafecha = request.getParameter("fechanac").toString();
+            boolean premium = parseBoolean(request.getParameter("premium"));
+            String estafechac = request.getParameter("fechacadpremium").toString();
             String contrasena = request.getParameter("contrasena").toString();
-            String estafechac = request.getParameter("fechacontrato").toString();
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date fechanac;
-            Date fechacontrato;
+            Date fechacadpremium = null;
             try {
                 fechanac = simpleDateFormat.parse(estafecha);
-                fechacontrato = simpleDateFormat.parse(estafechac);
+                if(estafechac.isEmpty()){
+                    fechacadpremium = simpleDateFormat.parse(estafechac);
+                }
             } catch (ParseException ex) {
                 mensaje = "f";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
                 return;
             }
             try{
-                administrador.setIdadmin(idadmin);
-                administrador.setNombre(nombre);
-                administrador.setApellidos(apellidos);
-                administrador.setFechanac(fechanac);
-                administrador.setContraseña(contrasena);
-                administrador.setFechacontrato(fechacontrato);
-                controlcon.create(administrador);
+                usuario.setIduser(iduser);
+                usuario.setNombre(nombre);
+                usuario.setApellidos(apellidos);
+                usuario.setFechanac(fechanac);
+                usuario.setPremium(premium);
+                if(fechacadpremium != null){
+                    usuario.setFechacadpremium(fechacadpremium);
+                }
+                usuario.setContraseña(contrasena);
+                controlcon.create(usuario);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
                 return;
             }
         }
         if(request.getParameter("Modificar") != null){
-            String idadmin = sesion.getAttribute("sidadmin").toString();
+            String iduser = sesion.getAttribute("siuser").toString();
             String nombre;
             if(request.getParameter("nombre").toString().isEmpty()){
                 nombre = sesion.getAttribute("snombre").toString();
@@ -145,61 +153,68 @@ public class AdministradorDAO extends HttpServlet {
                 estafecha = request.getParameter("fechanac").toString();
             }
             String estafechac;
-            if(request.getParameter("fechacontrato").toString().isEmpty()){
-                estafechac = sesion.getAttribute("sfechacontrato").toString();
+            if(request.getParameter("fechacadpremium").toString().isEmpty()){
+                estafechac = sesion.getAttribute("sfechacadpremium").toString();
             } else {
-                estafechac = request.getParameter("fechacontrato").toString();
+                estafechac = request.getParameter("fechacadpremium").toString();
             }
+            boolean premium = parseBoolean(request.getParameter("premium"));
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date fechanac;
-            Date fechacontrato;
+            Date fechacadpremium = null;
             try {
                 fechanac = simpleDateFormat.parse(estafecha);
-                fechacontrato = simpleDateFormat.parse(estafechac);
+                if(estafechac != null){
+                    fechacadpremium = simpleDateFormat.parse(estafechac);
+                }
             } catch (ParseException ex) {
                 mensaje = "f";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/modUsuario.jsp");
                 return;
             }
-            sesion.removeAttribute("sidadmin");
+            sesion.removeAttribute("siduser");
             sesion.removeAttribute("snombre");
             sesion.removeAttribute("sapellidos");
             sesion.removeAttribute("sfechanac");
             sesion.removeAttribute("scontrasena");
-            sesion.removeAttribute("sfechacontrato");
+            sesion.removeAttribute("spremium");
+            sesion.removeAttribute("sfechacadpremium");
             try{
-                administrador.setIdadmin(idadmin);
-                administrador.setNombre(nombre);
-                administrador.setApellidos(apellidos);
-                administrador.setFechanac(fechanac);
-                administrador.setContraseña(contrasena);
-                administrador.setFechacontrato(fechacontrato);
-                controlcon.edit(administrador);
+                usuario.setIduser(iduser);
+                usuario.setNombre(nombre);
+                usuario.setApellidos(apellidos);
+                usuario.setFechanac(fechanac);
+                usuario.setPremium(premium);
+                if(fechacadpremium != null){
+                    usuario.setFechacadpremium(fechacadpremium);
+                }
+                usuario.setContraseña(contrasena);
+                controlcon.create(usuario);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/modUsuario.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/modUsuario.jsp");
                 return;
             }
         }
         if(request.getParameter("Eliminar") != null){
-            String idadmin = request.getParameter("idadmin").toString();
+            String iduser = request.getParameter("iduser").toString();
             try{
-                controlcon.destroy(idadmin);
+                controlcon.destroy(iduser);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
+                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
                 return;
             }
         }
