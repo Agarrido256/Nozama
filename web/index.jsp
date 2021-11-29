@@ -54,6 +54,7 @@
                 sesion.removeAttribute("userpass");
                 sesion.removeAttribute("esadmin");
                 sesion.removeAttribute("n");
+                sesion.setAttribute("pagina", "vistas/welcome.jsp");
                 response.sendRedirect("index.jsp");
             }
             if(sesion.getAttribute("pagina") == null){
@@ -63,10 +64,14 @@
                 sesion.setAttribute("pagina", request.getParameter("cambiarpagina").toString());
                 response.sendRedirect("index.jsp");
             }
+            if(request.getParameter("salir") != null){
+                sesion.setAttribute("pagina", "vistas/welcome.jsp");
+                response.sendRedirect("index.jsp");
+            }
         %>
         <div class="base">
             <header>
-                <a href="index.jsp?cambiarpagina=vistas/welcome.jsp"><img src="imagenes/logo.PNG"></a>
+                <a href="index.jsp?salir=true"><img src="imagenes/logo.PNG"></a>
                 <div class="buscador"><label style="color: red; opacity: 0.5;">*falta por implementar campo buscar producto</label></div>
                 <div class="carrito"><label style="color: red; opacity: 0.5;">*falta por implementar carrito</label></div>
                 <div class="divlogin"><a href="#" id="login">
@@ -85,7 +90,7 @@
                 </div>
             </header>
             <nav>
-                <p style="font-weight: bold; margin-top: 5px;"><a href="">nav</a> | <a href="">nav</a> | <a href="">nav</a></p>
+                <p style="font-weight: bold; margin-top: 5px;"><a href="#">Clásica</a> | <a href="#">Blues</a> | <a href="#">Jazz</a> | <a href="#">Rock</a> | <a href="#">Metal</a> | <a href="#">Pop</a> | <a href="#">Rap</a></p>
             </nav>
             <section>
                 <article>

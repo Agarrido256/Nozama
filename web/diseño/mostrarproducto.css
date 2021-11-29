@@ -1,0 +1,46 @@
+*{
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+html, body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body{
+    background-color: rgb(244,244,244);
+}
+
+.base{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: grid;
+}
+
+.producto{
+    background-color: rgb(244,244,244);
+    display: inline-block;
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-row: 1;
+}
+
+.imgdiv img{
+    height: auto;
+    width: 95%;
+}
+
+.foro{
+    grid-row: 2;
+}
+
+button{
+    background-color: rgb(246,167,96);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px;
+    font-size: 1.1em;
+}

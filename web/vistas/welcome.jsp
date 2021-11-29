@@ -32,7 +32,7 @@
                     for(Producto registro : datosProducto){
                         if(contador < 4){
                             if(registro.getDescuento() > 0 && registro.getStock() > 0){%>
-                                <div class="productooferta">
+                                <div class="productooferta" onclick="location.href='mostrarproducto.jsp?esteproducto=<%= registro.getIdpro()%>';" style="cursor: pointer;">
                                     <div class="imgproductooferta">
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
@@ -73,7 +73,7 @@
                 <div class="bodydestacados">
                 <%
                     for(Producto registro : datosProducto){%>
-                                <div class="productodestacados">
+                                <div class="productodestacados" onclick="location.href='mostrarproducto.jsp?esteproducto=<%= registro.getIdpro()%>';" style="cursor: pointer;">
                                     <div class="imgproductodestacados">
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
