@@ -66,8 +66,9 @@
         %>
         <div class="base">
             <header>
-                <a href="index.jsp?salir=true"><img src="imagenes/logo.PNG"></a>
-                <div class="buscador"></div>
+                <a href="index.jsp?cambiarpagina=vistas/welcome.jsp"><img src="imagenes/logo.PNG"></a>
+                <div class="buscador"><label style="color: red; opacity: 0.5;">*falta por implementar campo buscar producto</label></div>
+                <div class="carrito"><label style="color: red; opacity: 0.5;">*falta por implementar carrito</label></div>
                 <div class="divlogin"><a href="#" id="login">
                     <%if(sesion.getAttribute("user") == null){%>
                         Iniciar sesión
