@@ -90,7 +90,18 @@
         <div class="base">
             <header>
                 <a href="index.jsp?salir=true"><img src="imagenes/logo.PNG"></a>
-                <div class="buscador"><label style="color: red; opacity: 0.5;">*falta por implementar campo buscar producto</label></div>
+                <div class="buscador">
+                    <select id="buscaproducto">
+                    <%for(Producto registro : datosProducto){%>
+                        <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
+                    <%}%>
+                    </select><br><label style="color: red; opacity: 0.5;">*falta añadir detalles y imagenes de cada disco en el buscador y mejorar diseño</label>
+                    <style>
+                        <%for(Producto registro : datosProducto){%>
+                            select#buscaproducto option[value="<%= registro.getNombre()%>"]   { background-image:url(/imagenes/<%= registro.getImg()%>);}
+                        <%}%>
+                    </style>
+                </div>
                 <div class="carrito"><label style="color: red; opacity: 0.5;">*falta por implementar carrito</label></div>
                 <div class="divlogin"><a href="#" id="login">
                     <%if(sesion.getAttribute("user") == null){%>
