@@ -95,7 +95,7 @@
                     <%for(Producto registro : datosProducto){%>
                         <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
                     <%}%>
-                    </select><br><label style="color: red; opacity: 0.5;">*falta añadir detalles y imagenes de cada disco en el buscador y mejorar diseño</label>
+                    </select><br><label style="color: red; opacity: 0.5;">*buscador de productos sin terminar</label>
                     <style>
                         <%for(Producto registro : datosProducto){%>
                             select#buscaproducto option[value="<%= registro.getNombre()%>"]   { background-image:url(/imagenes/<%= registro.getImg()%>);}
