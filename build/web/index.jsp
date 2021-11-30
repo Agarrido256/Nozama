@@ -78,12 +78,14 @@
             int contador = 0;
             for(Producto registro : datosProducto){
                 categorias[contador] = registro.getCategoria();
-                if(categorias[contador].equals("Electronica")){
-                    categorias[contador] = "Electrónica";
-                }
                 contador++;
             }
             categorias = new HashSet<String>(Arrays.asList(categorias)).toArray(new String[0]);
+            if(request.getParameter("vercategoria") != null){
+                sesion.setAttribute("pagina", "vistas/categoria.jsp");
+                sesion.setAttribute("c", request.getParameter("vercategoria"));
+                response.sendRedirect("index.jsp");
+            }
         %>
         <div class="base">
             <header>
@@ -108,11 +110,16 @@
             <nav>
                 <p style="font-weight: bold; margin-top: 5px;">
                     <%for (int i = 0; i < categorias.length; i++) {
-                    if(categorias[i] != null){%>
-                        <a href="#"><%= categorias[i]%></a>
+                    if(categorias[i] != null){
+                        if(categorias[i].equals("Electronica")){%>
+                            <a href="index.jsp?vercategoria=<%= categorias[i]%>">Electrónica</a>
+                        <%} else {%>
+                            <a href="index.jsp?vercategoria=<%= categorias[i]%>"><%= categorias[i]%></a>
+                        <%}%>
                         <%if(i < (categorias.length - 1)){%>
                         |
-                    <%}}}%>
+                        <%}%>
+                    <%}}%>
                 </p>
             </nav>
             <section>
