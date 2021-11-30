@@ -4,6 +4,10 @@
     Author     : PcCom
 --%>
 
+<%@page import="java.util.HashSet"%>
+<%@page import="java.util.Arrays"%>
+<%@page import="modelo.Producto"%>
+<%@page import="modelo.ProductoJpaController"%>
 <%@page import="modelo.Usuario"%>
 <%@page import="modelo.UsuarioJpaController"%>
 <%@page import="modelo.Administrador"%>
@@ -26,6 +30,8 @@
             List<Administrador> datosAdministrador = controlAdmin.findAdministradorEntities();
             UsuarioJpaController controlUsu = new UsuarioJpaController();
             List<Usuario> datosUsuario = controlUsu.findUsuarioEntities();
+            ProductoJpaController controlPro = new ProductoJpaController();
+            List<Producto> datosProducto = controlPro.findProductoEntities();
             if(request.getParameter("Logearse") != null){
                 String usuario = request.getParameter("user").toString();
                 String contra = request.getParameter("pass").toString();
@@ -68,6 +74,16 @@
                 sesion.setAttribute("pagina", "vistas/welcome.jsp");
                 response.sendRedirect("index.jsp");
             }
+            String[] categorias = new String[99];
+            int contador = 0;
+            for(Producto registro : datosProducto){
+                categorias[contador] = registro.getCategoria();
+                if(categorias[contador].equals("Electronica")){
+                    categorias[contador] = "Electrónica";
+                }
+                contador++;
+            }
+            categorias = new HashSet<String>(Arrays.asList(categorias)).toArray(new String[0]);
         %>
         <div class="base">
             <header>
@@ -90,7 +106,14 @@
                 </div>
             </header>
             <nav>
-                <p style="font-weight: bold; margin-top: 5px;"><a href="#">Clásica</a> | <a href="#">Blues</a> | <a href="#">Jazz</a> | <a href="#">Rock</a> | <a href="#">Metal</a> | <a href="#">Pop</a> | <a href="#">Rap</a></p>
+                <p style="font-weight: bold; margin-top: 5px;">
+                    <%for (int i = 0; i < categorias.length; i++) {
+                    if(categorias[i] != null){%>
+                        <a href="#"><%= categorias[i]%></a>
+                        <%if(i < (categorias.length - 1)){%>
+                        |
+                    <%}}}%>
+                </p>
             </nav>
             <section>
                 <article>

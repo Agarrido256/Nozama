@@ -16,7 +16,6 @@ body{
     width: 100%;
     height: 100%;
     margin: 0;
-    display: grid;
 }
 
 .producto{
@@ -24,7 +23,6 @@ body{
     display: inline-block;
     display: grid;
     grid-template-columns: 35% 65%;
-    grid-row: 1;
 }
 
 .imgdiv img{
