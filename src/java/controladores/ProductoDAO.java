@@ -7,25 +7,22 @@ package controladores;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.Boolean.parseBoolean;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static java.lang.Integer.parseInt;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelo.Usuario;
-import modelo.UsuarioJpaController;
+import modelo.Producto;
+import modelo.ProductoJpaController;
 
 /**
  *
  * @author PcCom
  */
-public class UsuarioDAO extends HttpServlet {
-    private UsuarioJpaController controlcon = new UsuarioJpaController();
-    private Usuario usuario = new Usuario();
+public class ProductoDAO extends HttpServlet {
+    private ProductoJpaController controlcon = new ProductoJpaController();
+    private Producto producto = new Producto();
     private String mensaje = "";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +41,7 @@ public class UsuarioDAO extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UsuarioDAO</title>");            
+            out.println("<title>Servlet ProductoDAO</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("</body>");
@@ -81,52 +78,42 @@ public class UsuarioDAO extends HttpServlet {
         HttpSession sesion = request.getSession();
         mensaje = "";
         if(request.getParameter("Registrar") != null){
-            String iduser = request.getParameter("iduser").toString();
+            String categoria = request.getParameter("categoria").toString();
+            String autor = request.getParameter("autor").toString();
+            String img = request.getParameter("img").toString();
             String nombre = request.getParameter("nombre").toString();
-            String apellidos = request.getParameter("apellidos").toString();
-            String estafecha = request.getParameter("fechanac").toString();
-            boolean premium = parseBoolean(request.getParameter("premium"));
-            String estafechac = request.getParameter("fechacadpremium").toString();
-            String contrasena = request.getParameter("contrasena").toString();
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            Date fechanac;
-            Date fechacadpremium = null;
-            try {
-                fechanac = simpleDateFormat.parse(estafecha);
-                if(estafechac.isEmpty()){
-                    fechacadpremium = simpleDateFormat.parse(estafechac);
-                }
-            } catch (ParseException ex) {
-                mensaje = "f";
-                sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
-                return;
-            }
+            String contenido = request.getParameter("contenido").toString();
+            String precio = request.getParameter("precio").toString();
+            String preciopremium = request.getParameter("preciopremium").toString();
+            String precioenvio = request.getParameter("precioenvio").toString();
+            int descuento = parseInt(request.getParameter("descuento"));
+            int stock = parseInt(request.getParameter("stock"));
             try{
-                usuario.setIduser(iduser);
-                usuario.setNombre(nombre);
-                usuario.setApellidos(apellidos);
-                usuario.setFechanac(fechanac);
-                usuario.setPremium(premium);
-                if(fechacadpremium != null){
-                    usuario.setFechacadpremium(fechacadpremium);
-                }
-                usuario.setContraseña(contrasena);
-                controlcon.create(usuario);
+                producto.setCategoria(categoria);
+                producto.setAutor(autor);
+                producto.setImg(img);
+                producto.setNombre(nombre);
+                producto.setContenido(contenido);
+                producto.setPrecio(precio);
+                producto.setPreciopremium(preciopremium);
+                producto.setPrecioenvio(precioenvio);
+                producto.setDescuento(descuento);
+                producto.setStock(stock);
+                controlcon.create(producto);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
+                response.sendRedirect("vistas/administrador/gestionProducto.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
+                response.sendRedirect("vistas/administrador/gestionProducto.jsp");
                 return;
             }
         }
         if(request.getParameter("Modificar") != null){
-            String iduser = sesion.getAttribute("siuser").toString();
+            //EEEEEEEEEEEEEEEEE
+            String idadmin = sesion.getAttribute("sidadmin").toString();
             String nombre;
             if(request.getParameter("nombre").toString().isEmpty()){
                 nombre = sesion.getAttribute("snombre").toString();
@@ -152,68 +139,61 @@ public class UsuarioDAO extends HttpServlet {
                 estafecha = request.getParameter("fechanac").toString();
             }
             String estafechac;
-            if(request.getParameter("fechacadpremium").toString().isEmpty()){
-                estafechac = sesion.getAttribute("sfechacadpremium").toString();
+            if(request.getParameter("fechacontrato").toString().isEmpty()){
+                estafechac = sesion.getAttribute("sfechacontrato").toString();
             } else {
-                estafechac = request.getParameter("fechacadpremium").toString();
+                estafechac = request.getParameter("fechacontrato").toString();
             }
-            boolean premium = parseBoolean(request.getParameter("premium"));
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date fechanac;
-            Date fechacadpremium = null;
+            Date fechacontrato;
             try {
                 fechanac = simpleDateFormat.parse(estafecha);
-                if(estafechac != null){
-                    fechacadpremium = simpleDateFormat.parse(estafechac);
-                }
+                fechacontrato = simpleDateFormat.parse(estafechac);
             } catch (ParseException ex) {
                 mensaje = "f";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/modUsuario.jsp");
+                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
                 return;
             }
-            sesion.removeAttribute("siduser");
+            sesion.removeAttribute("sidadmin");
             sesion.removeAttribute("snombre");
             sesion.removeAttribute("sapellidos");
             sesion.removeAttribute("sfechanac");
             sesion.removeAttribute("scontrasena");
-            sesion.removeAttribute("spremium");
-            sesion.removeAttribute("sfechacadpremium");
+            sesion.removeAttribute("sfechacontrato");
             try{
-                usuario.setIduser(iduser);
-                usuario.setNombre(nombre);
-                usuario.setApellidos(apellidos);
-                usuario.setFechanac(fechanac);
-                usuario.setPremium(premium);
-                if(fechacadpremium != null){
-                    usuario.setFechacadpremium(fechacadpremium);
-                }
-                usuario.setContraseña(contrasena);
-                controlcon.create(usuario);
+                administrador.setIdadmin(idadmin);
+                administrador.setNombre(nombre);
+                administrador.setApellidos(apellidos);
+                administrador.setFechanac(fechanac);
+                administrador.setContraseña(contrasena);
+                administrador.setFechacontrato(fechacontrato);
+                controlcon.edit(administrador);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/modUsuario.jsp");
+                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/modUsuario.jsp");
+                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
                 return;
             }
         }
         if(request.getParameter("Eliminar") != null){
-            String iduser = request.getParameter("iduser").toString();
+            String idadmin = request.getParameter("idadmin").toString();
             try{
-                controlcon.destroy(iduser);
+                controlcon.destroy(idadmin);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
+                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/usuario/gestionUsuario.jsp");
+                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
                 return;
             }
         }

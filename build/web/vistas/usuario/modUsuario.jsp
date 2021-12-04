@@ -82,8 +82,8 @@
     %>
     <body>
         <a href="gestionUsuario.jsp">Cancelar y volver</a><br>
-        <p>Escriba solamente, los datos que desee cambiar del administrador con el id: <%= sesion.getAttribute("sidadmin")%></p>
-        <form action='../../AdministradorDAO' method='POST'>
+        <p>Escriba solamente, los datos que desee cambiar del usuario con el id: <%= sesion.getAttribute("siduser")%></p>
+        <form action='../../UsuarioDAO' method='POST'>
             <p>Nombre: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("snombre")%>'></p>
             <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= sesion.getAttribute("sapellidos")%>'/></p>
             <p>Fecha de nacimiento: <input type='date' name='fechanac' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechanac"))%>'/></p>

@@ -8,6 +8,10 @@
         <servlet-name>UsuarioDAO</servlet-name>
         <servlet-class>controladores.UsuarioDAO</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductoDAO</servlet-name>
+        <servlet-class>controladores.ProductoDAO</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdministradorDAO</servlet-name>
         <url-pattern>/AdministradorDAO</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>UsuarioDAO</servlet-name>
         <url-pattern>/UsuarioDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductoDAO</servlet-name>
+        <url-pattern>/ProductoDAO</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

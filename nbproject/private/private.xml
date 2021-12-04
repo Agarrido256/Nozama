@@ -3,8 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/PcCom/Documents/NetBeansProjects/Nozama/web/diseño/css.css</file>
-            <file>file:/C:/Users/PcCom/Documents/NetBeansProjects/Nozama/web/index.jsp</file>
+            <file>file:/C:/Users/PcCom/Documents/NetBeansProjects/Nozama/web/vistas/producto/gestionProducto.jsp</file>
+            <file>file:/C:/Users/PcCom/Documents/NetBeansProjects/Nozama/src/java/controladores/ProductoDAO.java</file>
+            <file>file:/C:/Users/PcCom/Documents/NetBeansProjects/Nozama/web/vistas/tablas.jsp</file>
+            <file>file:/C:/Users/PcCom/Documents/NetBeansProjects/Nozama/web/vistas/administrador/gestionAdministrador.jsp</file>
+            <file>file:/C:/Users/PcCom/Documents/NetBeansProjects/Nozama/web/vistas/administrador/modAdministrador.jsp</file>
         </group>
     </open-files>
 </project-private>
