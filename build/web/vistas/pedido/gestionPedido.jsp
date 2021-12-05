@@ -109,7 +109,7 @@
         <h3>Modificar un producto</h3>
         <form action='modPedido.jsp' method='GET'>
             <p>Número del pedido: (fíjese en la tabla de abajo)  
-            <select name="idpro">
+            <select name="idpedido">
             <%for(Pedido registro : datosPedido){%>
                 <option value='<%= registro.getIdpedido()%>'><%= registro.getIdpedido()%></option>
             <%}%>
@@ -120,7 +120,7 @@
         <h3>Eliminar un pedido</h3>
         <form action='../../PedidoDAO' method='POST'>
             <p>Número del pedido: (fíjese en la tabla de abajo)  
-            <select name="idpro">
+            <select name="idpedido">
             <%for(Pedido registro : datosPedido){%>
                 <option value='<%= registro.getIdpedido()%>'><%= registro.getIdpedido()%></option>
             <%}%>

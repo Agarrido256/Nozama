@@ -121,7 +121,7 @@ public class ProductoDAO extends HttpServlet {
             }
         }
         if(request.getParameter("Modificar") != null){
-            String idpro = sesion.getAttribute("sidpro").toString();
+            int idpro = parseInt(request.getParameter("sidpro"));
             String categoria;
             if(request.getParameter("categoria").toString().isEmpty()){
                 categoria = sesion.getAttribute("scategoria").toString();
@@ -187,6 +187,7 @@ public class ProductoDAO extends HttpServlet {
                 stock = parseInt(request.getParameter("stock"));
             }
             try{
+                producto.setIdpro(idpro);
                 producto.setCategoria(categoria);
                 producto.setAutor(autor);
                 producto.setImg(img);

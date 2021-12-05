@@ -1,16 +1,14 @@
 <%-- 
-    Document   : gestionPedido
-    Created on : 05-dic-2021, 18:16:03
+    Document   : modPedido
+    Created on : 05-dic-2021, 21:58:38
     Author     : PcCom
 --%>
 
-<%@page import="modelo.Producto"%>
-<%@page import="modelo.ProductoJpaController"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="modelo.Usuario"%>
 <%@page import="modelo.UsuarioJpaController"%>
-<%@page import="modelo.Administrador"%>
-<%@page import="modelo.AdministradorJpaController"%>
-<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="modelo.Producto"%>
+<%@page import="modelo.ProductoJpaController"%>
 <%@page import="modelo.Pedido"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.PedidoJpaController"%>
@@ -55,8 +53,27 @@
         UsuarioJpaController controlUsuario = new UsuarioJpaController();
         List<Usuario> datosUsuario = controlUsuario.findUsuarioEntities();
         HttpSession sesion = request.getSession();
-        String pattern = "yyyy-MM-dd";
+        String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String patron = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormato = new SimpleDateFormat(patron);
+        String mensaje = "";
+        if(request.getParameter("mod") != null){
+            for(Pedido registro : datosPedido){
+                if(request.getParameter("idpedido").equals(registro.getIdpedido().toString())){
+                    sesion.setAttribute("sidpedido", registro.getIdpedido());
+                    sesion.setAttribute("sfechacompra", registro.getFechacompra());
+                    sesion.setAttribute("sestadoentrega", registro.getEstadoentrega());
+                    sesion.setAttribute("sidusuario", registro.getIdusuario().getIduser());
+                    sesion.setAttribute("sidproducto", registro.getIdproducto().getIdpro());
+                    sesion.setAttribute("scantidadpedida", registro.getCantidadpedida());
+                    sesion.setAttribute("scalle", registro.getCalle());
+                    sesion.setAttribute("sciudad", registro.getCiudad());
+                    sesion.setAttribute("sestado", registro.getEstado());
+                    sesion.setAttribute("scodigopostal", registro.getCodigopostal());
+                }
+            }
+        }
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
             sesion.removeAttribute("mensaje");
@@ -75,59 +92,40 @@
         }
     %>
     <body>
-        <a href="../tablas.jsp">Volver</a><br>
-        <p>Introduzca los datos y seleccione la acción, en el caso de que quiera eliminar o modificar un registro,
-            solo es necesario declarar el <strong>id identificador del registro en cuestión</strong></p>
-        <h2>Gestionar pedidos</h2>
-        <p>Si se registra un nuevo pedido en esta página de administración, no se reducirá el stock del producto en cuestión, ya que solo se usara esta función registrar para solución de posibles errores de la web</p>
-        <h3>Registrar un pedido</h3>
+        <a href="gestionPedido.jsp">Cancelar y volver</a><br>
+        <p>Escriba solamente, los datos que desee cambiar del producto con el nombre: <%= sesion.getAttribute("snombre")%></p>
         <form action='../../PedidoDAO' method='POST'>
-            <p>Fecha de compra: <input type='date' name='fechacompra' required/></p>
-            <p>Estado de la entrega: <input type='text' name='estadoentrega' required/></p>
+            <p>Fecha de compra: <input type='date' name='fechacompra' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechacompra"))%>'/></p>
+            <p>Estado de la entrega: <input type='text' name='estadoentrega' placeholder='<%= sesion.getAttribute("sestadoentrega")%>'/></p>
             <p>Id del comprador: 
             <select name="idusuario">
-            <%for(Usuario registro : datosUsuario){%>
-                <option value='<%= registro.getIduser()%>'><%= registro.getIduser()%></option>
-            <%}%>
+            <%for(Usuario registro : datosUsuario){
+                if(sesion.getAttribute("sidusuario").equals(registro.getIduser())){%>
+                    <option value='<%= registro.getIduser()%>'><%= registro.getIduser()%></option>
+                <%} else {%>
+
+                <%}}%>
             </select>
             </p>
             <p>Nombre del producto: 
             <select name="idproducto">
-            <%for(Producto registro : datosProducto){%>
+            <%for(Producto registro : datosProducto){
+                if(sesion.getAttribute("sidproducto").equals(registro.getIdpro())){%>
+                <option selected="selected" value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
+                <%} else {%>
                 <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
-            <%}%>
+                <%}}%>
             </select>
             </p>
-            <p>Cantidad de unidades pedidas: <input type="number" min="1" name='cantidadpedida' required/> unidades</p>
+            <p>Cantidad de unidades pedidas: <input type="number" min="1" name='cantidadpedida' placeholder='<%= sesion.getAttribute("scantidadpedida")%>'/> unidades</p>
             <p>Información del envío:</p>
-            <p>Calle: <input type='text' name='calle' required/></p>
-            <p>Ciudad: <input type='text' name='ciudad' required/></p>
-            <p>Estado: <input type='text' name='estado' required/></p>
-            <p>Código Postal: <input type='text' name='codigopostal' required/></p>
-            <p><input type='submit' name='Registrar' value='Registrar'/></p>
+            <p>Calle: <input type='text' name='calle' placeholder='<%= sesion.getAttribute("scalle")%>'/></p>
+            <p>Ciudad: <input type='text' name='ciudad' placeholder='<%= sesion.getAttribute("sciudad")%>'/></p>
+            <p>Estado: <input type='text' name='estado' placeholder='<%= sesion.getAttribute("sestado")%>'/></p>
+            <p>Código Postal: <input type='text' name='codigopostal' placeholder='<%= sesion.getAttribute("scodigopostal")%>'/></p>
+            <p><input type='submit' name='Modificar' value='Modificar'/></p>
         </form>
-        <h3>Modificar un producto</h3>
-        <form action='modPedido.jsp' method='GET'>
-            <p>Número del pedido: (fíjese en la tabla de abajo)  
-            <select name="idpedido">
-            <%for(Pedido registro : datosPedido){%>
-                <option value='<%= registro.getIdpedido()%>'><%= registro.getIdpedido()%></option>
-            <%}%>
-            </select>
-            </p>
-            <p><input type='submit' name='mod' value='Modificar'/></p>
-        </form>
-        <h3>Eliminar un pedido</h3>
-        <form action='../../PedidoDAO' method='POST'>
-            <p>Número del pedido: (fíjese en la tabla de abajo)  
-            <select name="idpedido">
-            <%for(Pedido registro : datosPedido){%>
-                <option value='<%= registro.getIdpedido()%>'><%= registro.getIdpedido()%></option>
-            <%}%>
-            </select>
-            </p>
-            <p><input type='submit' name='Eliminar' value='Eliminar'/></p>
-        </form>
+        <br>
         <h3>Tabla Pedido</h3>
         <table>
             <tr>
@@ -162,7 +160,8 @@
                     Código Postal
                 </th>
             </tr>
-            <%for(Pedido registro : datosPedido){%>
+            <%for(Pedido registro : datosPedido){
+                if(registro.getIdpedido().equals(sesion.getAttribute("sidpedido"))){%>
             <tr>
                 <td>
                     <%= registro.getIdpedido()%>
@@ -195,7 +194,7 @@
                     <%= registro.getCodigopostal() %>
                 </td>
             </tr>
-            <%}%>
+            <%}}%>
         </table><br>
         <h3>Tabla Usuario</h3>
         <table>
@@ -219,30 +218,30 @@
                     Fecha de caducidad de cuenta premium
                 </th>
             </tr>
-            <%for(Usuario registro : datosUsuario){%>
+            <%for(Usuario registrob : datosUsuario){%>
             <tr>
                 <td>
-                    <%= registro.getIduser()%>
+                    <%= registrob.getIduser()%>
                 </td>
                 <td>
-                    <%= registro.getNombre()%>
+                    <%= registrob.getNombre()%>
                 </td>
                 <td>
-                    <%= registro.getApellidos()%>
+                    <%= registrob.getApellidos()%>
                 </td>
                 <td>
-                    <%= simpleDateFormat.format(registro.getFechanac())%>
+                    <%= simpleDateFormat.format(registrob.getFechanac())%>
                 </td>
                 <td>
-                    <%= registro.getPremium()%>
+                    <%= registrob.getPremium()%>
                 </td>
-                <%if(registro.getFechacadpremium() == null){%>
+                <%if(registrob.getFechacadpremium() == null){%>
                 <td>
 
                 </td>
                 <%} else {%>
                 <td>
-                    <%= simpleDateFormat.format(registro.getFechacadpremium())%>
+                    <%= simpleDateFormat.format(registrob.getFechacadpremium())%>
                 </td>
                 <%}%>
             </tr>
@@ -285,40 +284,40 @@
                     Stock
                 </th>
             </tr>
-            <%for(Producto registro : datosProducto){%>
+            <%for(Producto registroc : datosProducto){%>
             <tr>
                 <td>
-                    <%= registro.getIdpro()%>
+                    <%= registroc.getIdpro()%>
                 </td>
                 <td>
-                    <%= registro.getCategoria()%>
+                    <%= registroc.getCategoria()%>
                 </td>
                 <td>
-                    <%= registro.getAutor()%>
+                    <%= registroc.getAutor()%>
                 </td>
                 <td>
-                    <%= registro.getImg()%>
+                    <%= registroc.getImg()%>
                 </td>
                 <td>
-                    <%= registro.getNombre()%>
+                    <%= registroc.getNombre()%>
                 </td>
                 <td>
-                    <%= registro.getContenido()%>
+                    <%= registroc.getContenido()%>
                 </td>
                 <td>
-                    <%= registro.getPrecio()%>
+                    <%= registroc.getPrecio()%>
                 </td>
                 <td>
-                    <%= registro.getPreciopremium()%>
+                    <%= registroc.getPreciopremium()%>
                 </td>
                 <td>
-                    <%= registro.getPrecioenvio()%>
+                    <%= registroc.getPrecioenvio()%>
                 </td>
                 <td>
-                    <%= registro.getDescuento()%>
+                    <%= registroc.getDescuento()%>
                 </td>
                 <td>
-                    <%= registro.getStock()%>
+                    <%= registroc.getStock()%>
                 </td>
             </tr>
             <%}%>
