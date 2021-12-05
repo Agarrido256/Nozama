@@ -49,7 +49,7 @@
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "n"){
-            out.print("<script>alert('ERROR, no se ha podido realizado la orden');</script>");
+            out.print("<script>alert('ERROR, no se ha podido realizar la orden');</script>");
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "f"){
@@ -70,7 +70,7 @@
         <h3>Registrar un producto</h3>
         <form action='../../ProductoDAO' method='POST'>
             <p>Categoría: <input type='text' name='categoria' required/></p>
-            <p>Autor: <input type='text' name='nombre' required/></p>
+            <p>Autor: <input type='text' name='autor' required/></p>
             <p>Nombre: <input type='text' name='nombre' required/></p>
             <p>4 mejores canciones que el disco contiene, sepárelas con un espacio por favor: <input type='text' name='contenido' required/></p>
             <p>Precio: <input type="number" min="0.00" max="10000.00" step="0.01" name='precio' required/>€</p>
@@ -119,9 +119,6 @@
                 </th>
                 <th>
                     Nombre
-                </th>
-                <th>
-                    Contenido
                 </th>
                 <th>
                     Contenido

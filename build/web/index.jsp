@@ -175,6 +175,7 @@
                         <h2>Opciones de cuenta</h2>
                         <a href="#" style="color: rgb(246,167,96);">Cambiar contraseña</a><br>
                         <a href="#" style="color: rgb(246,167,96);">Cambiar parámetros de la cuenta</a><br>
+                        <a href="#" style="color: rgb(246,167,96);">Mi historial de compras</a><br>
                         <a href="index.jsp?cerrarsesion=true" style="color: rgb(246,167,96);">Cerrar sesión</a>
                     <%}%>
                 </div> 

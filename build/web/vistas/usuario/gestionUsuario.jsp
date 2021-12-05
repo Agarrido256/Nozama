@@ -53,7 +53,7 @@
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "n"){
-            out.print("<script>alert('ERROR, no se ha podido realizado la orden');</script>");
+            out.print("<script>alert('ERROR, no se ha podido realizar la orden');</script>");
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "f"){

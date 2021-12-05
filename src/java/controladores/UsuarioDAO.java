@@ -173,13 +173,6 @@ public class UsuarioDAO extends HttpServlet {
                 response.sendRedirect("vistas/usuario/modUsuario.jsp");
                 return;
             }
-            sesion.removeAttribute("siduser");
-            sesion.removeAttribute("snombre");
-            sesion.removeAttribute("sapellidos");
-            sesion.removeAttribute("sfechanac");
-            sesion.removeAttribute("scontrasena");
-            sesion.removeAttribute("spremium");
-            sesion.removeAttribute("sfechacadpremium");
             try{
                 usuario.setIduser(iduser);
                 usuario.setNombre(nombre);

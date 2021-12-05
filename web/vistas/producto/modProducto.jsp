@@ -47,7 +47,7 @@
         String mensaje = "";
         if(request.getParameter("mod") != null){
             for(Producto registro : datos){
-                if(request.getParameter("idpro").toString().equals(registro.getIdpro() )){
+                if(request.getParameter("idpro").equals(registro.getIdpro().toString())){
                     sesion.setAttribute("sidpro", registro.getIdpro());
                     sesion.setAttribute("scategoria", registro.getCategoria());
                     sesion.setAttribute("sautor", registro.getAutor());
@@ -67,7 +67,7 @@
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "n"){
-            out.print("<script>alert('ERROR, no se ha podido realizado la orden');</script>");
+            out.print("<script>alert('ERROR, no se ha podido realizar la orden');</script>");
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "f"){
@@ -84,7 +84,7 @@
         <p>Escriba solamente, los datos que desee cambiar del producto con el nombre: <%= sesion.getAttribute("snombre")%></p>
         <form action='../../ProductoDAO' method='POST'>
             <p>Categoría: <input type='text' name='categoria' placeholder='<%= sesion.getAttribute("scategoria")%>'/></p>
-            <p>Autor: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("sautor")%>'/></p>
+            <p>Autor: <input type='text' name='autor' placeholder='<%= sesion.getAttribute("sautor")%>'/></p>
             <p>Nombre: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("snombre")%>'/></p>
             <p>4 mejores canciones que el disco contiene, sepárelas con un espacio por favor: <input type='text' name='contenido' placeholder='<%= sesion.getAttribute("scontenido")%>'/></p>
             <p>Precio: <input type="number" min="0.00" max="10000.00" step="0.01" name='precio' placeholder='<%= sesion.getAttribute("sprecio")%>'/>€</p>
@@ -112,9 +112,6 @@
                 </th>
                 <th>
                     Nombre
-                </th>
-                <th>
-                    Contenido
                 </th>
                 <th>
                     Contenido

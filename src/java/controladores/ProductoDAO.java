@@ -80,12 +80,21 @@ public class ProductoDAO extends HttpServlet {
         if(request.getParameter("Registrar") != null){
             String categoria = request.getParameter("categoria").toString();
             String autor = request.getParameter("autor").toString();
-            String img = request.getParameter("img").toString();
             String nombre = request.getParameter("nombre").toString();
+            String img = nombre + ".PNG";
             String contenido = request.getParameter("contenido").toString();
-            String precio = request.getParameter("precio").toString();
-            String preciopremium = request.getParameter("preciopremium").toString();
-            String precioenvio = request.getParameter("precioenvio").toString();
+            String esteprecio = request.getParameter("precio").toString();
+            esteprecio = esteprecio + "€";
+            esteprecio = esteprecio.replace(".", ",");
+            String precio = esteprecio;
+            esteprecio = request.getParameter("preciopremium").toString();
+            esteprecio = esteprecio + "€";
+            esteprecio = esteprecio.replace(".", ",");
+            String preciopremium = esteprecio;
+            esteprecio = request.getParameter("precioenvio").toString();
+            esteprecio = esteprecio + "€";
+            esteprecio = esteprecio.replace(".", ",");
+            String precioenvio = esteprecio;
             int descuento = parseInt(request.getParameter("descuento"));
             int stock = parseInt(request.getParameter("stock"));
             try{
@@ -102,98 +111,116 @@ public class ProductoDAO extends HttpServlet {
                 controlcon.create(producto);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionProducto.jsp");
+                response.sendRedirect("vistas/producto/gestionProducto.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionProducto.jsp");
+                response.sendRedirect("vistas/producto/gestionProducto.jsp");
                 return;
             }
         }
         if(request.getParameter("Modificar") != null){
-            //EEEEEEEEEEEEEEEEE
-            String idadmin = sesion.getAttribute("sidadmin").toString();
+            String idpro = sesion.getAttribute("sidpro").toString();
+            String categoria;
+            if(request.getParameter("categoria").toString().isEmpty()){
+                categoria = sesion.getAttribute("scategoria").toString();
+            } else {
+                categoria = request.getParameter("categoria").toString();
+            }
+            String autor;
+            if(request.getParameter("autor").toString().isEmpty()){
+                autor = sesion.getAttribute("sautor").toString();
+            } else {
+                autor = request.getParameter("autor").toString();
+            }
             String nombre;
             if(request.getParameter("nombre").toString().isEmpty()){
                 nombre = sesion.getAttribute("snombre").toString();
             } else {
                 nombre = request.getParameter("nombre").toString();
             }
-            String apellidos;
-            if(request.getParameter("apellidos").toString().isEmpty()){
-                apellidos = sesion.getAttribute("sapellidos").toString();
+            String img = nombre + ".PNG";
+            String contenido;
+            if(request.getParameter("contenido").toString().isEmpty()){
+                contenido = sesion.getAttribute("scontenido").toString();
             } else {
-                apellidos = request.getParameter("apellidos").toString();
+                contenido = request.getParameter("contenido").toString();
             }
-            String contrasena;
-            if(request.getParameter("contrasena").toString().isEmpty()){
-                contrasena = sesion.getAttribute("scontrasena").toString();
+            String precio;
+            if(request.getParameter("precio").toString().isEmpty()){
+                precio = sesion.getAttribute("sprecio").toString();
             } else {
-                contrasena = request.getParameter("contrasena").toString();
+                String esteprecio = request.getParameter("precio").toString();
+                esteprecio = esteprecio + "€";
+                esteprecio = esteprecio.replace(".", ",");
+                precio = esteprecio;
             }
-            String estafecha;
-            if(request.getParameter("fechanac").toString().isEmpty()){
-                estafecha = sesion.getAttribute("sfechanac").toString();
+            String preciopremium;
+            if(request.getParameter("preciopremium").toString().isEmpty()){
+                preciopremium = sesion.getAttribute("spreciopremium").toString();
             } else {
-                estafecha = request.getParameter("fechanac").toString();
+                String esteprecio = request.getParameter("preciopremium").toString();
+                esteprecio = esteprecio + "€";
+                esteprecio = esteprecio.replace(".", ",");
+                preciopremium = esteprecio;
             }
-            String estafechac;
-            if(request.getParameter("fechacontrato").toString().isEmpty()){
-                estafechac = sesion.getAttribute("sfechacontrato").toString();
+            String precioenvio;
+            if(request.getParameter("precioenvio").toString().isEmpty()){
+                precioenvio = sesion.getAttribute("sprecioenvio").toString();
             } else {
-                estafechac = request.getParameter("fechacontrato").toString();
+                String esteprecio = request.getParameter("precioenvio").toString();
+                esteprecio = esteprecio + "€";
+                esteprecio = esteprecio.replace(".", ",");
+                precioenvio = esteprecio;
             }
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            Date fechanac;
-            Date fechacontrato;
-            try {
-                fechanac = simpleDateFormat.parse(estafecha);
-                fechacontrato = simpleDateFormat.parse(estafechac);
-            } catch (ParseException ex) {
-                mensaje = "f";
-                sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
-                return;
+            int descuento;
+            if(request.getParameter("descuento").toString().isEmpty()){
+                descuento = parseInt(sesion.getAttribute("sdescuento").toString());
+            } else {
+                descuento = parseInt(request.getParameter("descuento"));
             }
-            sesion.removeAttribute("sidadmin");
-            sesion.removeAttribute("snombre");
-            sesion.removeAttribute("sapellidos");
-            sesion.removeAttribute("sfechanac");
-            sesion.removeAttribute("scontrasena");
-            sesion.removeAttribute("sfechacontrato");
+            int stock;
+            if(request.getParameter("stock").toString().isEmpty()){
+                stock = parseInt(sesion.getAttribute("sstock").toString());
+            } else {
+                stock = parseInt(request.getParameter("stock"));
+            }
             try{
-                administrador.setIdadmin(idadmin);
-                administrador.setNombre(nombre);
-                administrador.setApellidos(apellidos);
-                administrador.setFechanac(fechanac);
-                administrador.setContraseña(contrasena);
-                administrador.setFechacontrato(fechacontrato);
-                controlcon.edit(administrador);
+                producto.setCategoria(categoria);
+                producto.setAutor(autor);
+                producto.setImg(img);
+                producto.setNombre(nombre);
+                producto.setContenido(contenido);
+                producto.setPrecio(precio);
+                producto.setPreciopremium(preciopremium);
+                producto.setPrecioenvio(precioenvio);
+                producto.setDescuento(descuento);
+                producto.setStock(stock);
+                controlcon.edit(producto);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
+                response.sendRedirect("vistas/producto/modProducto.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/modAdministrador.jsp");
+                response.sendRedirect("vistas/producto/modProducto.jsp");
                 return;
             }
         }
         if(request.getParameter("Eliminar") != null){
-            String idadmin = request.getParameter("idadmin").toString();
+            int idpro = parseInt(request.getParameter("idpro"));
             try{
-                controlcon.destroy(idadmin);
+                controlcon.destroy(idpro);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
+                response.sendRedirect("vistas/producto/gestionProducto.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/administrador/gestionAdministrador.jsp");
+                response.sendRedirect("vistas/producto/gestionProducto.jsp");
                 return;
             }
         }

@@ -163,12 +163,6 @@ public class AdministradorDAO extends HttpServlet {
                 response.sendRedirect("vistas/administrador/modAdministrador.jsp");
                 return;
             }
-            sesion.removeAttribute("sidadmin");
-            sesion.removeAttribute("snombre");
-            sesion.removeAttribute("sapellidos");
-            sesion.removeAttribute("sfechanac");
-            sesion.removeAttribute("scontrasena");
-            sesion.removeAttribute("sfechacontrato");
             try{
                 administrador.setIdadmin(idadmin);
                 administrador.setNombre(nombre);
