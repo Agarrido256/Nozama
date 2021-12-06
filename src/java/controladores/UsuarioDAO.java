@@ -24,9 +24,9 @@ import modelo.UsuarioJpaController;
  * @author PcCom
  */
 public class UsuarioDAO extends HttpServlet {
-    private UsuarioJpaController controlcon = new UsuarioJpaController();
-    private Usuario usuario = new Usuario();
-    private String mensaje = "";
+    UsuarioJpaController controlcon = new UsuarioJpaController();
+    Usuario usuario = new Usuario();
+    String mensaje = "";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

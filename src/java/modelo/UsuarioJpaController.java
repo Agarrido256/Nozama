@@ -129,95 +129,11 @@ public class UsuarioJpaController implements Serializable {
             etx = em.getTransaction();
             etx.begin();
             Usuario persistentUsuario = em.find(Usuario.class, usuario.getIduser());
-            List<Asistencia> asistenciaListOld = persistentUsuario.getAsistenciaList();
-            List<Asistencia> asistenciaListNew = usuario.getAsistenciaList();
-            List<Foro> foroListOld = persistentUsuario.getForoList();
-            List<Foro> foroListNew = usuario.getForoList();
-            List<Pedido> pedidoListOld = persistentUsuario.getPedidoList();
-            List<Pedido> pedidoListNew = usuario.getPedidoList();
             List<String> illegalOrphanMessages = null;
-            for (Asistencia asistenciaListOldAsistencia : asistenciaListOld) {
-                if (!asistenciaListNew.contains(asistenciaListOldAsistencia)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Asistencia " + asistenciaListOldAsistencia + " since its idusuario field is not nullable.");
-                }
-            }
-            for (Foro foroListOldForo : foroListOld) {
-                if (!foroListNew.contains(foroListOldForo)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Foro " + foroListOldForo + " since its idusuario field is not nullable.");
-                }
-            }
-            for (Pedido pedidoListOldPedido : pedidoListOld) {
-                if (!pedidoListNew.contains(pedidoListOldPedido)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Pedido " + pedidoListOldPedido + " since its idusuario field is not nullable.");
-                }
-            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Asistencia> attachedAsistenciaListNew = new ArrayList<Asistencia>();
-            for (Asistencia asistenciaListNewAsistenciaToAttach : asistenciaListNew) {
-                asistenciaListNewAsistenciaToAttach = em.getReference(asistenciaListNewAsistenciaToAttach.getClass(), asistenciaListNewAsistenciaToAttach.getIdasistencia());
-                attachedAsistenciaListNew.add(asistenciaListNewAsistenciaToAttach);
-            }
-            asistenciaListNew = attachedAsistenciaListNew;
-            usuario.setAsistenciaList(asistenciaListNew);
-            List<Foro> attachedForoListNew = new ArrayList<Foro>();
-            for (Foro foroListNewForoToAttach : foroListNew) {
-                foroListNewForoToAttach = em.getReference(foroListNewForoToAttach.getClass(), foroListNewForoToAttach.getIdforo());
-                attachedForoListNew.add(foroListNewForoToAttach);
-            }
-            foroListNew = attachedForoListNew;
-            usuario.setForoList(foroListNew);
-            List<Pedido> attachedPedidoListNew = new ArrayList<Pedido>();
-            for (Pedido pedidoListNewPedidoToAttach : pedidoListNew) {
-                pedidoListNewPedidoToAttach = em.getReference(pedidoListNewPedidoToAttach.getClass(), pedidoListNewPedidoToAttach.getIdpedido());
-                attachedPedidoListNew.add(pedidoListNewPedidoToAttach);
-            }
-            pedidoListNew = attachedPedidoListNew;
-            usuario.setPedidoList(pedidoListNew);
             usuario = em.merge(usuario);
-            for (Asistencia asistenciaListNewAsistencia : asistenciaListNew) {
-                if (!asistenciaListOld.contains(asistenciaListNewAsistencia)) {
-                    Usuario oldIdusuarioOfAsistenciaListNewAsistencia = asistenciaListNewAsistencia.getIdusuario();
-                    asistenciaListNewAsistencia.setIdusuario(usuario);
-                    asistenciaListNewAsistencia = em.merge(asistenciaListNewAsistencia);
-                    if (oldIdusuarioOfAsistenciaListNewAsistencia != null && !oldIdusuarioOfAsistenciaListNewAsistencia.equals(usuario)) {
-                        oldIdusuarioOfAsistenciaListNewAsistencia.getAsistenciaList().remove(asistenciaListNewAsistencia);
-                        oldIdusuarioOfAsistenciaListNewAsistencia = em.merge(oldIdusuarioOfAsistenciaListNewAsistencia);
-                    }
-                }
-            }
-            for (Foro foroListNewForo : foroListNew) {
-                if (!foroListOld.contains(foroListNewForo)) {
-                    Usuario oldIdusuarioOfForoListNewForo = foroListNewForo.getIdusuario();
-                    foroListNewForo.setIdusuario(usuario);
-                    foroListNewForo = em.merge(foroListNewForo);
-                    if (oldIdusuarioOfForoListNewForo != null && !oldIdusuarioOfForoListNewForo.equals(usuario)) {
-                        oldIdusuarioOfForoListNewForo.getForoList().remove(foroListNewForo);
-                        oldIdusuarioOfForoListNewForo = em.merge(oldIdusuarioOfForoListNewForo);
-                    }
-                }
-            }
-            for (Pedido pedidoListNewPedido : pedidoListNew) {
-                if (!pedidoListOld.contains(pedidoListNewPedido)) {
-                    Usuario oldIdusuarioOfPedidoListNewPedido = pedidoListNewPedido.getIdusuario();
-                    pedidoListNewPedido.setIdusuario(usuario);
-                    pedidoListNewPedido = em.merge(pedidoListNewPedido);
-                    if (oldIdusuarioOfPedidoListNewPedido != null && !oldIdusuarioOfPedidoListNewPedido.equals(usuario)) {
-                        oldIdusuarioOfPedidoListNewPedido.getPedidoList().remove(pedidoListNewPedido);
-                        oldIdusuarioOfPedidoListNewPedido = em.merge(oldIdusuarioOfPedidoListNewPedido);
-                    }
-                }
-            }
             etx.commit();
         } catch (Exception ex) {
             try {

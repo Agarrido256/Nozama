@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <style>
             *{
                 font-family: 'Source Sans Pro', sans-serif;
@@ -64,6 +64,20 @@
         }
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
+            for(Producto registro : datos){
+                if(sesion.getAttribute("sidpro").equals(registro.getIdpro().toString())){
+                    sesion.setAttribute("scategoria", registro.getCategoria());
+                    sesion.setAttribute("sautor", registro.getAutor());
+                    sesion.setAttribute("simg", registro.getImg());
+                    sesion.setAttribute("snombre", registro.getNombre());
+                    sesion.setAttribute("scontenido", registro.getContenido());
+                    sesion.setAttribute("sprecio", registro.getPrecio());
+                    sesion.setAttribute("spreciopremium", registro.getPreciopremium());
+                    sesion.setAttribute("sprecioenvio", registro.getPrecioenvio());
+                    sesion.setAttribute("sdescuento", registro.getDescuento());
+                    sesion.setAttribute("sstock", registro.getStock());
+                }
+            }
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "n"){

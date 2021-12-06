@@ -11,6 +11,7 @@ import static java.lang.Integer.parseInt;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +19,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.Pedido;
 import modelo.PedidoJpaController;
+import modelo.Producto;
+import modelo.ProductoJpaController;
+import modelo.Usuario;
+import modelo.UsuarioJpaController;
 
 /**
  *
  * @author PcCom
  */
 public class PedidoDAO extends HttpServlet {
-    private PedidoJpaController controlcon = new PedidoJpaController();
-    private Pedido pedido = new Pedido();
-    private String mensaje = "";
+    PedidoJpaController controlcon = new PedidoJpaController();
+    Pedido pedido = new Pedido();
+    UsuarioJpaController controlUsuario = new UsuarioJpaController();
+    List<Usuario> datosUsuario = controlUsuario.findUsuarioEntities();
+    ProductoJpaController controlProducto = new ProductoJpaController();
+    List<Producto> datosProducto = controlProducto.findProductoEntities();
+    String mensaje = "";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -96,7 +105,9 @@ public class PedidoDAO extends HttpServlet {
             }
             String estadoentrega = request.getParameter("estadoentrega").toString();
             String idusuario = request.getParameter("idusuario").toString();
+            Usuario idusuariop = controlUsuario.findUsuario(idusuario);
             int idproducto = parseInt(request.getParameter("idproducto"));
+            Producto idproductop = controlProducto.findProducto(idproducto);
             int cantidadpedida = parseInt(request.getParameter("cantidadpedida"));
             String calle = request.getParameter("calle").toString();
             String ciudad = request.getParameter("ciudad").toString();
@@ -105,8 +116,8 @@ public class PedidoDAO extends HttpServlet {
             try{
                 pedido.setFechacompra(fechacompra);
                 pedido.setEstadoentrega(estadoentrega);
-                pedido.getIdusuario().setIduser(idusuario);
-                pedido.getIdproducto().setIdpro(idproducto);
+                pedido.setIdusuario(idusuariop);
+                pedido.setIdproducto(idproductop);
                 pedido.setCantidadpedida(cantidadpedida);
                 pedido.setCalle(calle);
                 pedido.setCiudad(ciudad);
@@ -155,12 +166,14 @@ public class PedidoDAO extends HttpServlet {
             } else {
                 idusuario = request.getParameter("idusuario").toString();
             }
+            Usuario idusuariop = controlUsuario.findUsuario(idusuario);
             int idproducto;
             if(request.getParameter("idproducto").toString().isEmpty()){
                 idproducto = parseInt(sesion.getAttribute("sidproducto").toString());
             } else {
                 idproducto = parseInt(request.getParameter("idproducto"));
             }
+            Producto idproductop = controlProducto.findProducto(idproducto);
             int cantidadpedida;
             if(request.getParameter("cantidadpedida").toString().isEmpty()){
                 cantidadpedida = parseInt(sesion.getAttribute("scantidadpedida").toString());
@@ -195,8 +208,8 @@ public class PedidoDAO extends HttpServlet {
                 pedido.setIdpedido(idpedido);
                 pedido.setFechacompra(fechacompra);
                 pedido.setEstadoentrega(estadoentrega);
-                pedido.getIdusuario().setIduser(idusuario);
-                pedido.getIdproducto().setIdpro(idproducto);
+                pedido.setIdusuario(idusuariop);
+                pedido.setIdproducto(idproductop);
                 pedido.setCantidadpedida(cantidadpedida);
                 pedido.setCalle(calle);
                 pedido.setCiudad(ciudad);

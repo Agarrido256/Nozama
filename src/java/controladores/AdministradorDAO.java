@@ -23,9 +23,9 @@ import modelo.AdministradorJpaController;
  * @author PcCom
  */
 public class AdministradorDAO extends HttpServlet {
-    private AdministradorJpaController controlcon = new AdministradorJpaController();
-    private Administrador administrador = new Administrador();
-    private String mensaje = "";
+    AdministradorJpaController controlcon = new AdministradorJpaController();
+    Administrador administrador = new Administrador();
+    String mensaje = "";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

@@ -65,6 +65,15 @@
         }
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
+            for(Administrador registro : datos){
+                if(sesion.getAttribute("sidadmin").toString().equals(registro.getIdadmin())){
+                    sesion.setAttribute("snombre", registro.getNombre());
+                    sesion.setAttribute("sapellidos", registro.getApellidos());
+                    sesion.setAttribute("sfechanac", registro.getFechanac());
+                    sesion.setAttribute("scontrasena", registro.getContraseña());
+                    sesion.setAttribute("sfechacontrato", registro.getFechacontrato());
+                }
+            }
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "n"){

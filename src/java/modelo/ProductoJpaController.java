@@ -125,95 +125,11 @@ public class ProductoJpaController implements Serializable {
             etx = em.getTransaction();
             etx.begin();
             Producto persistentProducto = em.find(Producto.class, producto.getIdpro());
-            List<Asistencia> asistenciaListOld = persistentProducto.getAsistenciaList();
-            List<Asistencia> asistenciaListNew = producto.getAsistenciaList();
-            List<Foro> foroListOld = persistentProducto.getForoList();
-            List<Foro> foroListNew = producto.getForoList();
-            List<Pedido> pedidoListOld = persistentProducto.getPedidoList();
-            List<Pedido> pedidoListNew = producto.getPedidoList();
             List<String> illegalOrphanMessages = null;
-            for (Asistencia asistenciaListOldAsistencia : asistenciaListOld) {
-                if (!asistenciaListNew.contains(asistenciaListOldAsistencia)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Asistencia " + asistenciaListOldAsistencia + " since its idpprodcuto field is not nullable.");
-                }
-            }
-            for (Foro foroListOldForo : foroListOld) {
-                if (!foroListNew.contains(foroListOldForo)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Foro " + foroListOldForo + " since its idpprodcuto field is not nullable.");
-                }
-            }
-            for (Pedido pedidoListOldPedido : pedidoListOld) {
-                if (!pedidoListNew.contains(pedidoListOldPedido)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Pedido " + pedidoListOldPedido + " since its idproducto field is not nullable.");
-                }
-            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Asistencia> attachedAsistenciaListNew = new ArrayList<Asistencia>();
-            for (Asistencia asistenciaListNewAsistenciaToAttach : asistenciaListNew) {
-                asistenciaListNewAsistenciaToAttach = em.getReference(asistenciaListNewAsistenciaToAttach.getClass(), asistenciaListNewAsistenciaToAttach.getIdasistencia());
-                attachedAsistenciaListNew.add(asistenciaListNewAsistenciaToAttach);
-            }
-            asistenciaListNew = attachedAsistenciaListNew;
-            producto.setAsistenciaList(asistenciaListNew);
-            List<Foro> attachedForoListNew = new ArrayList<Foro>();
-            for (Foro foroListNewForoToAttach : foroListNew) {
-                foroListNewForoToAttach = em.getReference(foroListNewForoToAttach.getClass(), foroListNewForoToAttach.getIdforo());
-                attachedForoListNew.add(foroListNewForoToAttach);
-            }
-            foroListNew = attachedForoListNew;
-            producto.setForoList(foroListNew);
-            List<Pedido> attachedPedidoListNew = new ArrayList<Pedido>();
-            for (Pedido pedidoListNewPedidoToAttach : pedidoListNew) {
-                pedidoListNewPedidoToAttach = em.getReference(pedidoListNewPedidoToAttach.getClass(), pedidoListNewPedidoToAttach.getIdpedido());
-                attachedPedidoListNew.add(pedidoListNewPedidoToAttach);
-            }
-            pedidoListNew = attachedPedidoListNew;
-            producto.setPedidoList(pedidoListNew);
             producto = em.merge(producto);
-            for (Asistencia asistenciaListNewAsistencia : asistenciaListNew) {
-                if (!asistenciaListOld.contains(asistenciaListNewAsistencia)) {
-                    Producto oldIdpprodcutoOfAsistenciaListNewAsistencia = asistenciaListNewAsistencia.getIdpprodcuto();
-                    asistenciaListNewAsistencia.setIdpprodcuto(producto);
-                    asistenciaListNewAsistencia = em.merge(asistenciaListNewAsistencia);
-                    if (oldIdpprodcutoOfAsistenciaListNewAsistencia != null && !oldIdpprodcutoOfAsistenciaListNewAsistencia.equals(producto)) {
-                        oldIdpprodcutoOfAsistenciaListNewAsistencia.getAsistenciaList().remove(asistenciaListNewAsistencia);
-                        oldIdpprodcutoOfAsistenciaListNewAsistencia = em.merge(oldIdpprodcutoOfAsistenciaListNewAsistencia);
-                    }
-                }
-            }
-            for (Foro foroListNewForo : foroListNew) {
-                if (!foroListOld.contains(foroListNewForo)) {
-                    Producto oldIdpprodcutoOfForoListNewForo = foroListNewForo.getIdpprodcuto();
-                    foroListNewForo.setIdpprodcuto(producto);
-                    foroListNewForo = em.merge(foroListNewForo);
-                    if (oldIdpprodcutoOfForoListNewForo != null && !oldIdpprodcutoOfForoListNewForo.equals(producto)) {
-                        oldIdpprodcutoOfForoListNewForo.getForoList().remove(foroListNewForo);
-                        oldIdpprodcutoOfForoListNewForo = em.merge(oldIdpprodcutoOfForoListNewForo);
-                    }
-                }
-            }
-            for (Pedido pedidoListNewPedido : pedidoListNew) {
-                if (!pedidoListOld.contains(pedidoListNewPedido)) {
-                    Producto oldIdproductoOfPedidoListNewPedido = pedidoListNewPedido.getIdproducto();
-                    pedidoListNewPedido.setIdproducto(producto);
-                    pedidoListNewPedido = em.merge(pedidoListNewPedido);
-                    if (oldIdproductoOfPedidoListNewPedido != null && !oldIdproductoOfPedidoListNewPedido.equals(producto)) {
-                        oldIdproductoOfPedidoListNewPedido.getPedidoList().remove(pedidoListNewPedido);
-                        oldIdproductoOfPedidoListNewPedido = em.merge(oldIdproductoOfPedidoListNewPedido);
-                    }
-                }
-            }
             etx.commit();
         } catch (Exception ex) {
             try {

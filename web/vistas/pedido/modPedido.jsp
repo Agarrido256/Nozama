@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <style>
             *{
                 font-family: 'Source Sans Pro', sans-serif;
@@ -76,6 +76,19 @@
         }
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
+            for(Pedido registro : datosPedido){
+                if(sesion.getAttribute("sidpedido").equals(registro.getIdpedido().toString())){
+                    sesion.setAttribute("sfechacompra", registro.getFechacompra());
+                    sesion.setAttribute("sestadoentrega", registro.getEstadoentrega());
+                    sesion.setAttribute("sidusuario", registro.getIdusuario().getIduser());
+                    sesion.setAttribute("sidproducto", registro.getIdproducto().getIdpro());
+                    sesion.setAttribute("scantidadpedida", registro.getCantidadpedida());
+                    sesion.setAttribute("scalle", registro.getCalle());
+                    sesion.setAttribute("sciudad", registro.getCiudad());
+                    sesion.setAttribute("sestado", registro.getEstado());
+                    sesion.setAttribute("scodigopostal", registro.getCodigopostal());
+                }
+            }
             sesion.removeAttribute("mensaje");
         }
         if(sesion.getAttribute("mensaje") == "n"){
@@ -93,7 +106,7 @@
     %>
     <body>
         <a href="gestionPedido.jsp">Cancelar y volver</a><br>
-        <p>Escriba solamente, los datos que desee cambiar del producto con el nombre: <%= sesion.getAttribute("snombre")%></p>
+        <p>Escriba solamente, los datos que desee cambiar del pedido número: <%= sesion.getAttribute("sidpedido")%></p>
         <form action='../../PedidoDAO' method='POST'>
             <p>Fecha de compra: <input type='date' name='fechacompra' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechacompra"))%>'/></p>
             <p>Estado de la entrega: <input type='text' name='estadoentrega' placeholder='<%= sesion.getAttribute("sestadoentrega")%>'/></p>

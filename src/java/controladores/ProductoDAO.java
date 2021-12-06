@@ -21,9 +21,9 @@ import modelo.ProductoJpaController;
  * @author PcCom
  */
 public class ProductoDAO extends HttpServlet {
-    private ProductoJpaController controlcon = new ProductoJpaController();
-    private Producto producto = new Producto();
-    private String mensaje = "";
+    ProductoJpaController controlcon = new ProductoJpaController();
+    Producto producto = new Producto();
+    String mensaje = "";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

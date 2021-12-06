@@ -93,39 +93,11 @@ public class AdministradorJpaController implements Serializable {
             etx = em.getTransaction();
             etx.begin();
             Administrador persistentAdministrador = em.find(Administrador.class, administrador.getIdadmin());
-            List<Asistencia> asistenciaListOld = persistentAdministrador.getAsistenciaList();
-            List<Asistencia> asistenciaListNew = administrador.getAsistenciaList();
             List<String> illegalOrphanMessages = null;
-            for (Asistencia asistenciaListOldAsistencia : asistenciaListOld) {
-                if (!asistenciaListNew.contains(asistenciaListOldAsistencia)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Asistencia " + asistenciaListOldAsistencia + " since its idadministrador field is not nullable.");
-                }
-            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Asistencia> attachedAsistenciaListNew = new ArrayList<Asistencia>();
-            for (Asistencia asistenciaListNewAsistenciaToAttach : asistenciaListNew) {
-                asistenciaListNewAsistenciaToAttach = em.getReference(asistenciaListNewAsistenciaToAttach.getClass(), asistenciaListNewAsistenciaToAttach.getIdasistencia());
-                attachedAsistenciaListNew.add(asistenciaListNewAsistenciaToAttach);
-            }
-            asistenciaListNew = attachedAsistenciaListNew;
-            administrador.setAsistenciaList(asistenciaListNew);
             administrador = em.merge(administrador);
-            for (Asistencia asistenciaListNewAsistencia : asistenciaListNew) {
-                if (!asistenciaListOld.contains(asistenciaListNewAsistencia)) {
-                    Administrador oldIdadministradorOfAsistenciaListNewAsistencia = asistenciaListNewAsistencia.getIdadministrador();
-                    asistenciaListNewAsistencia.setIdadministrador(administrador);
-                    asistenciaListNewAsistencia = em.merge(asistenciaListNewAsistencia);
-                    if (oldIdadministradorOfAsistenciaListNewAsistencia != null && !oldIdadministradorOfAsistenciaListNewAsistencia.equals(administrador)) {
-                        oldIdadministradorOfAsistenciaListNewAsistencia.getAsistenciaList().remove(asistenciaListNewAsistencia);
-                        oldIdadministradorOfAsistenciaListNewAsistencia = em.merge(oldIdadministradorOfAsistenciaListNewAsistencia);
-                    }
-                }
-            }
             etx.commit();
         } catch (Exception ex) {
             try {
