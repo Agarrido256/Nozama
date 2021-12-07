@@ -16,6 +16,14 @@
         <servlet-name>PedidoDAO</servlet-name>
         <servlet-class>controladores.PedidoDAO</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AsistenciaDAO</servlet-name>
+        <servlet-class>controladores.AsistenciaDAO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForoDAO</servlet-name>
+        <servlet-class>controladores.ForoDAO</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdministradorDAO</servlet-name>
         <url-pattern>/AdministradorDAO</url-pattern>
@@ -31,6 +39,14 @@
     <servlet-mapping>
         <servlet-name>PedidoDAO</servlet-name>
         <url-pattern>/PedidoDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AsistenciaDAO</servlet-name>
+        <url-pattern>/AsistenciaDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForoDAO</servlet-name>
+        <url-pattern>/ForoDAO</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

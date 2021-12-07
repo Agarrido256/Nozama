@@ -1,17 +1,19 @@
 <%-- 
-    Document   : modPedido
-    Created on : 05-dic-2021, 21:58:38
+    Document   : modAsistencia
+    Created on : 07-dic-2021, 16:57:03
     Author     : PcCom
 --%>
 
 <%@page import="java.text.SimpleDateFormat"%>
+<%@page import="modelo.Administrador"%>
+<%@page import="modelo.AdministradorJpaController"%>
 <%@page import="modelo.Usuario"%>
 <%@page import="modelo.UsuarioJpaController"%>
 <%@page import="modelo.Producto"%>
 <%@page import="modelo.ProductoJpaController"%>
-<%@page import="modelo.Pedido"%>
+<%@page import="modelo.Asistencia"%>
 <%@page import="java.util.List"%>
-<%@page import="modelo.PedidoJpaController"%>
+<%@page import="modelo.AsistenciaJpaController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -46,47 +48,41 @@
         </style>
     </head>
     <%
-        PedidoJpaController controlPedido = new PedidoJpaController();
-        List<Pedido> datosPedido = controlPedido.findPedidoEntities();
+        AsistenciaJpaController controlAsistencia = new AsistenciaJpaController();
+        List<Asistencia> datosAsistencia = controlAsistencia.findAsistenciaEntities();
         ProductoJpaController controlProducto = new ProductoJpaController();
         List<Producto> datosProducto = controlProducto.findProductoEntities();
         UsuarioJpaController controlUsuario = new UsuarioJpaController();
         List<Usuario> datosUsuario = controlUsuario.findUsuarioEntities();
+        AdministradorJpaController controlAdministrador = new AdministradorJpaController();
+        List<Administrador> datosAdministrador = controlAdministrador.findAdministradorEntities();
         HttpSession sesion = request.getSession();
         String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String patron = "yyyy-MM-dd";
-        SimpleDateFormat simpleDateFormato = new SimpleDateFormat(patron);
         String mensaje = "";
         if(request.getParameter("mod") != null){
-            for(Pedido registro : datosPedido){
-                if(request.getParameter("idpedido").equals(registro.getIdpedido().toString())){
-                    sesion.setAttribute("sidpedido", registro.getIdpedido());
-                    sesion.setAttribute("sfechacompra", registro.getFechacompra());
-                    sesion.setAttribute("sestadoentrega", registro.getEstadoentrega());
-                    sesion.setAttribute("sidusuario", registro.getIdusuario().getIduser());
-                    sesion.setAttribute("sidproducto", registro.getIdproducto().getIdpro());
-                    sesion.setAttribute("scantidadpedida", registro.getCantidadpedida());
-                    sesion.setAttribute("scalle", registro.getCalle());
-                    sesion.setAttribute("sciudad", registro.getCiudad());
+            for(Asistencia registro : datosAsistencia){
+                if(request.getParameter("idasistencia").equals(registro.getIdasistencia().toString())){
+                    sesion.setAttribute("sidasistencia", registro.getIdasistencia());
+                    sesion.setAttribute("sasunto", registro.getAsunto());
+                    sesion.setAttribute("sdescripcion", registro.getDescripcion());
                     sesion.setAttribute("sestado", registro.getEstado());
-                    sesion.setAttribute("scodigopostal", registro.getCodigopostal());
+                    sesion.setAttribute("sidusuario", registro.getIdusuario().getIduser());
+                    sesion.setAttribute("sidpproducto", registro.getIdpprodcuto().getIdpro());
+                    sesion.setAttribute("sidadministrador", registro.getIdadministrador().getIdadmin());
                 }
             }
         }
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
-            for(Pedido registro : datosPedido){
-                if(sesion.getAttribute("sidpedido").equals(registro.getIdpedido().toString())){
-                    sesion.setAttribute("sfechacompra", registro.getFechacompra());
-                    sesion.setAttribute("sestadoentrega", registro.getEstadoentrega());
-                    sesion.setAttribute("sidusuario", registro.getIdusuario().getIduser());
-                    sesion.setAttribute("sidproducto", registro.getIdproducto().getIdpro());
-                    sesion.setAttribute("scantidadpedida", registro.getCantidadpedida());
-                    sesion.setAttribute("scalle", registro.getCalle());
-                    sesion.setAttribute("sciudad", registro.getCiudad());
+            for(Asistencia registro : datosAsistencia){
+                if(sesion.getAttribute("sidasistencia").equals(registro.getIdasistencia().toString())){
+                    sesion.setAttribute("sasunto", registro.getAsunto());
+                    sesion.setAttribute("sdescripcion", registro.getDescripcion());
                     sesion.setAttribute("sestado", registro.getEstado());
-                    sesion.setAttribute("scodigopostal", registro.getCodigopostal());
+                    sesion.setAttribute("sidusuario", registro.getIdusuario().getIduser());
+                    sesion.setAttribute("sidpproducto", registro.getIdpprodcuto().getIdpro());
+                    sesion.setAttribute("sidadministrador", registro.getIdadministrador().getIdadmin());
                 }
             }
             sesion.removeAttribute("mensaje");
@@ -105,12 +101,13 @@
         }
     %>
     <body>
-        <a href="gestionPedido.jsp">Cancelar y volver</a><br>
-        <p>Escriba solamente, los datos que desee cambiar del pedido número: <%= sesion.getAttribute("sidpedido")%></p>
-        <form action='../../PedidoDAO' method='POST'>
-            <p>Fecha de compra: <input type='date' name='fechacompra' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechacompra"))%>'/></p>
-            <p>Estado de la entrega: <input type='text' name='estadoentrega' placeholder='<%= sesion.getAttribute("sestadoentrega")%>'/></p>
-            <p>Id del comprador: 
+        <a href="gestionAsistencia.jsp">Cancelar y volver</a><br>
+        <p>Escriba solamente, los datos que desee cambiar del ticket de asistencia número: <%= sesion.getAttribute("sidasistencia")%></p>
+        <form action='../../AsistenciaDAO' method='POST'>
+            <p>Asunto: <input type='text' name='asunto' placeholder='<%= sesion.getAttribute("sasunto")%>'/></p>
+            <p>Descripción: <input type='text' name='descripcion' placeholder='<%= sesion.getAttribute("sdescripcion")%>'/></p>
+            <p>Estado: <input type='text' name='estado' placeholder='<%= sesion.getAttribute("sestado")%>'/></p>
+            <p>Id del comprador que pide ayuda: 
             <select name="idusuario">
             <%for(Usuario registro : datosUsuario){
                 if(sesion.getAttribute("sidusuario").equals(registro.getIduser())){%>
@@ -120,8 +117,8 @@
                 <%}}%>
             </select>
             </p>
-            <p>Nombre del producto: 
-            <select name="idproducto">
+            <p>Nombre del producto con el que existe el problema: 
+            <select name="idpproducto">
             <%for(Producto registro : datosProducto){
                 if(sesion.getAttribute("sidproducto").equals(registro.getIdpro())){%>
                     <option selected="selected" value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
@@ -130,84 +127,67 @@
                 <%}}%>
             </select>
             </p>
-            <p>Cantidad de unidades pedidas: <input type="number" min="1" name='cantidadpedida' placeholder='<%= sesion.getAttribute("scantidadpedida")%>'/> unidades</p>
-            <p>Información del envío:</p>
-            <p>Calle: <input type='text' name='calle' placeholder='<%= sesion.getAttribute("scalle")%>'/></p>
-            <p>Ciudad: <input type='text' name='ciudad' placeholder='<%= sesion.getAttribute("sciudad")%>'/></p>
-            <p>Estado: <input type='text' name='estado' placeholder='<%= sesion.getAttribute("sestado")%>'/></p>
-            <p>Código Postal: <input type='text' name='codigopostal' placeholder='<%= sesion.getAttribute("scodigopostal")%>'/></p>
+            <p>Id del administrador que responde: 
+            <select name="idadministrador">
+            <%for(Administrador registro : datosAdministrador){
+                if(sesion.getAttribute("sidadministrador").equals(registro.getIdadmin())){%>
+                    <option selected="selected" value='<%= registro.getIdadmin()%>'><%= registro.getIdadmin()%></option>
+                <%} else {%>
+                    <option value='<%= registro.getIdadmin()%>'><%= registro.getIdadmin()%></option>
+                <%}}%>
+            </select>
+            </p>
             <p><input type='submit' name='Modificar' value='Modificar'/></p>
         </form>
         <br>
-        <h3>Tabla Pedido</h3>
+        <h3>Tabla Asistencia</h3>
         <table>
             <tr>
                 <th>
-                    Pedido número
+                    Asistencia número
                 </th>
                 <th>
-                    Fecha de compra
+                    Asunto
                 </th>
                 <th>
-                    Estado de la entrega
-                </th>
-                <th>
-                    Id del comprador
-                </th>
-                <th>
-                    Id del producto
-                </th>
-                <th>
-                    Cantidad de unidades pedidas
-                </th>
-                <th>
-                    Calle
-                </th>
-                <th>
-                    Ciudad
+                    Descripción
                 </th>
                 <th>
                     Estado
                 </th>
                 <th>
-                    Código Postal
+                    Id del usuario
+                </th>
+                <th>
+                    Id del producto
+                </th>
+                <th>
+                    Id del administrador
                 </th>
             </tr>
-            <%for(Pedido registro : datosPedido){
-                if(registro.getIdpedido().equals(sesion.getAttribute("sidpedido"))){%>
+            <%for(Asistencia registro : datosAsistencia){
+                if(registro.getIdasistencia().equals(sesion.getAttribute("sidasistencia"))){%>
             <tr>
                 <td>
-                    <%= registro.getIdpedido()%>
+                    <%= registro.getIdasistencia()%>
                 </td>
                 <td>
-                    <%= simpleDateFormat.format(registro.getFechacompra())%>
-                </td>
-                <td>
-                    <%= registro.getEstadoentrega()%>
-                </td>
-                <td>
-                    <%= registro.getIdusuario().getIduser()%>
-                </td>
-                <td>
-                    <%= registro.getIdproducto().getIdpro()%>
-                </td>
-                <td>
-                    <%= registro.getCantidadpedida()%>
-                </td>
-                <td>
-                    <%= registro.getCalle()%>
-                </td>
-                <td>
-                    <%= registro.getCiudad()%>
+                    <%= registro.getAsunto()%>
                 </td>
                 <td>
                     <%= registro.getEstado()%>
                 </td>
                 <td>
-                    <%= registro.getCodigopostal() %>
+                    <%= registro.getIdusuario().getIduser()%>
+                </td>
+                <td>
+                    <%= registro.getIdpprodcuto().getIdpro()%>
+                </td>
+                <td>
+                    <%= registro.getIdadministrador().getIdadmin()%>
                 </td>
             </tr>
-            <%}}%>
+            <%}%>
         </table><br>
         <h3>Tabla Usuario</h3>
         <table>
@@ -231,30 +211,30 @@
                     Fecha de caducidad de cuenta premium
                 </th>
             </tr>
-            <%for(Usuario registrob : datosUsuario){%>
+            <%for(Usuario registroa : datosUsuario){%>
             <tr>
                 <td>
-                    <%= registrob.getIduser()%>
+                    <%= registroa.getIduser()%>
                 </td>
                 <td>
-                    <%= registrob.getNombre()%>
+                    <%= registroa.getNombre()%>
                 </td>
                 <td>
-                    <%= registrob.getApellidos()%>
+                    <%= registroa.getApellidos()%>
                 </td>
                 <td>
-                    <%= simpleDateFormat.format(registrob.getFechanac())%>
+                    <%= simpleDateFormat.format(registroa.getFechanac())%>
                 </td>
                 <td>
-                    <%= registrob.getPremium()%>
+                    <%= registroa.getPremium()%>
                 </td>
-                <%if(registrob.getFechacadpremium() == null){%>
+                <%if(registroa.getFechacadpremium() == null){%>
                 <td>
 
                 </td>
                 <%} else {%>
                 <td>
-                    <%= simpleDateFormat.format(registrob.getFechacadpremium())%>
+                    <%= simpleDateFormat.format(registroa.getFechacadpremium())%>
                 </td>
                 <%}%>
             </tr>
@@ -297,40 +277,79 @@
                     Stock
                 </th>
             </tr>
-            <%for(Producto registroc : datosProducto){%>
+            <%for(Producto registrob : datosProducto){%>
             <tr>
                 <td>
-                    <%= registroc.getIdpro()%>
+                    <%= registrob.getIdpro()%>
                 </td>
                 <td>
-                    <%= registroc.getCategoria()%>
+                    <%= registrob.getCategoria()%>
                 </td>
                 <td>
-                    <%= registroc.getAutor()%>
+                    <%= registrob.getAutor()%>
                 </td>
                 <td>
-                    <%= registroc.getImg()%>
+                    <%= registrob.getImg()%>
+                </td>
+                <td>
+                    <%= registrob.getNombre()%>
+                </td>
+                <td>
+                    <%= registrob.getContenido()%>
+                </td>
+                <td>
+                    <%= registrob.getPrecio()%>
+                </td>
+                <td>
+                    <%= registrob.getPreciopremium()%>
+                </td>
+                <td>
+                    <%= registrob.getPrecioenvio()%>
+                </td>
+                <td>
+                    <%= registrob.getDescuento()%>
+                </td>
+                <td>
+                    <%= registrob.getStock()%>
+                </td>
+            </tr>
+            <%}%>
+        </table><br>
+        <h3>Tabla Administrador</h3>
+        <table>
+            <tr>
+                <th>
+                    Id del Administrador
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Apellidos(fíjese en la tabla de abajo) 
+                </th>
+                <th>
+                    Fecha de nacimiento
+                </th>
+                <th>
+                    Fecha de contrato
+                </th>
+            </tr>
+            <%for(Administrador registroc : datosAdministrador){%>
+            <tr>
+                <td>
+                    <%= registroc.getIdadmin()%>
                 </td>
                 <td>
                     <%= registroc.getNombre()%>
                 </td>
                 <td>
-                    <%= registroc.getContenido()%>
+                    <%= registroc.getApellidos()%>
                 </td>
                 <td>
-                    <%= registroc.getPrecio()%>
+                    <%= simpleDateFormat.format(registroc.getFechanac())%>
                 </td>
                 <td>
-                    <%= registroc.getPreciopremium()%>
-                </td>
-                <td>
-                    <%= registroc.getPrecioenvio()%>
-                </td>
-                <td>
-                    <%= registroc.getDescuento()%>
-                </td>
-                <td>
-                    <%= registroc.getStock()%>
+                    <%= simpleDateFormat.format(registroc.getFechacontrato())%>
                 </td>
             </tr>
             <%}%>

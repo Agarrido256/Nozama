@@ -114,9 +114,9 @@
             <select name="idusuario">
             <%for(Usuario registro : datosUsuario){
                 if(sesion.getAttribute("sidusuario").equals(registro.getIduser())){%>
-                    <option value='<%= registro.getIduser()%>'><%= registro.getIduser()%></option>
+                    <option selected="selected" value='<%= registro.getIduser()%>'><%= registro.getIduser()%></option>
                 <%} else {%>
-
+                    <option value='<%= registro.getIduser()%>'><%= registro.getIduser()%></option>
                 <%}}%>
             </select>
             </p>
@@ -124,9 +124,9 @@
             <select name="idproducto">
             <%for(Producto registro : datosProducto){
                 if(sesion.getAttribute("sidproducto").equals(registro.getIdpro())){%>
-                <option selected="selected" value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
+                    <option selected="selected" value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
                 <%} else {%>
-                <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
+                    <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
                 <%}}%>
             </select>
             </p>
