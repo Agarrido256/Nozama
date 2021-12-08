@@ -136,7 +136,7 @@ public class PedidoDAO extends HttpServlet {
             }
         }
         if(request.getParameter("Modificar") != null){
-            int idpedido = parseInt(request.getParameter("sidpedido"));
+            int idpedido = parseInt(sesion.getAttribute("sidpedido").toString());
             String estafecha;
             if(request.getParameter("fechacompra").toString().isEmpty()){
                 estafecha = sesion.getAttribute("sfechacompra").toString();
