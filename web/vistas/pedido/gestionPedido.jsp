@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
             *{
                 font-family: 'Source Sans Pro', sans-serif;
@@ -106,7 +106,7 @@
             <p>Código Postal: <input type='text' name='codigopostal' required/></p>
             <p><input type='submit' name='Registrar' value='Registrar'/></p>
         </form>
-        <h3>Modificar un producto</h3>
+        <h3>Modificar un pedido</h3>
         <form action='modPedido.jsp' method='GET'>
             <p>Número del pedido: (fíjese en la tabla de abajo)  
             <select name="idpedido">
@@ -183,13 +183,31 @@
                     <%= registro.getCantidadpedida()%>
                 </td>
                 <td>
-                    <%= registro.getCalle()%>
+                    <%
+                        String esteCalle = registro.getCalle().toString();
+                        esteCalle = esteCalle.replaceAll("Ã±", "ñ");
+                        esteCalle = esteCalle.replaceAll("Ã", "Ñ");
+                        esteCalle = esteCalle.replaceAll("Âº", "º");
+                    %>
+                    <%= esteCalle%>
                 </td>
                 <td>
-                    <%= registro.getCiudad()%>
+                    <%
+                        String esteCiudad = registro.getCiudad().toString();
+                        esteCiudad = esteCiudad.replaceAll("Ã±", "ñ");
+                        esteCiudad = esteCiudad.replaceAll("Ã", "Ñ");
+                        esteCiudad = esteCiudad.replaceAll("Âº", "º");
+                    %>
+                    <%= esteCiudad%>
                 </td>
                 <td>
-                    <%= registro.getEstado()%>
+                    <%
+                        String esteEstado = registro.getEstado().toString();
+                        esteEstado = esteEstado.replaceAll("Ã±", "ñ");
+                        esteEstado = esteEstado.replaceAll("Ã", "Ñ");
+                        esteEstado = esteEstado.replaceAll("Âº", "º");
+                    %>
+                    <%= esteEstado%>
                 </td>
                 <td>
                     <%= registro.getCodigopostal() %>

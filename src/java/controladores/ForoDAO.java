@@ -93,7 +93,7 @@ public class ForoDAO extends HttpServlet {
             int puntuacion = parseInt(request.getParameter("puntuacion"));
             String idusuario = request.getParameter("idusuario").toString();
             Usuario idusuariop = controlUsuario.findUsuario(idusuario);
-            int idpproducto = parseInt(request.getParameter("idproducto"));
+            int idpproducto = parseInt(request.getParameter("idpproducto"));
             Producto idpproductop = controlProducto.findProducto(idpproducto);
             try{
                 foro.setAsunto(asunto);
@@ -104,17 +104,17 @@ public class ForoDAO extends HttpServlet {
                 controlcon.create(foro);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/foro/gestionForo.jsp");
+                response.sendRedirect("vistas/Foro/gestionForo.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/foro/gestionForo.jsp");
+                response.sendRedirect("vistas/Foro/gestionForo.jsp");
                 return;
             }
         }
         if(request.getParameter("Modificar") != null){
-            int idforo = parseInt(request.getParameter("idforo"));
+            int idforo = parseInt(sesion.getAttribute("sidforo").toString());
             String asunto;
             if(request.getParameter("asunto").toString().isEmpty()){
                 asunto = sesion.getAttribute("sasunto").toString();
@@ -157,27 +157,27 @@ public class ForoDAO extends HttpServlet {
                 controlcon.edit(foro);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/foro/modForo.jsp");
+                response.sendRedirect("vistas/Foro/modForo.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/foro/modForo.jsp");
+                response.sendRedirect("vistas/Foro/modForo.jsp");
                 return;
             }
         }
         if(request.getParameter("Eliminar") != null){
-            int idforo = parseInt(request.getParameter("sidforo"));
+            int idforo = parseInt(request.getParameter("idforo").toString());
             try{
                 controlcon.destroy(idforo);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/foro/gestionForo.jsp");
+                response.sendRedirect("vistas/Foro/gestionForo.jsp");
                 return;
             } catch(Exception e){
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
-                response.sendRedirect("vistas/foro/gestionForo.jsp");
+                response.sendRedirect("vistas/Foro/gestionForo.jsp");
                 return;
             }
         }

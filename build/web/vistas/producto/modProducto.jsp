@@ -65,7 +65,7 @@
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
             for(Producto registro : datos){
-                if(sesion.getAttribute("sidpro").equals(registro.getIdpro().toString())){
+                if(registro.getIdpro().equals(sesion.getAttribute("sidpro"))){
                     sesion.setAttribute("scategoria", registro.getCategoria());
                     sesion.setAttribute("sautor", registro.getAutor());
                     sesion.setAttribute("simg", registro.getImg());

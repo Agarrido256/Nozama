@@ -228,7 +228,7 @@ public class PedidoDAO extends HttpServlet {
             }
         }
         if(request.getParameter("Eliminar") != null){
-            int idpedido = parseInt(request.getParameter("sidpedido"));
+            int idpedido = parseInt(request.getParameter("idpedido").toString());
             try{
                 controlcon.destroy(idpedido);
                 mensaje = "y";

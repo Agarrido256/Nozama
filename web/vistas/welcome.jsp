@@ -30,7 +30,7 @@
                 <div class="bodyoferta">
                 <%int contador = 0;
                     for(Producto registro : datosProducto){
-                        if(contador < 4){
+                        if(contador < 3){
                             if(registro.getDescuento() > 0 && registro.getStock() > 0){%>
                                 <div class="productooferta" onclick="location.href='mostrarproducto.jsp?esteproducto=<%= registro.getIdpro()%>';" style="cursor: pointer;">
                                     <div class="imgproductooferta">

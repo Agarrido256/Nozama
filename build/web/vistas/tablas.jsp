@@ -44,10 +44,9 @@
     <body>
         <a href="welcome.jsp">Salir</a><br><br>
         <a href="administrador/gestionAdministrador.jsp" style="background-color: #CF6A32; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Administrador</a>
-        <a href="usuario/gestionUsuario.jsp" style="background-color: #B2B2B2; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Usuario</a><br><br>
+        <a href="usuario/gestionUsuario.jsp" style="background-color: #AA0000; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Usuario</a><br><br>
         <a href="producto/gestionProducto.jsp" style="background-color: #476291; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Producto</a>
         <a href="pedido/gestionPedido.jsp" style="background-color: #4D7455; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Pedido</a><br><br>
-        <a href="asistencia/gestionAsistencia.jsp" style="background-color: #AA0000; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Asistencia</a>
-        <a href="foro/gestionForo.jsp" style="background-color: #8650AC; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Foro</a><br><br>
+        <a href="Foro/gestionForo.jsp" style="background-color: #8650AC; color: white; border-radius: 10px; text-decoration: none; border: solid black 2px; padding: 2px; margin-left: 10px;">Gestionar la tabla Foro</a><br><br>
     </body>
 </html>

@@ -151,6 +151,9 @@
                     <%= registro.getAsunto()%>
                 </td>
                 <td>
+                    <%= registro.getDescripcion() %>
+                </td>
+                <td>
                     <%= registro.getPuntuacion()%>
                 </td>
                 <td>

@@ -66,7 +66,7 @@
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
             for(Administrador registro : datos){
-                if(sesion.getAttribute("sidadmin").toString().equals(registro.getIdadmin())){
+                if(registro.getIdadmin().equals(sesion.getAttribute("sidadmin"))){
                     sesion.setAttribute("snombre", registro.getNombre());
                     sesion.setAttribute("sapellidos", registro.getApellidos());
                     sesion.setAttribute("sfechanac", registro.getFechanac());

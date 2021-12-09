@@ -34,7 +34,6 @@
             <div class="destacados">
                 <div class="headdestacados">
                     <h1>Todos nuestros discos de <%= nombrecategoria%></h1>
-                    <label style="color: red; opacity: 0.5;">*falta por diseñar y detallear la pagina</label>
                 </div>
                 <div class="bodydestacados">
                 <%

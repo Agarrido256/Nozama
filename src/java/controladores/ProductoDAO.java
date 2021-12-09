@@ -84,16 +84,34 @@ public class ProductoDAO extends HttpServlet {
             String img = nombre + ".PNG";
             String contenido = request.getParameter("contenido").toString();
             String esteprecio = request.getParameter("precio").toString();
-            esteprecio = esteprecio + "€";
             esteprecio = esteprecio.replace(".", ",");
+            if(esteprecio.contains(",")){
+                String decimales = esteprecio.substring(esteprecio.indexOf(",")+1);
+                if(decimales.length() == 1){
+                    esteprecio = esteprecio + "0";
+                }
+            }
+            esteprecio = esteprecio + "€";
             String precio = esteprecio;
             esteprecio = request.getParameter("preciopremium").toString();
-            esteprecio = esteprecio + "€";
             esteprecio = esteprecio.replace(".", ",");
+            if(esteprecio.contains(",")){
+                String decimales = esteprecio.substring(esteprecio.indexOf(",")+1);
+                if(decimales.length() == 1){
+                    esteprecio = esteprecio + "0";
+                }
+            }
+            esteprecio = esteprecio + "€";
             String preciopremium = esteprecio;
             esteprecio = request.getParameter("precioenvio").toString();
-            esteprecio = esteprecio + "€";
             esteprecio = esteprecio.replace(".", ",");
+            if(esteprecio.contains(",")){
+                String decimales = esteprecio.substring(esteprecio.indexOf(",")+1);
+                if(decimales.length() == 1){
+                    esteprecio = esteprecio + "0";
+                }
+            }
+            esteprecio = esteprecio + "€";
             String precioenvio = esteprecio;
             int descuento = parseInt(request.getParameter("descuento"));
             int stock = parseInt(request.getParameter("stock"));
@@ -121,7 +139,7 @@ public class ProductoDAO extends HttpServlet {
             }
         }
         if(request.getParameter("Modificar") != null){
-            int idpro = parseInt(request.getParameter("sidpro"));
+            int idpro = parseInt(sesion.getAttribute("sidpro").toString());
             String categoria;
             if(request.getParameter("categoria").toString().isEmpty()){
                 categoria = sesion.getAttribute("scategoria").toString();
@@ -152,8 +170,14 @@ public class ProductoDAO extends HttpServlet {
                 precio = sesion.getAttribute("sprecio").toString();
             } else {
                 String esteprecio = request.getParameter("precio").toString();
-                esteprecio = esteprecio + "€";
                 esteprecio = esteprecio.replace(".", ",");
+                if(esteprecio.contains(",")){
+                    String decimales = esteprecio.substring(esteprecio.indexOf(",")+1);
+                    if(decimales.length() == 1){
+                        esteprecio = esteprecio + "0";
+                    }
+                }
+                esteprecio = esteprecio + "€";
                 precio = esteprecio;
             }
             String preciopremium;
@@ -161,8 +185,14 @@ public class ProductoDAO extends HttpServlet {
                 preciopremium = sesion.getAttribute("spreciopremium").toString();
             } else {
                 String esteprecio = request.getParameter("preciopremium").toString();
-                esteprecio = esteprecio + "€";
                 esteprecio = esteprecio.replace(".", ",");
+                if(esteprecio.contains(",")){
+                    String decimales = esteprecio.substring(esteprecio.indexOf(",")+1);
+                    if(decimales.length() == 1){
+                        esteprecio = esteprecio + "0";
+                    }
+                }
+                esteprecio = esteprecio + "€";
                 preciopremium = esteprecio;
             }
             String precioenvio;
@@ -170,8 +200,14 @@ public class ProductoDAO extends HttpServlet {
                 precioenvio = sesion.getAttribute("sprecioenvio").toString();
             } else {
                 String esteprecio = request.getParameter("precioenvio").toString();
-                esteprecio = esteprecio + "€";
                 esteprecio = esteprecio.replace(".", ",");
+                if(esteprecio.contains(",")){
+                    String decimales = esteprecio.substring(esteprecio.indexOf(",")+1);
+                    if(decimales.length() == 1){
+                        esteprecio = esteprecio + "0";
+                    }
+                }
+                esteprecio = esteprecio + "€";
                 precioenvio = esteprecio;
             }
             int descuento;
@@ -211,7 +247,7 @@ public class ProductoDAO extends HttpServlet {
             }
         }
         if(request.getParameter("Eliminar") != null){
-            int idpro = parseInt(request.getParameter("idpro"));
+            int idpro = parseInt(request.getParameter("idpro").toString());
             try{
                 controlcon.destroy(idpro);
                 mensaje = "y";

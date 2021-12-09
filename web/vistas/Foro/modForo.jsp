@@ -72,7 +72,7 @@
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
             for(Foro registro : datosForo){
-                if(sesion.getAttribute("sidforo").equals(registro.getIdforo().toString())){
+                if(registro.getIdforo().equals(sesion.getAttribute("sidforo"))){
                     sesion.setAttribute("sasunto", registro.getAsunto());
                     sesion.setAttribute("sdescripcion", registro.getDescripcion());
                     sesion.setAttribute("spuntuacion", registro.getPuntuacion());
@@ -115,7 +115,7 @@
             <p>Nombre del producto en el que se ha publicado la opinión: 
             <select name="idpproducto">
             <%for(Producto registro : datosProducto){
-                if(sesion.getAttribute("sidproducto").equals(registro.getIdpro())){%>
+                if(sesion.getAttribute("sidpproducto").equals(registro.getIdpro())){%>
                     <option selected="selected" value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
                 <%} else {%>
                     <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
@@ -147,10 +147,14 @@
                     Id del producto
                 </th>
             </tr>
-            <%for(Foro registro : datosForo){%>
+            <%for(Foro registro : datosForo){
+                if(registro.getIdforo().equals(sesion.getAttribute("sidforo"))){%>
             <tr>
                 <td>
                     <%= registro.getIdforo()%>
+                </td>
+                <td>
+                    <%= registro.getDescripcion() %>
                 </td>
                 <td>
                     <%= registro.getAsunto()%>
@@ -165,7 +169,7 @@
                     <%= registro.getIdpprodcuto().getIdpro()%>
                 </td>
             </tr>
-            <%}%>
+            <%}}%>
         </table><br>
         <h3>Tabla Usuario</h3>
         <table>

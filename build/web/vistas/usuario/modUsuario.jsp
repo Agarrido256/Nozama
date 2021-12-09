@@ -66,7 +66,7 @@
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
             for(Usuario registro : datos){
-                if(sesion.getAttribute("siduser").toString().equals(registro.getIduser())){
+                if(registro.getIduser().equals(sesion.getAttribute("siduser"))){
                     sesion.setAttribute("snombre", registro.getNombre());
                     sesion.setAttribute("sapellidos", registro.getApellidos());
                     sesion.setAttribute("sfechanac", registro.getFechanac());
@@ -106,7 +106,7 @@
             <%}%>
             <p>Fecha de caducidad de cuenta premium: <input type='date' name='fechacadpremium' 
             <%if(sesion.getAttribute("sfechacadpremium") != null){%>
-                value='<%= simpleDateFormato.format(sesion.getAttribute("sfechanac"))%>'
+                value='<%= simpleDateFormato.format(sesion.getAttribute("sfechacadpremium"))%>'
             <%}%>
             /></p>
             <p>Contraseña: <input type='password' name='contrasena'/></p>

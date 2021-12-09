@@ -86,21 +86,20 @@
                 sesion.setAttribute("c", request.getParameter("vercategoria"));
                 response.sendRedirect("index.jsp");
             }
+            if(request.getParameter("buscar") != null){
+                sesion.setAttribute("pagina", "vistas/buscar.jsp");
+                sesion.setAttribute("textobuscar", request.getParameter("textobuscar"));
+                response.sendRedirect("index.jsp");
+            }
         %>
         <div class="base">
             <header>
                 <a href="index.jsp?salir=true"><img src="imagenes/logo.PNG"></a>
                 <div class="buscador">
-                    <select id="buscaproducto">
-                    <%for(Producto registro : datosProducto){%>
-                        <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
-                    <%}%>
-                    </select><br><label style="color: red; opacity: 0.5;">*buscador de productos sin terminar</label>
-                    <style>
-                        <%for(Producto registro : datosProducto){%>
-                            select#buscaproducto option[value="<%= registro.getNombre()%>"]   { background-image:url(/imagenes/<%= registro.getImg()%>);}
-                        <%}%>
-                    </style>
+                    <form action='index.jsp' method='GET'>
+                        <p><input type='text' name='textobuscar' placeholder='Nombre del disco, canción o grupo...' required class='textobuscar'/>
+                        <button type='submit' name='buscar' class='botonbuscar'><img src="imagenes/buscar.png"></button></p>
+                    </form>
                 </div>
                 <div class="carrito"><label style="color: red; opacity: 0.5;">*falta por implementar carrito</label></div>
                 <div class="divlogin"><a href="#" id="login">

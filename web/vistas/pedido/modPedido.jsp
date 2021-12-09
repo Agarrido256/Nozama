@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
             *{
                 font-family: 'Source Sans Pro', sans-serif;
@@ -77,7 +77,7 @@
         if(sesion.getAttribute("mensaje") == "y"){
             out.print("<script>alert('Orden Realizada!');</script>");
             for(Pedido registro : datosPedido){
-                if(sesion.getAttribute("sidpedido").equals(registro.getIdpedido().toString())){
+                if(registro.getIdpedido().equals(sesion.getAttribute("sidpedido"))){
                     sesion.setAttribute("sfechacompra", registro.getFechacompra());
                     sesion.setAttribute("sestadoentrega", registro.getEstadoentrega());
                     sesion.setAttribute("sidusuario", registro.getIdusuario().getIduser());
@@ -103,6 +103,18 @@
             out.print("<script>alert('ERROR, La entidad no existe');</script>");
             sesion.removeAttribute("mensaje");
         }
+        String Calle = sesion.getAttribute("scalle").toString();
+        Calle = Calle.replaceAll("Ã±", "ñ");
+        Calle = Calle.replaceAll("Ã", "Ñ");
+        Calle = Calle.replaceAll("Âº", "º");
+        String Ciudad = sesion.getAttribute("sciudad").toString();
+        Ciudad = Ciudad.replaceAll("Ã±", "ñ");
+        Ciudad = Ciudad.replaceAll("Ã", "Ñ");
+        Ciudad = Ciudad.replaceAll("Âº", "º");
+        String Estado = sesion.getAttribute("sestado").toString();
+        Estado = Estado.replaceAll("Ã±", "ñ");
+        Estado = Estado.replaceAll("Ã", "Ñ");
+        Estado = Estado.replaceAll("Âº", "º");
     %>
     <body>
         <a href="gestionPedido.jsp">Cancelar y volver</a><br>
@@ -132,9 +144,9 @@
             </p>
             <p>Cantidad de unidades pedidas: <input type="number" min="1" name='cantidadpedida' placeholder='<%= sesion.getAttribute("scantidadpedida")%>'/> unidades</p>
             <p>Información del envío:</p>
-            <p>Calle: <input type='text' name='calle' placeholder='<%= sesion.getAttribute("scalle")%>'/></p>
-            <p>Ciudad: <input type='text' name='ciudad' placeholder='<%= sesion.getAttribute("sciudad")%>'/></p>
-            <p>Estado: <input type='text' name='estado' placeholder='<%= sesion.getAttribute("sestado")%>'/></p>
+            <p>Calle: <input type='text' name='calle' placeholder='<%= Calle%>'/></p>
+            <p>Ciudad: <input type='text' name='ciudad' placeholder='<%= Ciudad%>'/></p>
+            <p>Estado: <input type='text' name='estado' placeholder='<%= Estado%>'/></p>
             <p>Código Postal: <input type='text' name='codigopostal' placeholder='<%= sesion.getAttribute("scodigopostal")%>'/></p>
             <p><input type='submit' name='Modificar' value='Modificar'/></p>
         </form>
@@ -195,13 +207,31 @@
                     <%= registro.getCantidadpedida()%>
                 </td>
                 <td>
-                    <%= registro.getCalle()%>
+                    <%
+                        String esteCalle = registro.getCalle().toString();
+                        esteCalle = esteCalle.replaceAll("Ã±", "ñ");
+                        esteCalle = esteCalle.replaceAll("Ã", "Ñ");
+                        esteCalle = esteCalle.replaceAll("Âº", "º");
+                    %>
+                    <%= esteCalle%>
                 </td>
                 <td>
-                    <%= registro.getCiudad()%>
+                    <%
+                        String esteCiudad = registro.getCiudad().toString();
+                        esteCiudad = esteCiudad.replaceAll("Ã±", "ñ");
+                        esteCiudad = esteCiudad.replaceAll("Ã", "Ñ");
+                        esteCiudad = esteCiudad.replaceAll("Âº", "º");
+                    %>
+                    <%= esteCiudad%>
                 </td>
                 <td>
-                    <%= registro.getEstado()%>
+                    <%
+                        String esteEstado = registro.getEstado().toString();
+                        esteEstado = esteEstado.replaceAll("Ã±", "ñ");
+                        esteEstado = esteEstado.replaceAll("Ã", "Ñ");
+                        esteEstado = esteEstado.replaceAll("Âº", "º");
+                    %>
+                    <%= esteEstado%>
                 </td>
                 <td>
                     <%= registro.getCodigopostal() %>

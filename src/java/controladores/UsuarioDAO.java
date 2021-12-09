@@ -94,7 +94,7 @@ public class UsuarioDAO extends HttpServlet {
             Date fechacadpremium = null;
             try {
                 fechanac = simpleDateFormat.parse(estafecha);
-                if(estafechac.isEmpty()){
+                if(!estafechac.isEmpty()){
                     fechacadpremium = simpleDateFormat.parse(estafechac);
                 }
             } catch (ParseException ex) {
@@ -126,7 +126,7 @@ public class UsuarioDAO extends HttpServlet {
             }
         }
         if(request.getParameter("Modificar") != null){
-            String iduser = sesion.getAttribute("siuser").toString();
+            String iduser = sesion.getAttribute("siduser").toString();
             String nombre;
             if(request.getParameter("nombre").toString().isEmpty()){
                 nombre = sesion.getAttribute("snombre").toString();
@@ -153,7 +153,7 @@ public class UsuarioDAO extends HttpServlet {
             }
             String estafechac;
             if(request.getParameter("fechacadpremium").toString().isEmpty()){
-                estafechac = sesion.getAttribute("sfechacadpremium").toString();
+                estafechac = "no";
             } else {
                 estafechac = request.getParameter("fechacadpremium").toString();
             }
@@ -164,7 +164,7 @@ public class UsuarioDAO extends HttpServlet {
             Date fechacadpremium = null;
             try {
                 fechanac = simpleDateFormat.parse(estafecha);
-                if(estafechac != null){
+                if(estafechac != "no"){
                     fechacadpremium = simpleDateFormat.parse(estafechac);
                 }
             } catch (ParseException ex) {
@@ -183,7 +183,7 @@ public class UsuarioDAO extends HttpServlet {
                     usuario.setFechacadpremium(fechacadpremium);
                 }
                 usuario.setContraseña(contrasena);
-                controlcon.create(usuario);
+                controlcon.edit(usuario);
                 mensaje = "y";
                 sesion.setAttribute("mensaje", mensaje);
                 response.sendRedirect("vistas/usuario/modUsuario.jsp");

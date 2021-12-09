@@ -1,11 +1,11 @@
 <%-- 
-    Document   : categoria
-    Created on : 30-nov-2021, 19:36:59
+    Document   : buscar
+    Created on : 09-dic-2021, 21:35:52
     Author     : PcCom
 --%>
 
-<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="modelo.Producto"%>
 <%@page import="modelo.ProductoJpaController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,25 +20,16 @@
             HttpSession sesion = request.getSession();
             ProductoJpaController controlProducto = new ProductoJpaController();
             List<Producto> datosProducto = controlProducto.findProductoEntities();
-            String nombrecategoria = null;
-            if(sesion.getAttribute("c") == null){
-                response.sendRedirect("welcome.jsp");
-            }
-            if(sesion.getAttribute("c").equals("Electronica")){
-                nombrecategoria = "Electrónica";
-            } else {
-                nombrecategoria = String.valueOf(sesion.getAttribute("c"));
-            }
         %>
         <div class="base">
             <div class="destacados">
                 <div class="headdestacados">
-                    <h1>Todos nuestros discos de <%= nombrecategoria%></h1>
+                    <h1>Estos son todos los productos que cuadran con la búsqueda: <%= sesion.getAttribute("textobuscar").toString()%></h1>
                 </div>
                 <div class="bodydestacados">
                 <%
                     for(Producto registro : datosProducto){
-                    if(registro.getCategoria().equals(sesion.getAttribute("c"))){%>
+                        if(registro.getNombre().toString().contains(sesion.getAttribute("textobuscar").toString()) || registro.getAutor().toString().contains(sesion.getAttribute("textobuscar").toString()) || registro.getContenido().toString().contains(sesion.getAttribute("textobuscar").toString())){%>
                                 <div class="productodestacados" onclick="location.href='mostrarproducto.jsp?esteproducto=<%= registro.getIdpro()%>';" style="cursor: pointer;">
                                     <div class="imgproductodestacados">
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
