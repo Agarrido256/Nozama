@@ -8,6 +8,7 @@ package controladores;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import modelo.ProductoJpaController;
 public class ProductoDAO extends HttpServlet {
     ProductoJpaController controlcon = new ProductoJpaController();
     Producto producto = new Producto();
+    List<Producto> datos = controlcon.findProductoEntities();
     String mensaje = "";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -61,6 +63,59 @@ public class ProductoDAO extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sesion = request.getSession();
+        mensaje = "";
+        if(request.getParameter("Comprar") != null){
+            int idpro = parseInt(sesion.getAttribute("product").toString());
+            String categoria = "";
+            String autor = "";
+            String nombre = "";
+            String img = "";
+            String contenido = "";
+            String precio = "";
+            String preciopremium = "";
+            String precioenvio = "";
+            int descuento = 1;
+            int stock = 1;
+            for(Producto registro : datos){
+                if(registro.getIdpro().equals(idpro)){
+                    categoria = registro.getCategoria();
+                    autor = registro.getAutor();
+                    nombre = registro.getNombre();
+                    img = registro.getImg();
+                    contenido = registro.getContenido();
+                    precio = registro.getPrecio();
+                    preciopremium = registro.getPreciopremium();
+                    precioenvio = registro.getPrecioenvio();
+                    descuento = registro.getDescuento();
+                    stock = registro.getStock();
+                }
+            }
+            stock = stock - 1;
+            try{
+                producto.setIdpro(idpro);
+                producto.setCategoria(categoria);
+                producto.setAutor(autor);
+                producto.setImg(img);
+                producto.setNombre(nombre);
+                producto.setContenido(contenido);
+                producto.setPrecio(precio);
+                producto.setPreciopremium(preciopremium);
+                producto.setPrecioenvio(precioenvio);
+                producto.setDescuento(descuento);
+                producto.setStock(stock);
+                controlcon.edit(producto);
+                mensaje = "yes";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/mostrarproducto.jsp");
+                return;
+            } catch(Exception e){
+                mensaje = "n";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/mostrarproducto.jsp");
+                return;
+            }
+        }
         processRequest(request, response);
     }
 

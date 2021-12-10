@@ -101,7 +101,9 @@
                         <button type='submit' name='buscar' class='botonbuscar'><img src="imagenes/buscar.png"></button></p>
                     </form>
                 </div>
-                <div class="carrito"><label style="color: red; opacity: 0.5;">*falta por implementar carrito</label></div>
+                <div class="carrito">
+                    <label style="color: red; opacity: 0.5;">*falta por implementar carrito</label>
+                </div>
                 <div class="divlogin"><a href="#" id="login">
                     <%if(sesion.getAttribute("user") == null){%>
                         Iniciar sesión

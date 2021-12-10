@@ -43,6 +43,35 @@ button{
     font-size: 1.1em;
 }
 
+button:hover{
+    background-color:orange;
+    cursor: pointer;
+}
+
+button:focus{
+    background-color:darkseagreen;
+    cursor: pointer;
+}
+
+.cualpago{
+    display: flex;
+    justify-content: space-between
+}
+
+.cualpago img{
+    height: auto;
+    width: 20%;
+    border-radius: 20px;
+}
+
+.cualpago img:hover{
+    cursor: pointer;
+}
+
+.cualpago img:focus{
+    cursor: pointer;
+}
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -62,7 +91,7 @@ button{
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 15%; /* Could be more or less, depending on screen size */
+    width: 35%; /* Could be more or less, depending on screen size */
     background-color: rgb(32, 32, 49);
     border-radius: 5%;
 }
@@ -106,6 +135,6 @@ button{
 
 @media screen and (max-width: 900px) {
     .modal-content {
-      width: 40%;
+      width: 50%;
   }
 }

@@ -25,16 +25,27 @@
             List<Producto> datosProducto = controlProducto.findProductoEntities();
             ForoJpaController controlForo = new ForoJpaController();
             List<Foro> datosForo = controlForo.findForoEntities();
-            if(request.getParameter("esteproducto") == null){
-                response.sendRedirect("welcome.jsp");
+            if(request.getParameter("esteproducto") != null){
+                sesion.setAttribute("estepro", request.getParameter("esteproducto"));
             }
-            int esteproducto = Integer.parseInt(request.getParameter("esteproducto"));
+            if(sesion.getAttribute("mensaje") == "y"){
+                response.sendRedirect("../ProductoDAO?Comprar=go");
+            }
+            if(sesion.getAttribute("mensaje") == "yes"){
+                out.print("<script>alert('Gracias por su compra!');</script>");
+                sesion.removeAttribute("mensaje");
+            }
+            if(sesion.getAttribute("mensaje") == "n"){
+                out.print("<script>alert('ERROR, no se ha podido realizar el pedido');</script>");
+                sesion.removeAttribute("mensaje");
+            }
         %>
         <div class="base">
                 <div class="body">
                 <%
                     for(Producto registro : datosProducto){
-                    if(registro.getIdpro() == esteproducto){%>
+                    if(registro.getIdpro().toString().equals(sesion.getAttribute("estepro"))){
+                    sesion.setAttribute("product", registro.getIdpro()); %>
                                 <div class="producto">
                                     <div class="imgdiv">
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
@@ -68,14 +79,12 @@
                                         <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span><br><span style="color: gray;"><%= registro.getPrecioenvio()%> de envió</span></h3>
                                         <%}%>
                                         <br><br><br><br><br>
-                                        <button href="#" id="login"
-                                        
-                                        >Comprar</button>
-                                        <button
-                                        <%if(registro.getStock() < 1 && sesion.getAttribute("user") != null && sesion.getAttribute("esadmin") != "si"){%>
+                                        <button href="#" id="login" 
+                                        <%if(registro.getStock() < 1){%>
                                         disabled
                                         <%}%>
-                                        >Añadir al carro</button><br>
+                                        >Comprar</button>
+                                        <button>Añadir al carro</button><br>
                                         <%if(sesion.getAttribute("user") == null || sesion.getAttribute("esadmin") == "si"){%>
                                         <label style="color: red;">Primero debe logearse con su <strong>cuenta de usuario</strong></label>
                                         <%} else if(registro.getStock() < 1){%>
@@ -95,9 +104,10 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <div> 
+                    <%if(sesion.getAttribute("esadmin") == "no"){%>
                         <form action="../PedidoDAO" method="POST"> 
                             <br>
-                            <label>Introduzca la dirección para el envío</label><br>
+                            <h2 style="margin-top: 0px; margin-bottom: 5px;">Introduzca la dirección para el envío</h2>
                             <label>Calle:</label><br>
                             <input type="text" name="calle" placeholder="Calle..." required><br>
                             <label>Ciudad:</label><br>
@@ -107,8 +117,21 @@
                             <label>Código postal:</label><br>
                             <input type="text" name="codigopostal" placeholder="Código postal..." required><br>
                             <br>
+                            <h2 style="margin-top: 5px; margin-bottom: 5px;">Introduzca la información de pago</h2>
+                            <div class="cualpago">
+                                <img src="../imagenes/m1.png"><img src="../imagenes/m2.png"><img src="../imagenes/m3.jpg">
+                            </div>
+                            <label>Titular de la tarjeta:</label><br>
+                            <input type="text" name="t1"><br>
+                            <label>Número de la tarjeta:</label><br>
+                            <input type="number" name="t2"><br>
+                            <label>CVC / CVV:</label><br>
+                            <input type="number" name="t3"><br>
                             <button type="submit" name="Comprar">Realizar el pedido <img src="../imagenes/loginicon.png"></button><br>
                         </form>
+                    <%} else {%>
+                        <label style="color: red;">Para poder realizar un pedido, primero debe iniciar sesión con su cuenta de usuario</label><br>
+                    <%}%>
                 </div> 
             </div>
         </div>
