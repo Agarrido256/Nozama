@@ -242,6 +242,7 @@ public class PedidoDAO extends HttpServlet {
                 return;
             }
         }
+        
         processRequest(request, response);
     }
 

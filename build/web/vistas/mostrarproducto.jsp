@@ -14,8 +14,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="../diseño/mostrarproducto.css">
+        <script src="../diseño/mostrarproducto.js"></script>
     </head>
     <body>
         <%
@@ -42,13 +43,12 @@
                                         <h2><%= registro.getNombre()%></h2>
                                         <hr>
                                         <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
-                                        <h4 class="nombrecategoria"><%= registro.getCategoria()%></h4>
                                         <%
                                             String contenido = registro.getContenido();
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
                                         <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
-                                        <br><br>
+                                        <br><br><br>
                                         <%
                                         String precio = registro.getPrecio();
                                         precio = precio.replaceAll(",", ".");
@@ -68,17 +68,17 @@
                                         <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span><br><span style="color: gray;"><%= registro.getPrecioenvio()%> de envió</span></h3>
                                         <%}%>
                                         <br><br><br><br><br>
-                                        <button
-                                        <%if(registro.getStock() < 1){%>
-                                        disabled
-                                        <%}%>
+                                        <button href="#" id="login"
+                                        
                                         >Comprar</button>
                                         <button
-                                        <%if(registro.getStock() < 1){%>
+                                        <%if(registro.getStock() < 1 && sesion.getAttribute("user") != null && sesion.getAttribute("esadmin") != "si"){%>
                                         disabled
                                         <%}%>
                                         >Añadir al carro</button><br>
-                                        <%if(registro.getStock() < 1){%>
+                                        <%if(sesion.getAttribute("user") == null || sesion.getAttribute("esadmin") == "si"){%>
+                                        <label style="color: red;">Primero debe logearse con su <strong>cuenta de usuario</strong></label>
+                                        <%} else if(registro.getStock() < 1){%>
                                         <label style="color: red;">Lo sentimos, producto fuera de <strong>stock</strong></label>
                                         <%} else {%>
                                         <label style="color: gray;">En stock, tenemos actualmente <strong><%= registro.getStock()%></strong> unidades</label>
@@ -91,5 +91,26 @@
                     <%}}%>
                 </div>
             </div>
+    <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div> 
+                        <form action="../PedidoDAO" method="POST"> 
+                            <br>
+                            <label>Introduzca la dirección para el envío</label><br>
+                            <label>Calle:</label><br>
+                            <input type="text" name="calle" placeholder="Calle..." required><br>
+                            <label>Ciudad:</label><br>
+                            <input type="text" name="ciudad" placeholder="Ciudad..." required><br>
+                            <label>Estado:</label><br>
+                            <input type="text" name="estado" placeholder="Estado..." required><br>
+                            <label>Código postal:</label><br>
+                            <input type="text" name="codigopostal" placeholder="Código postal..." required><br>
+                            <br>
+                            <button type="submit" name="Comprar">Realizar el pedido <img src="../imagenes/loginicon.png"></button><br>
+                        </form>
+                </div> 
+            </div>
+        </div>
     </body>
 </html>
