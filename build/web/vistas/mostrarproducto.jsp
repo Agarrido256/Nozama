@@ -42,11 +42,13 @@
                                         <h2><%= registro.getNombre()%></h2>
                                         <hr>
                                         <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
+                                        <h4 class="nombrecategoria"><%= registro.getCategoria()%></h4>
                                         <%
                                             String contenido = registro.getContenido();
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
                                         <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
+                                        <br><br>
                                         <%
                                         String precio = registro.getPrecio();
                                         precio = precio.replaceAll(",", ".");
@@ -61,15 +63,26 @@
                                         DecimalFormat formatoprecio = new DecimalFormat("#.00");
                                         if(registro.getDescuento() > 0){
                                         %>
-                                        <h3>Por: <%= formatoprecio.format(mostrar)%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(mostrarp)%>€ para cuentas premium</span><br> <span style="color: red;">¡<%= registro.getDescuento()%>% de descuento!</span><br><span style="color: gray;">¡<%= registro.getPrecioenvio()%> de envió</span></h3>
+                                        <h3>Por: <%= formatoprecio.format(mostrar)%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(mostrarp)%>€ para cuentas premium</span><br> <span style="color: red;">¡<%= registro.getDescuento()%>% de descuento!</span><br><span style="color: gray;"><%= registro.getPrecioenvio()%> de envió</span></h3>
                                         <%} else {%>
                                         <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span><br><span style="color: gray;"><%= registro.getPrecioenvio()%> de envió</span></h3>
                                         <%}%>
-                                        <br><br><br><br><br><br>
-                                        <button>Comprar</button>
-                                        <button>Añadir al carro</button><br>
-                                        <label style="color: red; opacity: 0.7;">*falta por implementar funciones comprar y añadir carro</label><br>
-                                        <label style="color: red; opacity: 0.7;">*PÁGINA NO TERMINADA, FALTA DISEÑO</label> 
+                                        <br><br><br><br><br>
+                                        <button
+                                        <%if(registro.getStock() < 1){%>
+                                        disabled
+                                        <%}%>
+                                        >Comprar</button>
+                                        <button
+                                        <%if(registro.getStock() < 1){%>
+                                        disabled
+                                        <%}%>
+                                        >Añadir al carro</button><br>
+                                        <%if(registro.getStock() < 1){%>
+                                        <label style="color: red;">Lo sentimos, producto fuera de <strong>stock</strong></label>
+                                        <%} else {%>
+                                        <label style="color: gray;">En stock, tenemos actualmente <strong><%= registro.getStock()%></strong> unidades</label>
+                                        <%}%>
                                     </div>
                                 </div>
                                 <div class="foro">
