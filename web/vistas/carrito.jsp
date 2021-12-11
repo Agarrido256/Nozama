@@ -1,75 +1,58 @@
 <%-- 
-    Document   : mostrarproducto
-    Created on : 29-nov-2021, 21:23:19
+    Document   : carrito
+    Created on : 11-dic-2021, 1:11:34
     Author     : PcCom
 --%>
 
-<%@page import="java.text.DecimalFormat"%>
-<%@page import="modelo.Foro"%>
-<%@page import="modelo.ForoJpaController"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Producto"%>
 <%@page import="modelo.ProductoJpaController"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../diseño/mostrarproducto.css">
-        <script src="../diseño/mostrarproducto.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <link rel="stylesheet" href="../diseño/carrito.css">
+        <script src="../diseño/carrito.js"></script>
     </head>
     <body>
         <%
             HttpSession sesion = request.getSession();
             ProductoJpaController controlProducto = new ProductoJpaController();
             List<Producto> datosProducto = controlProducto.findProductoEntities();
-            ForoJpaController controlForo = new ForoJpaController();
-            List<Foro> datosForo = controlForo.findForoEntities();
-            if(request.getParameter("esteproducto") != null){
-                sesion.setAttribute("estepro", request.getParameter("esteproducto"));
-            }
-            if(sesion.getAttribute("mensaje") == "y"){
-                response.sendRedirect("../ProductoDAO?Comprar=go");
-            }
-            if(sesion.getAttribute("mensaje") == "yes"){
-                out.print("<script>alert('Gracias por su compra!');</script>");
-                sesion.removeAttribute("mensaje");
-            }
-            if(sesion.getAttribute("mensaje") == "n"){
-                out.print("<script>alert('ERROR, no se ha podido realizar el pedido');</script>");
-                sesion.removeAttribute("mensaje");
-            }
-            if(request.getParameter("alcarro") != null){
-                String[] carray = (String[])sesion.getAttribute("carray");
-                String nuevoalcarro = request.getParameter("alcarro").toString();
-                boolean yaesta = false;
-                for (int i = 0; i < carray.length; i++) {
-                    if(nuevoalcarro.equals(carray[i])){
-                        yaesta = true;
-                    }
+            String[] carray = (String[])sesion.getAttribute("carray");
+            int count = 0;
+            for (int i = 0; i < carray.length; i++) {
+                if(carray[i] != null){
+                    count++;
                 }
-                if(!yaesta){
-                    for (int i = 0; i < carray.length; i++) {
-                        if(carray[i] == null){
-                            carray[i] = request.getParameter("alcarro").toString();
-                            sesion.setAttribute("carray", carray);
-                        }
-                    }
-                }
-                response.sendRedirect("mostrarproducto.jsp");
+            }
+            if(count < 1){
+                sesion.setAttribute("mensaje", "v");
+                response.sendRedirect("welcome.jsp");
             }
         %>
         <div class="base">
-                <div class="body">
+            <div class="destacados">
+                <div class="headdestacados">
+                    <h1>Aquí esta tu carrito</h1>
+                </div>
+                <div class="bodydestacados">
                 <%
                     for(Producto registro : datosProducto){
-                    if(registro.getIdpro().toString().equals(sesion.getAttribute("estepro"))){
-                    sesion.setAttribute("product", registro.getIdpro()); %>
-                                <div class="producto">
-                                    <div class="imgdiv">
+                        boolean ok = false;
+                        for (int i = 0; i < carray.length; i++) {
+                            if(registro.getIdpro().toString().equals(carray[i])){
+                                ok = true;
+                            } 
+                        }
+                        if(ok){%>
+                                <div class="productodestacados" onclick="location.href='mostrarproducto.jsp?esteproducto=<%= registro.getIdpro()%>';" style="cursor: pointer;">
+                                    <div class="imgproductodestacados">
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
-                                    <div class="contdiv">
+                                    <div class="contproductodestacados">
                                         <h2><%= registro.getNombre()%></h2>
                                         <hr>
                                         <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
@@ -78,7 +61,6 @@
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
                                         <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
-                                        <br><br><br><br><br><br><br>
                                         <%
                                         String precio = registro.getPrecio();
                                         precio = precio.replaceAll(",", ".");
@@ -93,37 +75,27 @@
                                         DecimalFormat formatoprecio = new DecimalFormat("#.00");
                                         if(registro.getDescuento() > 0){
                                         %>
-                                        <h3>Por: <%= formatoprecio.format(mostrar)%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(mostrarp)%>€ para cuentas premium</span><br> <span style="color: red;">¡<%= registro.getDescuento()%>% de descuento!</span><br><span style="color: gray;"><%= registro.getPrecioenvio()%> de envió</span></h3>
+                                        <h3>Por: <%= formatoprecio.format(mostrar)%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(mostrarp)%>€ para cuentas premium</span><br> <span style="color: red;">¡<%= registro.getDescuento()%>% de descuento!</span></h3>
                                         <%} else {%>
-                                        <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span><br><span style="color: gray;"><%= registro.getPrecioenvio()%> de envió</span></h3>
+                                        <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span></h3>
                                         <%}%>
                                         <button href="#" id="login" 
                                         <%if(registro.getStock() < 1){%>
                                         disabled
                                         <%}%>
                                         >Comprar</button>
-                                        <button onclick="location.href='mostrarproducto.jsp?alcarro=<%= registro.getIdpro()%>';" 
+                                        <button 
                                         <%if(registro.getStock() < 1 || sesion.getAttribute("esadmin") != "no"){%>
                                         disabled
                                         <%}%>   
-                                        >Añadir al carro</button>
-                                        <br>
-                                        <%if(sesion.getAttribute("user") == null || sesion.getAttribute("esadmin") == "si"){%>
-                                        <label style="color: red;">Primero debe logearse con su <strong>cuenta de usuario</strong></label>
-                                        <%} else if(registro.getStock() < 1){%>
-                                        <label style="color: red;">Lo sentimos, producto fuera de <strong>stock</strong></label>
-                                        <%} else {%>
-                                        <label style="color: gray;">En stock, tenemos actualmente <strong><%= registro.getStock()%></strong> unidades</label>
-                                        <%}%>
+                                        >Eliminar del carro</button>
                                     </div>
-                                </div>
-                                <div class="foro">
-                                    <label style="color: red; opacity: 0.7;">*falta por implementar opiniones de los clientes</label> 
                                 </div>
                     <%}}%>
                 </div>
             </div>
-    <div id="loginModal" class="modal">
+        </div>
+        <div id="loginModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <div> 
@@ -157,6 +129,6 @@
                     <%}%>
                 </div> 
             </div>
-        </div>
+        </div>        
     </body>
 </html>

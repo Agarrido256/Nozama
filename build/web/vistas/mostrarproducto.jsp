@@ -39,6 +39,25 @@
                 out.print("<script>alert('ERROR, no se ha podido realizar el pedido');</script>");
                 sesion.removeAttribute("mensaje");
             }
+            if(request.getParameter("alcarro") != null){
+                String[] carray = (String[])sesion.getAttribute("carray");
+                String nuevoalcarro = request.getParameter("alcarro").toString();
+                boolean yaesta = false;
+                for (int i = 0; i < carray.length; i++) {
+                    if(nuevoalcarro.equals(carray[i])){
+                        yaesta = true;
+                    }
+                }
+                if(!yaesta){
+                    for (int i = 0; i < carray.length; i++) {
+                        if(carray[i] == null){
+                            carray[i] = request.getParameter("alcarro").toString();
+                            sesion.setAttribute("carray", carray);
+                        }
+                    }
+                }
+                response.sendRedirect("mostrarproducto.jsp");
+            }
         %>
         <div class="base">
                 <div class="body">
@@ -59,7 +78,7 @@
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
                                         <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
-                                        <br><br><br>
+                                        <br><br><br><br><br><br><br>
                                         <%
                                         String precio = registro.getPrecio();
                                         precio = precio.replaceAll(",", ".");
@@ -78,13 +97,17 @@
                                         <%} else {%>
                                         <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span><br><span style="color: gray;"><%= registro.getPrecioenvio()%> de envió</span></h3>
                                         <%}%>
-                                        <br><br><br><br><br>
                                         <button href="#" id="login" 
                                         <%if(registro.getStock() < 1){%>
                                         disabled
                                         <%}%>
                                         >Comprar</button>
-                                        <button>Añadir al carro</button><br>
+                                        <button onclick="location.href='mostrarproducto.jsp?alcarro=<%= registro.getIdpro()%>';" 
+                                        <%if(registro.getStock() < 1 || sesion.getAttribute("esadmin") != "no"){%>
+                                        disabled
+                                        <%}%>   
+                                        >Añadir al carro</button>
+                                        <br>
                                         <%if(sesion.getAttribute("user") == null || sesion.getAttribute("esadmin") == "si"){%>
                                         <label style="color: red;">Primero debe logearse con su <strong>cuenta de usuario</strong></label>
                                         <%} else if(registro.getStock() < 1){%>

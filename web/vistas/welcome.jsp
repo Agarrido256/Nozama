@@ -20,6 +20,10 @@
             HttpSession sesion = request.getSession();
             ProductoJpaController controlProducto = new ProductoJpaController();
             List<Producto> datosProducto = controlProducto.findProductoEntities();
+            if(sesion.getAttribute("mensaje") == "v"){
+                out.print("<script>alert('Lo sentimos, pero el carrito se encuentra vacío, use nuestro buscador, nuestras categorías o directamente haga clic en algún producto que ve en pantalla, y al ver sus detalles, encontrara un botón para añadirlo al carrito');</script>");
+                sesion.removeAttribute("mensaje");
+            }
         %>
         <div class="base">
             <div class="ofertas">

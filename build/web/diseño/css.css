@@ -75,6 +75,45 @@ header a img{
 
 .carrito{
     grid-column: 3;
+    display: grid;
+    justify-content: end;
+}
+
+.botoncarro{
+    background-color: rgb(246,167,96);
+    border: none;
+    border-radius: 50%;
+}
+
+.botoncarro:hover{
+    background-color:orange;
+    cursor: pointer;
+}
+
+.botoncarro:focus{
+    background-color:darkseagreen;
+    cursor: pointer;
+}
+
+.botonbuscar{
+    background-color: rgb(246,167,96);
+    border: none;
+    border-radius: 0% 25% 25% 0%;
+}
+
+.botonbuscar:hover{
+    background-color:orange;
+    cursor: pointer;
+}
+
+.botonbuscar:focus{
+    background-color:darkseagreen;
+    cursor: pointer;
+}
+
+.buscador form p input{
+    border: none;
+    border-radius: 10px 0px 0px 10px;
 }
 
 .divlogin{

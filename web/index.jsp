@@ -60,6 +60,7 @@
                 sesion.removeAttribute("userpass");
                 sesion.removeAttribute("esadmin");
                 sesion.removeAttribute("n");
+                sesion.removeAttribute("carray");
                 sesion.setAttribute("pagina", "vistas/welcome.jsp");
                 response.sendRedirect("index.jsp");
             }
@@ -91,6 +92,10 @@
                 sesion.setAttribute("textobuscar", request.getParameter("textobuscar"));
                 response.sendRedirect("index.jsp");
             }
+            if(sesion.getAttribute("carray") == null){
+                String[] arraycarrito = new String[100];
+                sesion.setAttribute("carray", arraycarrito);
+            }    
         %>
         <div class="base">
             <header>
@@ -102,7 +107,9 @@
                     </form>
                 </div>
                 <div class="carrito">
-                    <label style="color: red; opacity: 0.5;">*falta por implementar carrito</label>
+                    <%if(sesion.getAttribute("esadmin") == "no"){%>
+                        <button class="botoncarro" onclick="location.href='index.jsp?cambiarpagina=vistas/carrito.jsp';"><img src="imagenes/shop.png"></button>
+                    <%}%>
                 </div>
                 <div class="divlogin"><a href="#" id="login">
                     <%if(sesion.getAttribute("user") == null){%>
