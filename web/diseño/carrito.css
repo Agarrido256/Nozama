@@ -24,20 +24,25 @@ body{
 }
 
 .bodydestacados{
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .productodestacados{
     background-color: rgb(244,244,244);
-    display: inline-block;
-    border: blueviolet solid 2px;
     border-radius: 4%;
     display: grid;
     grid-template-columns: 35% 65%;
     margin: 0.2%;
-    max-width: 400px;
+    max-width: 700px;
+    border-bottom: chocolate solid 1px;
+}
+
+.botonera{
+    margin-bottom: 5px;
+    margin-right: 5px;
+    float: right;
 }
 
 .contproductodestacados h2{
@@ -53,7 +58,6 @@ body{
 .imgproductodestacados img{
     height: auto;
     width: 95%;
-    border: blueviolet solid 2px;
     border-radius: 4%;
 }
 

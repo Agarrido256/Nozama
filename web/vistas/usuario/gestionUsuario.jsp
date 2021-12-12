@@ -79,7 +79,7 @@
             <p>Cuenta premium:(si)<input type='radio' name='premium' value="true" required/>
                 (no)<input type='radio' name='premium' value="false" required/></p>
             <p>Fecha de caducidad de cuenta premium: <input type='date' name='fechacadpremium'/></p>
-            <p>Contraseña: <input type='password' name='contrasena'/></p>
+            <p>Contraseña: <input type='password' name='contrasena' required/></p>
             <p><input type='submit' name='Registrar' value='Registrar'/></p>
         </form>
         <h3>Modificar a un usuario</h3>

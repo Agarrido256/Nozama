@@ -49,14 +49,36 @@
                     }
                 }
                 if(!yaesta){
+                    boolean hecho = false;
                     for (int i = 0; i < carray.length; i++) {
-                        if(carray[i] == null){
+                        if(carray[i] == null && hecho == false){
                             carray[i] = request.getParameter("alcarro").toString();
                             sesion.setAttribute("carray", carray);
+                            hecho = true;
                         }
                     }
                 }
                 response.sendRedirect("mostrarproducto.jsp");
+            }
+            if(sesion.getAttribute("mensaje") == "fy"){
+                out.print("<script>alert('Opinión publicada');</script>");
+                sesion.removeAttribute("mensaje");
+            }
+            if(sesion.getAttribute("mensaje") == "fn"){
+                out.print("<script>alert('No se ha podido publicar la opinión');</script>");
+                sesion.removeAttribute("mensaje");
+            }
+            if(request.getParameter("borrar") != null){
+                sesion.setAttribute("foroborrar", request.getParameter("borrar"));
+                response.sendRedirect("../ForoDAO?Borrar=go");
+            }
+            if(sesion.getAttribute("mensaje") == "yb"){
+                out.print("<script>alert('Opinión eliminada');</script>");
+                sesion.removeAttribute("mensaje");
+            }
+            if(sesion.getAttribute("mensaje") == "nb"){
+                out.print("<script>alert('No se ha podido eliminar la opinión');</script>");
+                sesion.removeAttribute("mensaje");
             }
         %>
         <div class="base">
@@ -117,9 +139,47 @@
                                         <%}%>
                                     </div>
                                 </div>
-                                <div class="foro">
-                                    <label style="color: red; opacity: 0.7;">*falta por implementar opiniones de los clientes</label> 
-                                </div>
+                                
+                                    <div class="foro">
+                                        <h1 style="margin-top: 100px;">Que opinan los usuarios</h1>
+                                        <div class="publicaciones">
+                                            <%for(Foro registrof : datosForo){
+                                                if(registrof.getIdpprodcuto().getIdpro() == registro.getIdpro()){%>
+                                                <div class="asunto"><h2><%= registrof.getAsunto()%></h2></div>
+                                                <div class="puntuacion">
+                                                    <%for (int i = 0; i < registrof.getPuntuacion(); i++) {%>
+                                                        <img src="../imagenes/star.png">
+                                                    <%}%>
+                                                </div>
+                                                <div class="descripcion"><p><%= registrof.getDescripcion()%></p></div>
+                                                <div class="porquien"><p><label style="color: gray;">Publicado por </label><%= registrof.getIdusuario().getNombre()%></p></div>
+                                                <%if(sesion.getAttribute("user") != null){%>
+                                                <button 
+                                                    <%if(!registrof.getIdusuario().getIduser().equals(sesion.getAttribute("user").toString())){%>
+                                                style="visibility: hidden;" disabled 
+                                                    <%}%>
+                                                class="borrar" onclick="location.href='mostrarproducto.jsp?borrar=<%= registrof.getIdforo()%>';">Borrar</button><br><br>
+                                                <%} else {%>
+                                                <button style="visibility: hidden;" disabled class="borrar">Borrar</button><br><br>
+                                                <%}%>
+                                            <%}}%>
+                                        </div>
+                                        <%if(sesion.getAttribute("esadmin") == "no"){%>
+                                        <br>
+                                        <div class="newpublicacion">
+                                            <form action='../ForoDAO' method='POST' class="formforo">
+                                                <h2>Comenta que opinas del producto</h2>
+                                                <div class="newpu">
+                                                    <p>En pocas palabras: <input type='text' name='asunto' required/></p>
+                                                    <p>Cuantas estrellas le das: <input type="number" min="1" max="5" name='puntuacion' required style="width: 25px;"/></p>
+                                                    <p>Que opinas: <input type='text' name='descripcion' required/></p>
+                                                </div>
+                                                <p><input type='submit' name='Publicar' value='Publicar'/></p>
+                                            </form>
+                                        </div>
+                                        <%}%>
+                                    </div>
+                                
                     <%}}%>
                 </div>
             </div>

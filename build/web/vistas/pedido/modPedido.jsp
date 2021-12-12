@@ -212,6 +212,16 @@
                         esteCalle = esteCalle.replaceAll("Ã±", "ñ");
                         esteCalle = esteCalle.replaceAll("Ã", "Ñ");
                         esteCalle = esteCalle.replaceAll("Âº", "º");
+                        esteCalle = esteCalle.replaceAll("Ã¡", "á");
+                        esteCalle = esteCalle.replaceAll("Ã©", "é");
+                        esteCalle = esteCalle.replaceAll("Ã­", "í");
+                        esteCalle = esteCalle.replaceAll("Ã³", "ó");
+                        esteCalle = esteCalle.replaceAll("Ãº", "ú");
+                        esteCalle = esteCalle.replaceAll("Ã", "Á");
+                        esteCalle = esteCalle.replaceAll("Ã", "É");
+                        esteCalle = esteCalle.replaceAll("Ã", "Í");
+                        esteCalle = esteCalle.replaceAll("Ã", "Ó");
+                        esteCalle = esteCalle.replaceAll("Ã", "Ú");
                     %>
                     <%= esteCalle%>
                 </td>
@@ -221,6 +231,16 @@
                         esteCiudad = esteCiudad.replaceAll("Ã±", "ñ");
                         esteCiudad = esteCiudad.replaceAll("Ã", "Ñ");
                         esteCiudad = esteCiudad.replaceAll("Âº", "º");
+                        esteCiudad = esteCiudad.replaceAll("Ã¡", "á");
+                        esteCiudad = esteCiudad.replaceAll("Ã©", "é");
+                        esteCiudad = esteCiudad.replaceAll("Ã­", "í");
+                        esteCiudad = esteCiudad.replaceAll("Ã³", "ó");
+                        esteCiudad = esteCiudad.replaceAll("Ãº", "ú");
+                        esteCiudad = esteCiudad.replaceAll("Ã", "Á");
+                        esteCiudad = esteCiudad.replaceAll("Ã", "É");
+                        esteCiudad = esteCiudad.replaceAll("Ã", "Í");
+                        esteCiudad = esteCiudad.replaceAll("Ã", "Ó");
+                        esteCiudad = esteCiudad.replaceAll("Ã", "Ú");
                     %>
                     <%= esteCiudad%>
                 </td>
@@ -230,6 +250,16 @@
                         esteEstado = esteEstado.replaceAll("Ã±", "ñ");
                         esteEstado = esteEstado.replaceAll("Ã", "Ñ");
                         esteEstado = esteEstado.replaceAll("Âº", "º");
+                        esteEstado = esteEstado.replaceAll("Ã¡", "á");
+                        esteEstado = esteEstado.replaceAll("Ã©", "é");
+                        esteEstado = esteEstado.replaceAll("Ã­", "í");
+                        esteEstado = esteEstado.replaceAll("Ã³", "ó");
+                        esteEstado = esteEstado.replaceAll("Ãº", "ú");
+                        esteEstado = esteEstado.replaceAll("Ã", "Á");
+                        esteEstado = esteEstado.replaceAll("Ã", "É");
+                        esteEstado = esteEstado.replaceAll("Ã", "Í");
+                        esteEstado = esteEstado.replaceAll("Ã", "Ó");
+                        esteEstado = esteEstado.replaceAll("Ã", "Ú");
                     %>
                     <%= esteEstado%>
                 </td>

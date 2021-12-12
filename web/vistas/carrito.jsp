@@ -28,15 +28,72 @@
                     count++;
                 }
             }
-            if(count < 1){
-                sesion.setAttribute("mensaje", "v");
-                response.sendRedirect("welcome.jsp");
+            if(sesion.getAttribute("ciniciado") == null){
+                if(count < 1){
+                    sesion.setAttribute("mensaje", "v");
+                    response.sendRedirect("welcome.jsp");
+                }
+            }    
+            if(request.getParameter("eliminardelcarro") != null){
+                for (int i = 0; i < carray.length; i++) {
+                    if(request.getParameter("eliminardelcarro").toString().equals(carray[i])){
+                        carray[i] = null;
+                        sesion.setAttribute("carray", carray);
+                    }
+                }
+                boolean vacio = true;
+                for (int i = 0; i < carray.length; i++) {
+                    if(carray[i] != null){
+                        vacio = false;
+                    }
+                }
+                if(vacio){
+                    sesion.setAttribute("mensaje", "vae");
+                    sesion.removeAttribute("ciniciado");
+                    response.sendRedirect("welcome.jsp");
+                } else{
+                    response.sendRedirect("carrito.jsp");
+                }
             }
+            if(request.getParameter("datosdelpro") != null){
+                sesion.setAttribute("product", request.getParameter("datosdelpro"));
+            }
+            if(sesion.getAttribute("mensaje") == "y"){
+                for (int i = 0; i < carray.length; i++) {
+                    if(sesion.getAttribute("product").toString().equals(carray[i])){
+                        carray[i] = null;
+                        sesion.setAttribute("carray", carray);
+                    }
+                }
+                response.sendRedirect("../ProductoDAO?Comprarc=go");
+            }
+            if(sesion.getAttribute("mensaje") == "yes"){
+                boolean vacio = true;
+                for (int i = 0; i < carray.length; i++) {
+                    if(carray[i] != null){
+                        vacio = false;
+                    }
+                }
+                if(vacio){
+                    sesion.setAttribute("mensaje", "va");
+                    sesion.removeAttribute("ciniciado");
+                    response.sendRedirect("welcome.jsp");
+                } else{
+                    out.print("<script>alert('Gracias por su compra!');</script>");
+                    sesion.removeAttribute("mensaje");
+                }
+            }
+            if(sesion.getAttribute("mensaje") == "n"){
+                out.print("<script>alert('ERROR, no se ha podido realizar el pedido');</script>");
+                sesion.removeAttribute("mensaje");
+            }
+            boolean primer = false;
         %>
         <div class="base">
             <div class="destacados">
                 <div class="headdestacados">
-                    <h1>Aquí esta tu carrito</h1>
+                    <h1>Aquí esta su carrito</h1>
+                    <p>Si desea comprar un producto del carro, deberá hacerlo en orden uno por uno.</p>
                 </div>
                 <div class="bodydestacados">
                 <%
@@ -47,48 +104,52 @@
                                 ok = true;
                             } 
                         }
-                        if(ok){%>
-                                <div class="productodestacados" onclick="location.href='mostrarproducto.jsp?esteproducto=<%= registro.getIdpro()%>';" style="cursor: pointer;">
+                        if(ok){
+                            sesion.setAttribute("ciniciado", "si"); %>
+                                <div class="productodestacados">
                                     <div class="imgproductodestacados">
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
                                     <div class="contproductodestacados">
-                                        <h2><%= registro.getNombre()%></h2>
-                                        <hr>
-                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
-                                        <%
-                                            String contenido = registro.getContenido();
-                                            contenido = contenido.replaceAll(" ", ", ");
-                                        %>
-                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
-                                        <%
-                                        String precio = registro.getPrecio();
-                                        precio = precio.replaceAll(",", ".");
-                                        precio = precio.replaceAll("€", "");
-                                        String preciop = registro.getPreciopremium();
-                                        preciop = preciop.replaceAll(",", ".");
-                                        preciop = preciop.replaceAll("€", "");
-                                        Double descuento = (Double.parseDouble(precio) * registro.getDescuento()) / 100;
-                                        Double mostrar = Double.parseDouble(precio) - descuento;
-                                        Double descuentopremium = (Double.parseDouble(preciop) * registro.getDescuento()) / 100;
-                                        Double mostrarp = Double.parseDouble(preciop) - descuentopremium;
-                                        DecimalFormat formatoprecio = new DecimalFormat("#.00");
-                                        if(registro.getDescuento() > 0){
-                                        %>
-                                        <h3>Por: <%= formatoprecio.format(mostrar)%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(mostrarp)%>€ para cuentas premium</span><br> <span style="color: red;">¡<%= registro.getDescuento()%>% de descuento!</span></h3>
-                                        <%} else {%>
-                                        <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span></h3>
-                                        <%}%>
-                                        <button href="#" id="login" 
-                                        <%if(registro.getStock() < 1){%>
-                                        disabled
-                                        <%}%>
-                                        >Comprar</button>
-                                        <button 
-                                        <%if(registro.getStock() < 1 || sesion.getAttribute("esadmin") != "no"){%>
-                                        disabled
-                                        <%}%>   
-                                        >Eliminar del carro</button>
+                                        <div class="info">
+                                            <h2><%= registro.getNombre()%></h2>
+                                            <hr>
+                                            <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
+                                            <%
+                                                String contenido = registro.getContenido();
+                                                contenido = contenido.replaceAll(" ", ", ");
+                                            %>
+                                            <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
+                                            <%
+                                            String precio = registro.getPrecio();
+                                            precio = precio.replaceAll(",", ".");
+                                            precio = precio.replaceAll("€", "");
+                                            String preciop = registro.getPreciopremium();
+                                            preciop = preciop.replaceAll(",", ".");
+                                            preciop = preciop.replaceAll("€", "");
+                                            Double descuento = (Double.parseDouble(precio) * registro.getDescuento()) / 100;
+                                            Double mostrar = Double.parseDouble(precio) - descuento;
+                                            Double descuentopremium = (Double.parseDouble(preciop) * registro.getDescuento()) / 100;
+                                            Double mostrarp = Double.parseDouble(preciop) - descuentopremium;
+                                            DecimalFormat formatoprecio = new DecimalFormat("#.00");
+                                            if(registro.getDescuento() > 0){
+                                            %>
+                                            <h3>Por: <%= formatoprecio.format(mostrar)%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(mostrarp)%>€ para cuentas premium</span><br> <span style="color: red;">¡<%= registro.getDescuento()%>% de descuento!</span></h3>
+                                            <%} else {%>
+                                            <h3>Por: <%= formatoprecio.format(Double.parseDouble(precio))%>€<br><span style="color: goldenrod;"><%= formatoprecio.format(Double.parseDouble(preciop))%>€ para cuentas premium</span></h3>
+                                            <%}%>
+                                        </div>
+                                        
+                                        <div class="botonera">
+                                            <%if(!primer){
+                                                primer = true;
+                                                sesion.setAttribute("product", registro.getIdpro());
+                                            %>
+                                            <button href="#" id="login">Comprar</button>
+                                            <%}%>
+                                            <button onclick="location.href='carrito.jsp?eliminardelcarro=<%= registro.getIdpro()%>';">Eliminar del carro</button>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                     <%}}%>
@@ -122,7 +183,7 @@
                             <input type="number" name="t2"><br>
                             <label>CVC / CVV:</label><br>
                             <input type="number" name="t3"><br>
-                            <button type="submit" name="Comprar">Realizar el pedido <img src="../imagenes/loginicon.png"></button><br>
+                            <button type="submit" name="Comprarc">Realizar el pedido <img src="../imagenes/loginicon.png"></button><br>
                         </form>
                     <%} else {%>
                         <label style="color: red;">Para poder realizar un pedido, primero debe iniciar sesión con su cuenta de usuario</label><br>

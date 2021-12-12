@@ -276,6 +276,40 @@ public class PedidoDAO extends HttpServlet {
                 return;
             }
         }
+        if(request.getParameter("Comprarc") != null){
+            Date fecha = new Date();
+            String estadoentrega = "Espera de recogida por transportador";
+            String idusuario = sesion.getAttribute("user").toString();
+            Usuario idusuariop = controlUsuario.findUsuario(idusuario);
+            int idproducto = parseInt(sesion.getAttribute("product").toString());
+            Producto idproductop = controlProducto.findProducto(idproducto);
+            int cantidadpedida = 1;
+            String calle = request.getParameter("calle").toString();
+            String ciudad = request.getParameter("ciudad").toString();
+            String estado = request.getParameter("estado").toString();
+            String codigopostal = request.getParameter("codigopostal").toString();
+            try{
+                pedido.setFechacompra(fecha);
+                pedido.setEstadoentrega(estadoentrega);
+                pedido.setIdusuario(idusuariop);
+                pedido.setIdproducto(idproductop);
+                pedido.setCantidadpedida(cantidadpedida);
+                pedido.setCalle(calle);
+                pedido.setCiudad(ciudad);
+                pedido.setEstado(estado);
+                pedido.setCodigopostal(codigopostal);
+                controlcon.create(pedido);
+                mensaje = "y";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/carrito.jsp");
+                return;
+            } catch(Exception e){
+                mensaje = "n";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/carrito.jsp");
+                return;
+            }
+        }
         processRequest(request, response);
     }
 

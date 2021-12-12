@@ -71,6 +71,23 @@ public class ForoDAO extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sesion = request.getSession();
+        mensaje = "";
+        if(request.getParameter("Borrar") != null){
+            int idforo = parseInt(sesion.getAttribute("foroborrar").toString());
+            try{
+                controlcon.destroy(idforo);
+                mensaje = "yb";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/mostrarproducto.jsp");
+                return;
+            } catch(Exception e){
+                mensaje = "nb";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/mostrarproducto.jsp");
+                return;
+            }
+        }
         processRequest(request, response);
     }
 
@@ -178,6 +195,32 @@ public class ForoDAO extends HttpServlet {
                 mensaje = "n";
                 sesion.setAttribute("mensaje", mensaje);
                 response.sendRedirect("vistas/Foro/gestionForo.jsp");
+                return;
+            }
+        }
+        if(request.getParameter("Publicar") != null){
+            String asunto = request.getParameter("asunto").toString();
+            String descripcion = request.getParameter("descripcion").toString();
+            int puntuacion = parseInt(request.getParameter("puntuacion"));
+            String idusuario = sesion.getAttribute("user").toString();
+            Usuario idusuariop = controlUsuario.findUsuario(idusuario);
+            int idpproducto = parseInt(sesion.getAttribute("product").toString());
+            Producto idpproductop = controlProducto.findProducto(idpproducto);
+            try{
+                foro.setAsunto(asunto);
+                foro.setDescripcion(descripcion);
+                foro.setPuntuacion(puntuacion);
+                foro.setIdusuario(idusuariop);
+                foro.setIdpprodcuto(idpproductop);
+                controlcon.create(foro);
+                mensaje = "fy";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/mostrarproducto.jsp");
+                return;
+            } catch(Exception e){
+                mensaje = "fn";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/mostrarproducto.jsp");
                 return;
             }
         }

@@ -24,6 +24,26 @@
                 out.print("<script>alert('Lo sentimos, pero el carrito se encuentra vacío, use nuestro buscador, nuestras categorías o directamente haga clic en algún producto que ve en pantalla, y al ver sus detalles, encontrara un botón para añadirlo al carrito');</script>");
                 sesion.removeAttribute("mensaje");
             }
+            if(sesion.getAttribute("mensaje") == "va"){
+                out.print("<script>alert('Gracias por su compra!, Su carrito ha quedado vacío');</script>");
+                sesion.removeAttribute("mensaje");
+            }
+            if(sesion.getAttribute("mensaje") == "vae"){
+                out.print("<script>alert('Su carrito ha quedado vacío');</script>");
+                sesion.removeAttribute("mensaje");
+            }
+            if(request.getParameter("mensajecorreo") != null){
+                out.print("<script>alert('Nos pondremos en contacto con usted, revise su correo');</script>");
+            }
+            if(sesion.getAttribute("mensaje") == "yr"){
+                out.print("<script>alert('Su cuenta ha sido registrada, bienvenid@');</script>");
+                sesion.removeAttribute("mensaje");
+                sesion.setAttribute("fuera", "si");
+            }
+            if(sesion.getAttribute("mensaje") == "nr"){
+                out.print("<script>alert('No se ha podido registrar la cuenta, puede que esta ya exista, contacte con asistencia al cliente');</script>");
+                sesion.removeAttribute("mensaje");
+            }
         %>
         <div class="base">
             <div class="ofertas">

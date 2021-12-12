@@ -116,6 +116,57 @@ public class ProductoDAO extends HttpServlet {
                 return;
             }
         }
+        if(request.getParameter("Comprarc") != null){
+            int idpro = parseInt(sesion.getAttribute("product").toString());
+            String categoria = "";
+            String autor = "";
+            String nombre = "";
+            String img = "";
+            String contenido = "";
+            String precio = "";
+            String preciopremium = "";
+            String precioenvio = "";
+            int descuento = 1;
+            int stock = 1;
+            for(Producto registro : datos){
+                if(registro.getIdpro().equals(idpro)){
+                    categoria = registro.getCategoria();
+                    autor = registro.getAutor();
+                    nombre = registro.getNombre();
+                    img = registro.getImg();
+                    contenido = registro.getContenido();
+                    precio = registro.getPrecio();
+                    preciopremium = registro.getPreciopremium();
+                    precioenvio = registro.getPrecioenvio();
+                    descuento = registro.getDescuento();
+                    stock = registro.getStock();
+                }
+            }
+            stock = stock - 1;
+            try{
+                producto.setIdpro(idpro);
+                producto.setCategoria(categoria);
+                producto.setAutor(autor);
+                producto.setImg(img);
+                producto.setNombre(nombre);
+                producto.setContenido(contenido);
+                producto.setPrecio(precio);
+                producto.setPreciopremium(preciopremium);
+                producto.setPrecioenvio(precioenvio);
+                producto.setDescuento(descuento);
+                producto.setStock(stock);
+                controlcon.edit(producto);
+                mensaje = "yes";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/carrito.jsp");
+                return;
+            } catch(Exception e){
+                mensaje = "n";
+                sesion.setAttribute("mensaje", mensaje);
+                response.sendRedirect("vistas/carrito.jsp");
+                return;
+            }
+        }
         processRequest(request, response);
     }
 

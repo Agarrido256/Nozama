@@ -30,10 +30,6 @@ body{
     width: 95%;
 }
 
-.foro{
-    grid-row: 2;
-}
-
 button{
     background-color: rgb(246,167,96);
     border: none;
@@ -70,6 +66,39 @@ button:focus{
 
 .cualpago img:focus{
     cursor: pointer;
+}
+
+.foro{
+    display: grid;
+}
+
+.newpublicacion{
+    background-color: rgb(246,167,96);
+    border: none;
+    border-radius: 0% 25% 25% 0%;
+    color: white;
+    padding: 5px;
+    font-size: 1.1em;
+    width: 370px;
+    margin-top: 40px;
+}
+
+.newpublicacion:hover{
+    background-color:orange;
+}
+
+.publicaciones{
+    margin-left: 2px;
+}
+
+.porquien{
+    float: left;
+    margin-right: 20px;
+    margin-top: -6px;
+}
+
+.borrar{
+    clear: both;
 }
 
 .modal {

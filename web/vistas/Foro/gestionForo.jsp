@@ -81,7 +81,7 @@
         <form action='../../ForoDAO' method='POST'>
             <p>Asunto: <input type='text' name='asunto' required/></p>
             <p>Descripción: <input type='text' name='descripcion' required/></p>
-            <p>Puncuación: <input type="number" min="0" max="5" name='puntuacion' required/></p>
+            <p>Puncuación: <input type="number" min="1" max="5" name='puntuacion' required/></p>
             <p>Id del usuario que ha publicado la opinión: 
             <select name="idusuario">
             <%for(Usuario registro : datosUsuario){%>
@@ -148,10 +148,42 @@
                     <%= registro.getIdforo()%>
                 </td>
                 <td>
-                    <%= registro.getAsunto()%>
+                    <%
+                                                    String esteAsunto = registro.getAsunto().toString();
+                                                    esteAsunto = esteAsunto.replaceAll("Ã±", "ñ");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã", "Ñ");
+                                                    esteAsunto = esteAsunto.replaceAll("Âº", "º");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã¡", "á");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã©", "é");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã­", "í");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã³", "ó");
+                                                    esteAsunto = esteAsunto.replaceAll("Ãº", "ú");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã", "Á");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã", "É");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã", "Í");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã", "Ó");
+                                                    esteAsunto = esteAsunto.replaceAll("Ã", "Ú");
+                                                %>
+                                                <%= esteAsunto%>
                 </td>
                 <td>
-                    <%= registro.getDescripcion() %>
+                    <% 
+                                                    String esteDescripcion = registro.getDescripcion().toString();
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã±", "ñ");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã", "Ñ");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Âº", "º");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã¡", "á");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã©", "é");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã­", "í");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã³", "ó");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ãº", "ú");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã", "Á");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã", "É");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã", "Í");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã", "Ó");
+                                                    esteDescripcion = esteDescripcion.replaceAll("Ã", "Ú");
+                                                %>
+                                                <%= esteDescripcion%>
                 </td>
                 <td>
                     <%= registro.getPuntuacion()%>

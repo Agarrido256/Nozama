@@ -61,6 +61,7 @@
                 sesion.removeAttribute("esadmin");
                 sesion.removeAttribute("n");
                 sesion.removeAttribute("carray");
+                sesion.removeAttribute("fuera");
                 sesion.setAttribute("pagina", "vistas/welcome.jsp");
                 response.sendRedirect("index.jsp");
             }
@@ -69,6 +70,10 @@
             }
             if(request.getParameter("cambiarpagina") != null){
                 sesion.setAttribute("pagina", request.getParameter("cambiarpagina").toString());
+                response.sendRedirect("index.jsp");
+            }
+            if(request.getParameter("nuevousuario") != null){
+                sesion.setAttribute("pagina", request.getParameter("nuevousuario").toString());
                 response.sendRedirect("index.jsp");
             }
             if(request.getParameter("salir") != null){
@@ -109,15 +114,19 @@
                 <div class="carrito">
                     <%if(sesion.getAttribute("esadmin") == "no"){%>
                         <button class="botoncarro" onclick="location.href='index.jsp?cambiarpagina=vistas/carrito.jsp';"><img src="imagenes/shop.png"></button>
+                        <button class="botoncarro" href="#" id="login"><img src="imagenes/uconf.png"></button>
                     <%}%>
                 </div>
-                <div class="divlogin"><a href="#" id="login">
+                <div class="divlogin"><a href="#"
                     <%if(sesion.getAttribute("user") == null){%>
-                        Iniciar sesión
+                         id="login">Iniciar sesión
                     <%} else {%>
-                        Bienvenid@ <%= sesion.getAttribute("n")%>
+                        >Bienvenid@ <%= sesion.getAttribute("n")%>
                     <%}%>
                 </a><br>
+                    <%if(sesion.getAttribute("user") == null){%>
+                    <a href="index.jsp?nuevousuario=vistas/registrar.jsp">Registrarse</a>
+                    <%}%>
                     <%if(sesion.getAttribute("esadmin") == "si") {%>
                         <a href="index.jsp?cerrarsesion=true">Cerrar sesión</a><br>
                         <a href="index.jsp?cambiarpagina=vistas/tablas.jsp">Administración</a>
@@ -148,17 +157,17 @@
                 <footer>
                     <div class="foot1">
                         <h2>Conócenos</h2>
-                        <a href="">Trabajar en Nozama</a><br>
-                        <a href="">Sobre Nosotros</a>
+                        <a href="index.jsp?cambiarpagina=vistas/pagina1.jsp">Trabajar en Nozama</a><br>
+                        <a href="index.jsp?cambiarpagina=vistas/pagina2.jsp">Sobre Nosotros</a>
                     </div>
                     <div class="foot2">
                         <h2>Métodos de pago en Nozama</h2>
-                        <a href="">Métodos de pago</a><br>
-                        <a href="">¿Problemas con el pago?</a>
+                        <a href="index.jsp?cambiarpagina=vistas/pagina3.jsp">Métodos de pago</a><br>
+                        <a href="index.jsp?cambiarpagina=vistas/asistencia.jsp">¿Problemas con el pago?</a>
                     </div>
                     <div class="foot3">
                         <h2>¿Necesitas ayuda?</h2>
-                        <a href="">Atención al Cliente</a>
+                        <a href="index.jsp?cambiarpagina=vistas/asistencia.jsp">Atención al Cliente</a>
                     </div>
                     <img src="imagenes/logofixed.PNG">
                 </footer>
@@ -177,13 +186,12 @@
                             <input type="password" name="pass" placeholder="Escriba su contraseña..."><br>
                             <br>
                             <button type="submit" name="Logearse">ACCEDER <img src="imagenes/loginicon.png"></button><br>
-                            <p><a href="" style="color:cornflowerblue">¿Has olvidado la contraseña?</a></p> 
+                            <p><a href="index.jsp?cambiarpagina=vistas/asistencia.jsp" style="color:cornflowerblue">¿Has olvidado la contraseña?</a></p> 
                         </form>
                     <%} else {%>
                         <h2>Opciones de cuenta</h2>
-                        <a href="#" style="color: rgb(246,167,96);">Cambiar contraseña</a><br>
-                        <a href="#" style="color: rgb(246,167,96);">Cambiar parámetros de la cuenta</a><br>
-                        <a href="#" style="color: rgb(246,167,96);">Mi historial de compras</a><br>
+                        <a href="index.jsp?cambiarpagina=vistas/uconf.jsp" style="color: rgb(246,167,96);">Cambiar contraseña, comprar subscripción premium o cambiar otros parámetros de la cuenta</a><br><br>
+                        <a href="index.jsp?cambiarpagina=vistas/historial.jsp" style="color: rgb(246,167,96);">Mi historial de compras</a><br><br>
                         <a href="index.jsp?cerrarsesion=true" style="color: rgb(246,167,96);">Cerrar sesión</a>
                     <%}%>
                 </div> 
