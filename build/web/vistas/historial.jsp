@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="modelo.Pedido"%>
 <%@page import="java.util.List"%>
@@ -43,6 +44,7 @@
         </style>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         PedidoJpaController controlPedido = new PedidoJpaController();
         List<Pedido> datosPedido = controlPedido.findPedidoEntities();
         HttpSession sesion = request.getSession();
@@ -101,10 +103,10 @@
                     <%= simpleDateFormat.format(registro.getFechacompra())%>
                 </td>
                 <td>
-                    <%= registro.getEstadoentrega()%>
+                    <%= fix.fixtexto(registro.getEstadoentrega())%>
                 </td>
                 <td>
-                    <%= registro.getIdusuario().getIduser()%>
+                    <%= fix.fixtexto(registro.getIdusuario().getIduser())%>
                 </td>
                 <td>
                     <%= registro.getIdproducto().getIdpro()%>
@@ -113,64 +115,16 @@
                     <%= registro.getCantidadpedida()%>
                 </td>
                 <td>
-                    <%
-                        String esteCalle = registro.getCalle().toString();
-                        esteCalle = esteCalle.replaceAll("Ã±", "ñ");
-                        esteCalle = esteCalle.replaceAll("Ã", "Ñ");
-                        esteCalle = esteCalle.replaceAll("Âº", "º");
-                        esteCalle = esteCalle.replaceAll("Ã¡", "á");
-                        esteCalle = esteCalle.replaceAll("Ã©", "é");
-                        esteCalle = esteCalle.replaceAll("Ã­", "í");
-                        esteCalle = esteCalle.replaceAll("Ã³", "ó");
-                        esteCalle = esteCalle.replaceAll("Ãº", "ú");
-                        esteCalle = esteCalle.replaceAll("Ã", "Á");
-                        esteCalle = esteCalle.replaceAll("Ã", "É");
-                        esteCalle = esteCalle.replaceAll("Ã", "Í");
-                        esteCalle = esteCalle.replaceAll("Ã", "Ó");
-                        esteCalle = esteCalle.replaceAll("Ã", "Ú");
-                    %>
-                    <%= esteCalle%>
+                    <%= fix.fixtexto(registro.getCalle())%>
                 </td>
                 <td>
-                    <%
-                        String esteCiudad = registro.getCiudad().toString();
-                        esteCiudad = esteCiudad.replaceAll("Ã±", "ñ");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Ñ");
-                        esteCiudad = esteCiudad.replaceAll("Âº", "º");
-                        esteCiudad = esteCiudad.replaceAll("Ã¡", "á");
-                        esteCiudad = esteCiudad.replaceAll("Ã©", "é");
-                        esteCiudad = esteCiudad.replaceAll("Ã­", "í");
-                        esteCiudad = esteCiudad.replaceAll("Ã³", "ó");
-                        esteCiudad = esteCiudad.replaceAll("Ãº", "ú");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Á");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "É");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Í");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Ó");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Ú");
-                    %>
-                    <%= esteCiudad%>
+                    <%= fix.fixtexto(registro.getCiudad())%>
                 </td>
                 <td>
-                    <%
-                        String esteEstado = registro.getEstado().toString();
-                        esteEstado = esteEstado.replaceAll("Ã±", "ñ");
-                        esteEstado = esteEstado.replaceAll("Ã", "Ñ");
-                        esteEstado = esteEstado.replaceAll("Âº", "º");
-                        esteEstado = esteEstado.replaceAll("Ã¡", "á");
-                        esteEstado = esteEstado.replaceAll("Ã©", "é");
-                        esteEstado = esteEstado.replaceAll("Ã­", "í");
-                        esteEstado = esteEstado.replaceAll("Ã³", "ó");
-                        esteEstado = esteEstado.replaceAll("Ãº", "ú");
-                        esteEstado = esteEstado.replaceAll("Ã", "Á");
-                        esteEstado = esteEstado.replaceAll("Ã", "É");
-                        esteEstado = esteEstado.replaceAll("Ã", "Í");
-                        esteEstado = esteEstado.replaceAll("Ã", "Ó");
-                        esteEstado = esteEstado.replaceAll("Ã", "Ú");
-                    %>
-                    <%= esteEstado%>
+                    <%= fix.fixtexto(registro.getEstado())%>
                 </td>
                 <td>
-                    <%= registro.getCodigopostal() %>
+                    <%= fix.fixtexto(registro.getCodigopostal())%>
                 </td>
             </tr>
             <%}}%>

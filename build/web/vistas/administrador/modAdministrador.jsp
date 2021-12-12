@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="modelo.Administrador"%>
@@ -43,6 +44,7 @@
         </style>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         AdministradorJpaController controlcon = new AdministradorJpaController();
         List<Administrador> datos = controlcon.findAdministradorEntities();
         HttpSession sesion = request.getSession();
@@ -91,10 +93,10 @@
     %>
     <body>
         <a href="gestionAdministrador.jsp">Cancelar y volver</a><br>
-        <p>Escriba solamente, los datos que desee cambiar del administrador con el id: <%= sesion.getAttribute("sidadmin")%></p>
+        <p>Escriba solamente, los datos que desee cambiar del administrador con el id: <%= fix.fixtexto(sesion.getAttribute("sidadmin").toString())%></p>
         <form action='../../AdministradorDAO' method='POST'>
-            <p>Nombre: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("snombre")%>'/></p>
-            <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= sesion.getAttribute("sapellidos")%>'/></p>
+            <p>Nombre: <input type='text' name='nombre' placeholder='<%= fix.fixtexto(sesion.getAttribute("snombre").toString())%>'/></p>
+            <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= fix.fixtexto(sesion.getAttribute("sapellidos").toString())%>'/></p>
             <p>Fecha de nacimiento: <input type='date' name='fechanac' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechanac"))%>'/></p>
             <p>Contraseña: <input type='password' name='contrasena'/></p>
             <p>Fecha del contrato: <input type='date' name='fechacontrato' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechacontrato"))%>'/></p>
@@ -124,13 +126,13 @@
                 if(registro.getIdadmin().equals(sesion.getAttribute("sidadmin"))){%>
             <tr>
                 <td>
-                    <%= registro.getIdadmin()%>
+                    <%= fix.fixtexto(registro.getIdadmin())%>
                 </td>
                 <td>
-                    <%= registro.getNombre()%>
+                    <%= fix.fixtexto(registro.getNombre())%>
                 </td>
                 <td>
-                    <%= registro.getApellidos()%>
+                    <%= fix.fixtexto(registro.getApellidos())%>
                 </td>
                 <td>
                     <%= simpleDateFormat.format(registro.getFechanac())%>

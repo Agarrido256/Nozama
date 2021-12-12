@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="modelo.Producto"%>
@@ -25,6 +26,7 @@
     </head>
     <body>
         <%
+            Arreglos fix = new Arreglos();
             HttpSession sesion = request.getSession();
             AdministradorJpaController controlAdmin = new AdministradorJpaController();
             List<Administrador> datosAdministrador = controlAdmin.findAdministradorEntities();
@@ -121,7 +123,7 @@
                     <%if(sesion.getAttribute("user") == null){%>
                          id="login">Iniciar sesión
                     <%} else {%>
-                        >Bienvenid@ <%= sesion.getAttribute("n")%>
+                        >Bienvenid@ <%= fix.fixtexto(sesion.getAttribute("n").toString())%>
                     <%}%>
                 </a><br>
                     <%if(sesion.getAttribute("user") == null){%>
@@ -142,7 +144,7 @@
                         if(categorias[i].equals("Electronica")){%>
                             <a href="index.jsp?vercategoria=<%= categorias[i]%>">Electrónica</a>
                         <%} else {%>
-                            <a href="index.jsp?vercategoria=<%= categorias[i]%>"><%= categorias[i]%></a>
+                            <a href="index.jsp?vercategoria=<%= categorias[i]%>"><%= fix.fixtexto(categorias[i])%></a>
                         <%}%>
                         <%if(i < (categorias.length - 1)){%>
                         |

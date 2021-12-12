@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Producto"%>
@@ -17,6 +18,7 @@
     </head>
     <body>
         <%
+            Arreglos fix = new Arreglos();
             HttpSession sesion = request.getSession();
             ProductoJpaController controlProducto = new ProductoJpaController();
             List<Producto> datosProducto = controlProducto.findProductoEntities();
@@ -33,7 +35,7 @@
         <div class="base">
             <div class="destacados">
                 <div class="headdestacados">
-                    <h1>Todos nuestros discos de <%= nombrecategoria%></h1>
+                    <h1>Todos nuestros discos de <%= fix.fixtexto(nombrecategoria)%></h1>
                 </div>
                 <div class="bodydestacados">
                 <%
@@ -44,14 +46,14 @@
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
                                     <div class="contproductodestacados">
-                                        <h2><%= registro.getNombre()%></h2>
+                                        <h2><%= fix.fixtexto(registro.getNombre())%></h2>
                                         <hr>
-                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
+                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= fix.fixtexto(registro.getAutor())%></h3>
                                         <%
                                             String contenido = registro.getContenido();
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
-                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
+                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= fix.fixtexto(contenido)%></p>
                                         <%
                                         String precio = registro.getPrecio();
                                         precio = precio.replaceAll(",", ".");

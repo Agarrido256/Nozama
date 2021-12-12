@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Producto"%>
@@ -17,6 +18,7 @@
     </head>
     <body>
         <%
+            Arreglos fix = new Arreglos();
             HttpSession sesion = request.getSession();
             ProductoJpaController controlProducto = new ProductoJpaController();
             List<Producto> datosProducto = controlProducto.findProductoEntities();
@@ -61,14 +63,14 @@
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
                                     <div class="contproductooferta">
-                                        <h2><%= registro.getNombre()%></h2>
+                                        <h2><%= fix.fixtexto(registro.getNombre())%></h2>
                                         <hr>
-                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
+                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= fix.fixtexto(registro.getAutor())%></h3>
                                         <%
                                             String contenido = registro.getContenido();
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
-                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
+                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= fix.fixtexto(contenido)%></p>
                                         <%
                                         String precio = registro.getPrecio();
                                         precio = precio.replaceAll(",", ".");
@@ -102,14 +104,14 @@
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
                                     <div class="contproductodestacados">
-                                        <h2><%= registro.getNombre()%></h2>
+                                        <h2><%= fix.fixtexto(registro.getNombre())%></h2>
                                         <hr>
-                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
+                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= fix.fixtexto(registro.getAutor())%></h3>
                                         <%
                                             String contenido = registro.getContenido();
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
-                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
+                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= fix.fixtexto(contenido)%></p>
                                         <%
                                         String precio = registro.getPrecio();
                                         precio = precio.replaceAll(",", ".");

@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Usuario"%>
@@ -17,6 +18,7 @@
         <script src="../diseño/mostrarproducto.js"></script>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         UsuarioJpaController controlcon = new UsuarioJpaController();
         List<Usuario> datos = controlcon.findUsuarioEntities();
         HttpSession sesion = request.getSession();
@@ -80,10 +82,10 @@
         <div class="base">
             <h2>Cambiar configuración de cuenta</h2>
             <p>Recuerde que para logearse en la web deben recordar su id de usuario y contraseña</p>
-            <p>Su id de cuenta es: <%= sesion.getAttribute("siduser")%></p>
+            <p>Su id de cuenta es: <%= fix.fixtexto(sesion.getAttribute("siduser").toString())%></p>
             <form action='../UsuarioDAO' method='POST'>
-                <p>Nombre: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("snombre")%>'></p>
-                <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= sesion.getAttribute("sapellidos")%>'/></p>
+                <p>Nombre: <input type='text' name='nombre' placeholder='<%= fix.fixtexto(sesion.getAttribute("snombre").toString())%>'></p>
+                <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= fix.fixtexto(sesion.getAttribute("sapellidos").toString())%>'/></p>
                 <p>Fecha de nacimiento: <input type='date' name='fechanac' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechanac"))%>'/></p>
                 <p>Contraseña: <input type='password' name='contrasena'/></p>
                 <p><input type='submit' name='Uconf' value='Modificar'/></p>

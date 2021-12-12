@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="modelo.Usuario"%>
 <%@page import="modelo.UsuarioJpaController"%>
@@ -46,6 +47,7 @@
         </style>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         PedidoJpaController controlPedido = new PedidoJpaController();
         List<Pedido> datosPedido = controlPedido.findPedidoEntities();
         ProductoJpaController controlProducto = new ProductoJpaController();
@@ -103,32 +105,20 @@
             out.print("<script>alert('ERROR, La entidad no existe');</script>");
             sesion.removeAttribute("mensaje");
         }
-        String Calle = sesion.getAttribute("scalle").toString();
-        Calle = Calle.replaceAll("Ã±", "ñ");
-        Calle = Calle.replaceAll("Ã", "Ñ");
-        Calle = Calle.replaceAll("Âº", "º");
-        String Ciudad = sesion.getAttribute("sciudad").toString();
-        Ciudad = Ciudad.replaceAll("Ã±", "ñ");
-        Ciudad = Ciudad.replaceAll("Ã", "Ñ");
-        Ciudad = Ciudad.replaceAll("Âº", "º");
-        String Estado = sesion.getAttribute("sestado").toString();
-        Estado = Estado.replaceAll("Ã±", "ñ");
-        Estado = Estado.replaceAll("Ã", "Ñ");
-        Estado = Estado.replaceAll("Âº", "º");
     %>
     <body>
         <a href="gestionPedido.jsp">Cancelar y volver</a><br>
         <p>Escriba solamente, los datos que desee cambiar del pedido número: <%= sesion.getAttribute("sidpedido")%></p>
         <form action='../../PedidoDAO' method='POST'>
             <p>Fecha de compra: <input type='date' name='fechacompra' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechacompra"))%>'/></p>
-            <p>Estado de la entrega: <input type='text' name='estadoentrega' placeholder='<%= sesion.getAttribute("sestadoentrega")%>'/></p>
+            <p>Estado de la entrega: <input type='text' name='estadoentrega' placeholder='<%= fix.fixtexto(sesion.getAttribute("sestadoentrega").toString())%>'/></p>
             <p>Id del comprador: 
             <select name="idusuario">
             <%for(Usuario registro : datosUsuario){
                 if(sesion.getAttribute("sidusuario").equals(registro.getIduser())){%>
-                    <option selected="selected" value='<%= registro.getIduser()%>'><%= registro.getIduser()%></option>
+                    <option selected="selected" value='<%= registro.getIduser()%>'><%= fix.fixtexto(registro.getIduser())%></option>
                 <%} else {%>
-                    <option value='<%= registro.getIduser()%>'><%= registro.getIduser()%></option>
+                    <option value='<%= registro.getIduser()%>'><%= fix.fixtexto(registro.getIduser())%></option>
                 <%}}%>
             </select>
             </p>
@@ -136,17 +126,17 @@
             <select name="idproducto">
             <%for(Producto registro : datosProducto){
                 if(sesion.getAttribute("sidproducto").equals(registro.getIdpro())){%>
-                    <option selected="selected" value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
+                    <option selected="selected" value='<%= registro.getIdpro()%>'><%= fix.fixtexto(registro.getNombre())%></option>
                 <%} else {%>
-                    <option value='<%= registro.getIdpro()%>'><%= registro.getNombre()%></option>
+                    <option value='<%= registro.getIdpro()%>'><%= fix.fixtexto(registro.getNombre())%></option>
                 <%}}%>
             </select>
             </p>
             <p>Cantidad de unidades pedidas: <input type="number" min="1" name='cantidadpedida' placeholder='<%= sesion.getAttribute("scantidadpedida")%>'/> unidades</p>
             <p>Información del envío:</p>
-            <p>Calle: <input type='text' name='calle' placeholder='<%= Calle%>'/></p>
-            <p>Ciudad: <input type='text' name='ciudad' placeholder='<%= Ciudad%>'/></p>
-            <p>Estado: <input type='text' name='estado' placeholder='<%= Estado%>'/></p>
+            <p>Calle: <input type='text' name='calle' placeholder='<%= fix.fixtexto(sesion.getAttribute("scalle").toString())%>'/></p>
+            <p>Ciudad: <input type='text' name='ciudad' placeholder='<%= fix.fixtexto(sesion.getAttribute("sciudad").toString())%>'/></p>
+            <p>Estado: <input type='text' name='estado' placeholder='<%= fix.fixtexto(sesion.getAttribute("sestado").toString())%>'/></p>
             <p>Código Postal: <input type='text' name='codigopostal' placeholder='<%= sesion.getAttribute("scodigopostal")%>'/></p>
             <p><input type='submit' name='Modificar' value='Modificar'/></p>
         </form>
@@ -195,10 +185,10 @@
                     <%= simpleDateFormat.format(registro.getFechacompra())%>
                 </td>
                 <td>
-                    <%= registro.getEstadoentrega()%>
+                    <%= fix.fixtexto(registro.getEstadoentrega())%>
                 </td>
                 <td>
-                    <%= registro.getIdusuario().getIduser()%>
+                    <%= fix.fixtexto(registro.getIdusuario().getIduser())%>
                 </td>
                 <td>
                     <%= registro.getIdproducto().getIdpro()%>
@@ -207,64 +197,16 @@
                     <%= registro.getCantidadpedida()%>
                 </td>
                 <td>
-                    <%
-                        String esteCalle = registro.getCalle().toString();
-                        esteCalle = esteCalle.replaceAll("Ã±", "ñ");
-                        esteCalle = esteCalle.replaceAll("Ã", "Ñ");
-                        esteCalle = esteCalle.replaceAll("Âº", "º");
-                        esteCalle = esteCalle.replaceAll("Ã¡", "á");
-                        esteCalle = esteCalle.replaceAll("Ã©", "é");
-                        esteCalle = esteCalle.replaceAll("Ã­", "í");
-                        esteCalle = esteCalle.replaceAll("Ã³", "ó");
-                        esteCalle = esteCalle.replaceAll("Ãº", "ú");
-                        esteCalle = esteCalle.replaceAll("Ã", "Á");
-                        esteCalle = esteCalle.replaceAll("Ã", "É");
-                        esteCalle = esteCalle.replaceAll("Ã", "Í");
-                        esteCalle = esteCalle.replaceAll("Ã", "Ó");
-                        esteCalle = esteCalle.replaceAll("Ã", "Ú");
-                    %>
-                    <%= esteCalle%>
+                    <%= fix.fixtexto(registro.getCalle())%>
                 </td>
                 <td>
-                    <%
-                        String esteCiudad = registro.getCiudad().toString();
-                        esteCiudad = esteCiudad.replaceAll("Ã±", "ñ");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Ñ");
-                        esteCiudad = esteCiudad.replaceAll("Âº", "º");
-                        esteCiudad = esteCiudad.replaceAll("Ã¡", "á");
-                        esteCiudad = esteCiudad.replaceAll("Ã©", "é");
-                        esteCiudad = esteCiudad.replaceAll("Ã­", "í");
-                        esteCiudad = esteCiudad.replaceAll("Ã³", "ó");
-                        esteCiudad = esteCiudad.replaceAll("Ãº", "ú");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Á");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "É");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Í");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Ó");
-                        esteCiudad = esteCiudad.replaceAll("Ã", "Ú");
-                    %>
-                    <%= esteCiudad%>
+                    <%= fix.fixtexto(registro.getCiudad())%>
                 </td>
                 <td>
-                    <%
-                        String esteEstado = registro.getEstado().toString();
-                        esteEstado = esteEstado.replaceAll("Ã±", "ñ");
-                        esteEstado = esteEstado.replaceAll("Ã", "Ñ");
-                        esteEstado = esteEstado.replaceAll("Âº", "º");
-                        esteEstado = esteEstado.replaceAll("Ã¡", "á");
-                        esteEstado = esteEstado.replaceAll("Ã©", "é");
-                        esteEstado = esteEstado.replaceAll("Ã­", "í");
-                        esteEstado = esteEstado.replaceAll("Ã³", "ó");
-                        esteEstado = esteEstado.replaceAll("Ãº", "ú");
-                        esteEstado = esteEstado.replaceAll("Ã", "Á");
-                        esteEstado = esteEstado.replaceAll("Ã", "É");
-                        esteEstado = esteEstado.replaceAll("Ã", "Í");
-                        esteEstado = esteEstado.replaceAll("Ã", "Ó");
-                        esteEstado = esteEstado.replaceAll("Ã", "Ú");
-                    %>
-                    <%= esteEstado%>
+                    <%= fix.fixtexto(registro.getEstado())%>
                 </td>
                 <td>
-                    <%= registro.getCodigopostal() %>
+                    <%= fix.fixtexto(registro.getCodigopostal())%>
                 </td>
             </tr>
             <%}}%>
@@ -294,13 +236,13 @@
             <%for(Usuario registrob : datosUsuario){%>
             <tr>
                 <td>
-                    <%= registrob.getIduser()%>
+                    <%= fix.fixtexto(registrob.getIduser())%>
                 </td>
                 <td>
-                    <%= registrob.getNombre()%>
+                    <%= fix.fixtexto(registrob.getNombre())%>
                 </td>
                 <td>
-                    <%= registrob.getApellidos()%>
+                    <%= fix.fixtexto(registrob.getApellidos())%>
                 </td>
                 <td>
                     <%= simpleDateFormat.format(registrob.getFechanac())%>
@@ -363,19 +305,19 @@
                     <%= registroc.getIdpro()%>
                 </td>
                 <td>
-                    <%= registroc.getCategoria()%>
+                    <%= fix.fixtexto(registroc.getCategoria())%>
                 </td>
                 <td>
-                    <%= registroc.getAutor()%>
+                    <%= fix.fixtexto(registroc.getAutor())%>
                 </td>
                 <td>
                     <%= registroc.getImg()%>
                 </td>
                 <td>
-                    <%= registroc.getNombre()%>
+                    <%= fix.fixtexto(registroc.getNombre())%>
                 </td>
                 <td>
-                    <%= registroc.getContenido()%>
+                    <%= fix.fixtexto(registroc.getContenido())%>
                 </td>
                 <td>
                     <%= registroc.getPrecio()%>

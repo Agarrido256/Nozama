@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="modelo.Administrador"%>
 <%@page import="java.util.List"%>
@@ -42,6 +43,7 @@
         </style>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         AdministradorJpaController controlAdministrador = new AdministradorJpaController();
         List<Administrador> datosAdministrador = controlAdministrador.findAdministradorEntities();
         HttpSession sesion = request.getSession();
@@ -123,13 +125,13 @@
             <%for(Administrador registro : datosAdministrador){%>
             <tr>
                 <td>
-                    <%= registro.getIdadmin()%>
+                    <%= fix.fixtexto(registro.getIdadmin())%>
                 </td>
                 <td>
-                    <%= registro.getNombre()%>
+                    <%= fix.fixtexto(registro.getNombre())%>
                 </td>
                 <td>
-                    <%= registro.getApellidos()%>
+                    <%= fix.fixtexto(registro.getApellidos())%>
                 </td>
                 <td>
                     <%= simpleDateFormat.format(registro.getFechanac())%>

@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="modelo.Foro"%>
 <%@page import="modelo.ForoJpaController"%>
@@ -20,6 +21,7 @@
     </head>
     <body>
         <%
+            Arreglos fix = new Arreglos();
             HttpSession sesion = request.getSession();
             ProductoJpaController controlProducto = new ProductoJpaController();
             List<Producto> datosProducto = controlProducto.findProductoEntities();
@@ -92,14 +94,14 @@
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
                                     </div>
                                     <div class="contdiv">
-                                        <h2><%= registro.getNombre()%></h2>
+                                        <h2><%= fix.fixtexto(registro.getNombre())%></h2>
                                         <hr>
-                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= registro.getAutor()%></h3>
+                                        <h3 class="nombregrupo"><span class="delgrupo" style="color: gray;">de</span> <%= fix.fixtexto(registro.getAutor())%></h3>
                                         <%
                                             String contenido = registro.getContenido();
                                             contenido = contenido.replaceAll(" ", ", ");
                                         %>
-                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= contenido%></p>
+                                        <p><span class="delgrupo" style="color: gray;">Contiene éxitos como:</span><br> <%= fix.fixtexto(contenido)%></p>
                                         <br><br><br><br><br><br><br>
                                         <%
                                         String precio = registro.getPrecio();
@@ -153,14 +155,14 @@
                                         <div class="publicaciones">
                                             <%for(Foro registrof : datosForo){
                                                 if(registrof.getIdpprodcuto().getIdpro() == registro.getIdpro()){%>
-                                                <div class="asunto"><h2><%= registrof.getAsunto()%></h2></div>
+                                                <div class="asunto"><h2><%= fix.fixtexto(registrof.getAsunto())%></h2></div>
                                                 <div class="puntuacion">
                                                     <%for (int i = 0; i < registrof.getPuntuacion(); i++) {%>
                                                         <img src="../imagenes/star.png">
                                                     <%}%>
                                                 </div>
-                                                <div class="descripcion"><p><%= registrof.getDescripcion()%></p></div>
-                                                <div class="porquien"><p><label style="color: gray;">Publicado por </label><%= registrof.getIdusuario().getNombre()%></p></div>
+                                                <div class="descripcion"><p><%= fix.fixtexto(registrof.getDescripcion())%></p></div>
+                                                <div class="porquien"><p><label style="color: gray;">Publicado por </label><%= fix.fixtexto(registrof.getIdusuario().getNombre())%></p></div>
                                                 <%if(sesion.getAttribute("user") != null){%>
                                                 <button 
                                                     <%if(!registrof.getIdusuario().getIduser().equals(sesion.getAttribute("user").toString())){%>

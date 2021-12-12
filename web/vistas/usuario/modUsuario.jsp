@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Usuario"%>
@@ -42,6 +43,7 @@
         </style>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         UsuarioJpaController controlcon = new UsuarioJpaController();
         List<Usuario> datos = controlcon.findUsuarioEntities();
         HttpSession sesion = request.getSession();
@@ -92,10 +94,10 @@
     %>
     <body>
         <a href="gestionUsuario.jsp">Cancelar y volver</a><br>
-        <p>Escriba solamente, los datos que desee cambiar del usuario con el id: <%= sesion.getAttribute("siduser")%></p>
+        <p>Escriba solamente, los datos que desee cambiar del usuario con el id: <%= fix.fixtexto(sesion.getAttribute("siduser").toString())%></p>
         <form action='../../UsuarioDAO' method='POST'>
-            <p>Nombre: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("snombre")%>'></p>
-            <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= sesion.getAttribute("sapellidos")%>'/></p>
+            <p>Nombre: <input type='text' name='nombre' placeholder='<%= fix.fixtexto(sesion.getAttribute("snombre").toString())%>'></p>
+            <p>Apellidos: <input type='text' name='apellidos' placeholder='<%= fix.fixtexto(sesion.getAttribute("sapellidos").toString())%>'/></p>
             <p>Fecha de nacimiento: <input type='date' name='fechanac' value='<%= simpleDateFormato.format(sesion.getAttribute("sfechanac"))%>'/></p>
             <%if(sesion.getAttribute("spremium").equals(true)){%>
             <p>Cuenta premium:(si)<input type='radio' name='premium' value="true" checked/>
@@ -139,13 +141,13 @@
                 if(registro.getIduser().equals(sesion.getAttribute("siduser"))){%>
             <tr>
                 <td>
-                    <%= registro.getIduser()%>
+                    <%= fix.fixtexto(registro.getIduser())%>
                 </td>
                 <td>
-                    <%= registro.getNombre()%>
+                    <%= fix.fixtexto(registro.getNombre())%>
                 </td>
                 <td>
-                    <%= registro.getApellidos()%>
+                    <%= fix.fixtexto(registro.getApellidos())%>
                 </td>
                 <td>
                     <%= simpleDateFormat.format(registro.getFechanac())%>

@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Producto"%>
 <%@page import="modelo.ProductoJpaController"%>
@@ -41,6 +42,7 @@
         </style>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         ProductoJpaController control = new ProductoJpaController();
         List<Producto> datos = control.findProductoEntities();
         HttpSession sesion = request.getSession();
@@ -145,19 +147,19 @@
                     <%= registro.getIdpro()%>
                 </td>
                 <td>
-                    <%= registro.getCategoria()%>
+                    <%= fix.fixtexto(registro.getCategoria())%>
                 </td>
                 <td>
-                    <%= registro.getAutor()%>
+                    <%= fix.fixtexto(registro.getAutor())%>
                 </td>
                 <td>
                     <%= registro.getImg()%>
                 </td>
                 <td>
-                    <%= registro.getNombre()%>
+                    <%= fix.fixtexto(registro.getNombre())%>
                 </td>
                 <td>
-                    <%= registro.getContenido()%>
+                    <%= fix.fixtexto(registro.getContenido())%>
                 </td>
                 <td>
                     <%= registro.getPrecio()%>

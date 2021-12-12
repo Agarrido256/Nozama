@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Producto"%>
 <%@page import="modelo.ProductoJpaController"%>
@@ -41,6 +42,7 @@
         </style>
     </head>
     <%
+        Arreglos fix = new Arreglos();
         ProductoJpaController control = new ProductoJpaController();
         List<Producto> datos = control.findProductoEntities();
         HttpSession sesion = request.getSession();
@@ -95,12 +97,12 @@
     %>
     <body>
         <a href="gestionProducto.jsp">Cancelar y volver</a><br>
-        <p>Escriba solamente, los datos que desee cambiar del producto con el nombre: <%= sesion.getAttribute("snombre")%></p>
+        <p>Escriba solamente, los datos que desee cambiar del producto con el nombre: <%= fix.fixtexto(sesion.getAttribute("snombre").toString())%></p>
         <form action='../../ProductoDAO' method='POST'>
-            <p>Categoría: <input type='text' name='categoria' placeholder='<%= sesion.getAttribute("scategoria")%>'/></p>
-            <p>Autor: <input type='text' name='autor' placeholder='<%= sesion.getAttribute("sautor")%>'/></p>
-            <p>Nombre: <input type='text' name='nombre' placeholder='<%= sesion.getAttribute("snombre")%>'/></p>
-            <p>4 mejores canciones que el disco contiene, sepárelas con un espacio por favor: <input type='text' name='contenido' placeholder='<%= sesion.getAttribute("scontenido")%>'/></p>
+            <p>Categoría: <input type='text' name='categoria' placeholder='<%= fix.fixtexto(sesion.getAttribute("scategoria").toString())%>'/></p>
+            <p>Autor: <input type='text' name='autor' placeholder='<%= fix.fixtexto(sesion.getAttribute("sautor").toString())%>'/></p>
+            <p>Nombre: <input type='text' name='nombre' placeholder='<%= fix.fixtexto(sesion.getAttribute("snombre").toString())%>'/></p>
+            <p>4 mejores canciones que el disco contiene, sepárelas con un espacio por favor: <input type='text' name='contenido' placeholder='<%= fix.fixtexto(sesion.getAttribute("scontenido").toString())%>'/></p>
             <p>Precio: <input type="number" min="0.00" max="10000.00" step="0.01" name='precio' placeholder='<%= sesion.getAttribute("sprecio")%>'/>€</p>
             <p>Precio para cuentas premium: <input type="number" min="0.00" max="10000.00" step="0.01" name='preciopremium' placeholder='<%= sesion.getAttribute("spreciopremium")%>'/>€</p>
             <p>Precio de envió: <input type="number" min="0.00" max="10000.00" step="0.01" name='precioenvio' placeholder='<%= sesion.getAttribute("sprecioenvio")%>'/>€</p>
@@ -153,19 +155,19 @@
                     <%= registro.getIdpro()%>
                 </td>
                 <td>
-                    <%= registro.getCategoria()%>
+                    <%= fix.fixtexto(registro.getCategoria())%>
                 </td>
                 <td>
-                    <%= registro.getAutor()%>
+                    <%= fix.fixtexto(registro.getAutor())%>
                 </td>
                 <td>
                     <%= registro.getImg()%>
                 </td>
                 <td>
-                    <%= registro.getNombre()%>
+                    <%= fix.fixtexto(registro.getNombre())%>
                 </td>
                 <td>
-                    <%= registro.getContenido()%>
+                    <%= fix.fixtexto(registro.getContenido())%>
                 </td>
                 <td>
                     <%= registro.getPrecio()%>
