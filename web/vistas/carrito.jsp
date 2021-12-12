@@ -4,6 +4,7 @@
     Author     : PcCom
 --%>
 
+<%@page import="funciones.Arreglos"%>
 <%@page import="java.util.List"%>
 <%@page import="modelo.Producto"%>
 <%@page import="modelo.ProductoJpaController"%>
