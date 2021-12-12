@@ -180,6 +180,14 @@ footer img{
     align-self: end;
 }
 
+footer p{
+    grid-row: 3;
+    grid-column: 1 / span 2;
+    margin-bottom: 0;
+    align-self: end;
+    color: gray;
+}
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -314,6 +322,10 @@ footer img{
       display: none;
   }
 
+  footer p{
+      display: none;
+  }
+    
   .modal-content {
       width: 40%;
   }

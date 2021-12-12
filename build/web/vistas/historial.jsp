@@ -14,34 +14,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../diseño/uconf.css">
-        <style>
-            *{
-                font-family: 'Source Sans Pro', sans-serif;
-}
-
-            html, body{
-                width: 100%;
-                height: 100%;
-                margin: 0;
-            }
-
-            body{
-                background-color: rgb(244,244,244);
-            }
-            
-            table, td, th {
-                border: 1px solid black;
-            }
-
-            table {
-                border-collapse: collapse;
-            }  
-            
-            tr, td{
-                text-align: center;
-            }
-        </style>
+        <link rel="stylesheet" href="../diseño/historial.css">
     </head>
     <%
         Arreglos fix = new Arreglos();
@@ -58,7 +31,7 @@
     %>
     <body>
         <a href="welcome.jsp" style="height: 10px; margin-bottom: 0px;">Volver</a><br><br>
-        <div class="base" style="margin-top: -300px;">
+        <div class="base">
             <h2>Este es su historial de compras</h2>
         <table>
             <tr>

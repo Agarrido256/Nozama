@@ -172,6 +172,7 @@
                         <a href="index.jsp?cambiarpagina=vistas/asistencia.jsp">Atención al Cliente</a>
                     </div>
                     <img src="imagenes/logofixed.PNG">
+                    <p>© 1996-2021, Nozama.com, Inc. o afiliados. Todos los derechos reservados.</p>
                 </footer>
             </section>
         </div>
