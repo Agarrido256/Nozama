@@ -78,7 +78,7 @@ public class ProductoDAO extends HttpServlet {
             int descuento = 1;
             int stock = 1;
             for(Producto registro : datos){
-                if(registro.getIdpro().equals(idpro)){
+                if(registro.getIdpro().equals(sesion.getAttribute("product"))){
                     categoria = registro.getCategoria();
                     autor = registro.getAutor();
                     nombre = registro.getNombre();
@@ -129,7 +129,7 @@ public class ProductoDAO extends HttpServlet {
             int descuento = 1;
             int stock = 1;
             for(Producto registro : datos){
-                if(registro.getIdpro().equals(idpro)){
+                if(registro.getIdpro().equals(sesion.getAttribute("product"))){
                     categoria = registro.getCategoria();
                     autor = registro.getAutor();
                     nombre = registro.getNombre();
