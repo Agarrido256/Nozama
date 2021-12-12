@@ -141,7 +141,15 @@
                                 </div>
                                 
                                     <div class="foro">
-                                        <h1 style="margin-top: 100px;">Que opinan los usuarios</h1>
+                                        <% boolean hayuno = false;
+                                            for(Foro registrow : datosForo){
+                                                if(registrow.getIdpprodcuto().getIdpro() == registro.getIdpro()){
+                                                    hayuno = true;
+                                               }
+                                            }%>
+                                            <%if(hayuno){%>
+                                            <h1 style="margin-top: 100px;">Que opinan los usuarios</h1>
+                                            <%}%>
                                         <div class="publicaciones">
                                             <%for(Foro registrof : datosForo){
                                                 if(registrof.getIdpprodcuto().getIdpro() == registro.getIdpro()){%>
