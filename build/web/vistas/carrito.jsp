@@ -146,6 +146,7 @@
                                             <%if(!primer){
                                                 primer = true;
                                                 sesion.setAttribute("product", registro.getIdpro());
+                                                sesion.setAttribute("estestockc", registro.getStock());
                                             %>
                                             <button href="#" id="login">Comprar</button>
                                             <%}%>

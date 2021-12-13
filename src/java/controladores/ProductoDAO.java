@@ -88,10 +88,9 @@ public class ProductoDAO extends HttpServlet {
                     preciopremium = registro.getPreciopremium();
                     precioenvio = registro.getPrecioenvio();
                     descuento = registro.getDescuento();
-                    stock = registro.getStock();
                 }
             }
-            stock = stock - 1;
+            stock = parseInt(sesion.getAttribute("estestock").toString()) - 1;
             try{
                 producto.setIdpro(idpro);
                 producto.setCategoria(categoria);
@@ -139,10 +138,9 @@ public class ProductoDAO extends HttpServlet {
                     preciopremium = registro.getPreciopremium();
                     precioenvio = registro.getPrecioenvio();
                     descuento = registro.getDescuento();
-                    stock = registro.getStock();
                 }
             }
-            stock = stock - 1;
+            stock = parseInt(sesion.getAttribute("estestockc").toString()) - 1;
             try{
                 producto.setIdpro(idpro);
                 producto.setCategoria(categoria);

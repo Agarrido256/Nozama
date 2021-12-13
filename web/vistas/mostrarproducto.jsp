@@ -88,7 +88,8 @@
                 <%
                     for(Producto registro : datosProducto){
                     if(registro.getIdpro().toString().equals(sesion.getAttribute("estepro"))){
-                    sesion.setAttribute("product", registro.getIdpro()); %>
+                    sesion.setAttribute("product", registro.getIdpro()); 
+                    sesion.setAttribute("estestock", registro.getStock()); %>
                                 <div class="producto">
                                     <div class="imgdiv">
                                         <img src="../imagenes/<%= registro.getImg()%>" alt="<%= registro.getImg()%>">
